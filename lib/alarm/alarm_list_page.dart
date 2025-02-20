@@ -78,108 +78,107 @@ class AlarmListPage extends StatelessWidget {
           },
           child: Opacity(
             opacity: alarmItem.isEnabled ? 1.0 : 0.5,
-            child: Container(
+            child: Card(
+              elevation: 2,
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              decoration: BoxDecoration(
-                color: isDarkTheme ? Colors.grey[850] : const Color(0xFFFCFCFC),
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.2),
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
               ),
-              child: ListTile(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                title: RichText(
-                  text: TextSpan(
+              color: isDarkTheme ? Colors.grey[850] : const Color(0xFFFCFCFC),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(15),
+                onTap: () {
+                  onTapAlarm(index);
+                },
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
+                  title: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '${formattedTime.split(' ')[0]} ',
+                          style: TextStyle(
+                            color: isDarkTheme ? Colors.white : Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        TextSpan(
+                          text: formattedTime.split(' ')[1],
+                          style: TextStyle(
+                            color: isDarkTheme ? Colors.white : Colors.black,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextSpan(
-                        text: '${formattedTime.split(' ')[0]} ',
+                      Text(
+                        cancelModeText,
                         style: TextStyle(
-                          color: isDarkTheme ? Colors.white : Colors.black,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
+                          color: isDarkTheme ? Colors.white70 : Colors.black87,
+                          fontSize: 16,
                         ),
                       ),
-                      TextSpan(
-                        text: formattedTime.split(' ')[1],
+                      Text(
+                        alarmItem.settings.notificationBody.isEmpty
+                            ? '메모 없음'
+                            : alarmItem.settings.notificationBody,
                         style: TextStyle(
-                          color: isDarkTheme ? Colors.white : Colors.black,
-                          fontSize: 32,
-                          fontWeight: FontWeight.w600,
+                          color: isDarkTheme ? Colors.white70 : Colors.black87,
+                          fontSize: 18,
                         ),
                       ),
                     ],
                   ),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      cancelModeText,
-                      style: TextStyle(
-                        color: isDarkTheme ? Colors.white70 : Colors.black87,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      alarmItem.settings.notificationBody.isEmpty
-                          ? '메모 없음'
-                          : alarmItem.settings.notificationBody,
-                      style: TextStyle(
-                        color: isDarkTheme ? Colors.white70 : Colors.black87,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
-                trailing: Switch(
-                  value: alarmItem.isEnabled,
-                  onChanged: (value) {
-                    HapticFeedback.mediumImpact();
-                    onToggleAlarm(alarmItem);
+                  trailing: Switch(
+                    value: alarmItem.isEnabled,
+                    onChanged: (value) {
+                      HapticFeedback.mediumImpact();
+                      onToggleAlarm(alarmItem);
 
-                    if (value) {
-                      // 스위치가 켜질 때만 실행
-                      final now = DateTime.now();
-                      final alarmTime = alarmItem.settings.dateTime;
+                      if (value) {
+                        final now = DateTime.now();
+                        final alarmTime = alarmItem.settings.dateTime;
 
-                      if (alarmTime.isAfter(now)) {
-                        final difference = alarmTime.difference(now);
-                        final totalMinutes = (difference.inSeconds / 60)
-                            .ceil(); // 초를 올림하여 분으로 변환
-                        final hours = totalMinutes ~/ 60;
-                        final minutes = totalMinutes % 60;
+                        if (alarmTime.isAfter(now)) {
+                          final difference = alarmTime.difference(now);
+                          final totalMinutes =
+                              (difference.inSeconds / 60).ceil();
+                          final hours = totalMinutes ~/ 60;
+                          final minutes = totalMinutes % 60;
 
-                        Fluttertoast.showToast(
-                          msg: hours > 0
-                              ? '알람이 약 $hours시간 $minutes분 후에 울립니다.'
-                              : '알람이 약 $minutes분 후에 울립니다.',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          backgroundColor: Colors.black.withValues(alpha: 0.8),
-                          textColor: Colors.white,
-                        );
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: '알람 시간이 현재 시간보다 이전입니다.',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          backgroundColor:
-                              Colors.redAccent.withValues(alpha: 0.8),
-                          textColor: Colors.white,
-                        );
+                          Fluttertoast.showToast(
+                            msg: hours > 0
+                                ? '알람이 약 $hours시간 $minutes분 후에 울립니다.'
+                                : '알람이 약 $minutes분 후에 울립니다.',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            backgroundColor:
+                                Colors.black.withValues(alpha: 0.8),
+                            textColor: Colors.white,
+                          );
+                        } else {
+                          Fluttertoast.showToast(
+                            msg: '알람 시간이 현재 시간보다 이전입니다.',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            backgroundColor:
+                                Colors.redAccent.withValues(alpha: 0.8),
+                            textColor: Colors.white,
+                          );
+                        }
                       }
-                    }
-                  },
+                    },
+                  ),
                 ),
-                onTap: () {
-                  onTapAlarm(index);
-                },
               ),
             ),
           ),
