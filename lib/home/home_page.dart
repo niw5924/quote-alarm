@@ -23,9 +23,15 @@ class AlarmItem {
   bool isEnabled;
   AlarmCancelMode cancelMode;
   double volume;
+  List<bool> repeatDays;
 
-  AlarmItem(this.settings, this.isEnabled,
-      {this.cancelMode = AlarmCancelMode.slider, this.volume = 1.0});
+  AlarmItem(
+    this.settings,
+    this.isEnabled, {
+    this.cancelMode = AlarmCancelMode.slider,
+    this.volume = 1.0,
+    this.repeatDays = const [false, false, false, false, false, false, false],
+  });
 }
 
 class AlarmHomePage extends StatefulWidget {
@@ -53,8 +59,13 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
     Alarm.ringStream.stream.listen((alarmSettings) async {
       final matchingAlarm = _alarms.firstWhere(
         (alarm) => alarm.settings.id == alarmSettings.id,
-        orElse: () => AlarmItem(alarmSettings, false,
-            cancelMode: AlarmCancelMode.slider, volume: 1.0),
+        orElse: () => AlarmItem(
+          alarmSettings,
+          false,
+          cancelMode: AlarmCancelMode.slider,
+          volume: 1.0,
+          repeatDays: List.filled(7, false),
+        ),
       );
 
       if (matchingAlarm.isEnabled) {
@@ -114,6 +125,7 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
           alarmSettings: newAlarmSettings,
           cancelMode: AlarmCancelMode.slider,
           volume: 1.0,
+          repeatDays: List.filled(7, false),
         ),
       ),
     );
@@ -148,10 +160,22 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
 
   Future<void> _saveAlarms() async {
     final prefs = await SharedPreferences.getInstance();
+
     final List<String> alarmList = _alarms.map((alarm) {
-      return '${alarm.settings.id}|${alarm.settings.dateTime.toIso8601String()}|${alarm.isEnabled}|${alarm.cancelMode.index}|${alarm.volume}|${alarm.settings.assetAudioPath}|${alarm.settings.notificationBody}';
+      return [
+        alarm.settings.id,
+        alarm.settings.dateTime.toIso8601String(),
+        alarm.isEnabled,
+        alarm.cancelMode.index,
+        alarm.volume,
+        alarm.settings.assetAudioPath,
+        alarm.settings.notificationBody,
+        alarm.repeatDays.join(","),
+      ].join("|");
     }).toList();
-    prefs.setStringList('alarms', alarmList);
+
+    print(alarmList);
+    await prefs.setStringList('alarms', alarmList);
   }
 
   Future<void> _loadAlarms() async {
@@ -168,14 +192,22 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
             loopAudio: true,
             vibrate: true,
             notificationTitle: '알람',
-            notificationBody: parts.length > 6 ? parts[6] : '',
+            notificationBody: parts[6],
             enableNotificationOnKill: true,
           );
           final isEnabled = parts[2] == 'true';
           final cancelMode = AlarmCancelMode.values[int.parse(parts[3])];
           final volume = double.parse(parts[4]);
-          return AlarmItem(alarmSettings, isEnabled,
-              cancelMode: cancelMode, volume: volume);
+          final repeatDays =
+              parts[7].split(',').map((e) => e == 'true').toList();
+
+          return AlarmItem(
+            alarmSettings,
+            isEnabled,
+            cancelMode: cancelMode,
+            volume: volume,
+            repeatDays: repeatDays,
+          );
         }).toList();
       });
     }
@@ -220,6 +252,7 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
                     alarmSettings: _alarms[index].settings,
                     cancelMode: _alarms[index].cancelMode,
                     volume: _alarms[index].volume,
+                    repeatDays: _alarms[index].repeatDays,
                   ),
                 ),
               );

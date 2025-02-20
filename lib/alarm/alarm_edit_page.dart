@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter_alarm_app_2/home/home_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AlarmEditPage extends StatefulWidget {
   final AlarmSettings alarmSettings;
   final AlarmCancelMode cancelMode;
   final double volume;
+  final List<bool> repeatDays;
 
   const AlarmEditPage({
     super.key,
     required this.alarmSettings,
     required this.cancelMode,
     required this.volume,
+    required this.repeatDays,
   });
 
   @override
@@ -26,6 +29,7 @@ class _AlarmEditPageState extends State<AlarmEditPage> {
   String _selectedAudioPath = 'assets/sound/alarm_sound.mp3';
   late double _volume;
   List<String> _customSoundFiles = []; // 사용자 사운드 파일 목록
+  late List<bool> _repeatDays; // 요일 선택 상태
 
   final List<String> _defaultSoundFiles = [
     'assets/sound/alarm_cuckoo.mp3',
@@ -44,6 +48,8 @@ class _AlarmEditPageState extends State<AlarmEditPage> {
     _cancelMode = widget.cancelMode;
     _selectedAudioPath = widget.alarmSettings.assetAudioPath;
     _volume = widget.volume;
+    _repeatDays = List.from(widget.repeatDays);
+    print(_repeatDays);
 
     _loadCustomSounds(); // 사용자 사운드 파일 불러오기
   }
@@ -68,9 +74,25 @@ class _AlarmEditPageState extends State<AlarmEditPage> {
   }
 
   Future<void> _saveAlarm() async {
+    if (!_repeatDays.contains(true)) {
+      Fluttertoast.showToast(
+        msg: '요일을 최소 하루 이상 선택해야 합니다.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black.withValues(alpha: 0.8),
+        textColor: Colors.white,
+      );
+      return;
+    }
+
     final DateTime now = DateTime.now();
     var updatedAlarmTime = DateTime(
-        now.year, now.month, now.day, _selectedTime.hour, _selectedTime.minute);
+      now.year,
+      now.month,
+      now.day,
+      _selectedTime.hour,
+      _selectedTime.minute,
+    );
 
     if (updatedAlarmTime.isBefore(now)) {
       updatedAlarmTime = updatedAlarmTime.add(const Duration(days: 1));
@@ -87,6 +109,7 @@ class _AlarmEditPageState extends State<AlarmEditPage> {
       true,
       cancelMode: _cancelMode,
       volume: _volume,
+      repeatDays: _repeatDays,
     );
 
     if (context.mounted) {
@@ -100,6 +123,7 @@ class _AlarmEditPageState extends State<AlarmEditPage> {
   Widget build(BuildContext context) {
     // 기본 사운드와 사용자 사운드를 합친 리스트
     final allSoundFiles = [..._defaultSoundFiles, ..._customSoundFiles];
+    final List<String> days = ['일', '월', '화', '수', '목', '금', '토'];
 
     return Scaffold(
       appBar: AppBar(
@@ -136,6 +160,49 @@ class _AlarmEditPageState extends State<AlarmEditPage> {
                   color: Colors.grey,
                 ),
                 onTap: _selectTime,
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text('반복 요일', style: TextStyle(fontSize: 16)),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1A1A1A),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(7, (index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _repeatDays[index] = !_repeatDays[index];
+                      });
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 10,
+                      height: MediaQuery.of(context).size.width / 10,
+                      decoration: BoxDecoration(
+                        color: _repeatDays[index]
+                            ? const Color(0xFF94FFCB)
+                            : const Color(0xFF1A1A1A),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.grey, width: 0.5),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        days[index],
+                        style: TextStyle(
+                          color: _repeatDays[index]
+                              ? const Color(0xFF1A1A1A)
+                              : Colors.grey,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  );
+                }),
               ),
             ),
             const SizedBox(height: 16),
