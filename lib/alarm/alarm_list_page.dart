@@ -37,6 +37,8 @@ class AlarmListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> days = ['일', '월', '화', '수', '목', '금', '토'];
+
     return ListView.builder(
       itemCount: alarms.length,
       itemBuilder: (context, index) {
@@ -95,27 +97,56 @@ class AlarmListPage extends StatelessWidget {
                     horizontal: 16.0,
                     vertical: 8.0,
                   ),
-                  title: RichText(
-                    text: TextSpan(
-                      children: [
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 요일 표시
+                      Text.rich(
                         TextSpan(
-                          text: '${formattedTime.split(' ')[0]} ',
-                          style: TextStyle(
-                            color: isDarkTheme ? Colors.white : Colors.black,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          children: List.generate(7, (dayIndex) {
+                            return TextSpan(
+                              text: '${days[dayIndex]} ',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: (isDarkTheme
+                                        ? Colors.white
+                                        : Colors.black)
+                                    .withValues(
+                                        alpha: alarmItem.repeatDays[dayIndex]
+                                            ? 1.0
+                                            : 0.5),
+                              ),
+                            );
+                          }),
                         ),
-                        TextSpan(
-                          text: formattedTime.split(' ')[1],
-                          style: TextStyle(
-                            color: isDarkTheme ? Colors.white : Colors.black,
-                            fontSize: 32,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      ),
+                      // 기존 시간 표시
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: '${formattedTime.split(' ')[0]} ',
+                              style: TextStyle(
+                                color:
+                                    isDarkTheme ? Colors.white : Colors.black,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            TextSpan(
+                              text: formattedTime.split(' ')[1],
+                              style: TextStyle(
+                                color:
+                                    isDarkTheme ? Colors.white : Colors.black,
+                                fontSize: 32,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
