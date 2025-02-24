@@ -36,9 +36,9 @@ class _SettingsPageState extends State<SettingsPage> {
               StreamBuilder<DocumentSnapshot>(
                 stream: uid != null
                     ? FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(uid)
-                    .snapshots()
+                        .collection('users')
+                        .doc(uid)
+                        .snapshots()
                     : null,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -51,7 +51,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
                     // 월별 알람 해제 횟수 합산
                     int currentMonthDismissals = 0;
-                    String currentMonthKey = '${DateTime.now().year}-${DateTime.now().month}';
+                    String currentMonthKey =
+                        '${DateTime.now().year}-${DateTime.now().month}';
 
                     alarmDismissals.forEach((date, alarms) {
                       DateTime dateTime = DateTime.parse(date);
@@ -67,11 +68,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     // 해제 횟수에 따른 별 색상 설정
                     Icon starIcon;
                     if (currentMonthDismissals >= 10) {
-                      starIcon = const Icon(Icons.star, color: Colors.amber, size: 24); // 금색 별
+                      starIcon = const Icon(Icons.star,
+                          color: Colors.amber, size: 24); // 금색 별
                     } else if (currentMonthDismissals >= 5) {
-                      starIcon = const Icon(Icons.star, color: Colors.grey, size: 24); // 은색 별
+                      starIcon = const Icon(Icons.star,
+                          color: Colors.grey, size: 24); // 은색 별
                     } else {
-                      starIcon = const Icon(Icons.star, color: Colors.brown, size: 24); // 동색 별
+                      starIcon = const Icon(Icons.star,
+                          color: Colors.brown, size: 24); // 동색 별
                     }
 
                     return Padding(
@@ -94,7 +98,9 @@ class _SettingsPageState extends State<SettingsPage> {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return StarGradeExplanationPopup(currentMonthDismissals: currentMonthDismissals);
+                                  return StarGradeExplanationPopup(
+                                      currentMonthDismissals:
+                                          currentMonthDismissals);
                                 },
                               );
                             },
@@ -122,7 +128,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   }
                 }
               },
-              splashColor: Colors.grey.withOpacity(0.2),
+              splashColor: Colors.grey.withValues(alpha: 0.2),
               highlightColor: Colors.transparent,
               child: Container(
                 width: double.infinity,
@@ -156,7 +162,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                 );
               },
-              splashColor: Colors.grey.withOpacity(0.2),
+              splashColor: Colors.grey.withValues(alpha: 0.2),
               highlightColor: Colors.transparent,
               child: Container(
                 width: double.infinity,
@@ -218,7 +224,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             },
                             style: TextButton.styleFrom(
                               backgroundColor: const Color(0xFF6BF3B1),
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -239,11 +246,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 } else {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SoundAdditionPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const SoundAdditionPage()),
                   );
                 }
               },
-              splashColor: Colors.grey.withOpacity(0.2),
+              splashColor: Colors.grey.withValues(alpha: 0.2),
               highlightColor: Colors.transparent,
               child: Container(
                 width: double.infinity,
@@ -273,16 +281,17 @@ class _SettingsPageState extends State<SettingsPage> {
                 StreamBuilder<DocumentSnapshot>(
                   stream: uid != null
                       ? FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(uid)
-                      .snapshots()
+                          .collection('users')
+                          .doc(uid)
+                          .snapshots()
                       : null,
                   builder: (context, snapshot) {
                     Map<DateTime, int> datasets = {};
                     if (snapshot.connectionState == ConnectionState.active &&
                         snapshot.hasData &&
                         authProvider.isLoggedIn) {
-                      final data = snapshot.data?.data() as Map<String, dynamic>?;
+                      final data =
+                          snapshot.data?.data() as Map<String, dynamic>?;
                       final alarmDismissals = data?['alarmDismissals'] ?? {};
 
                       alarmDismissals.forEach((date, alarms) {
@@ -294,8 +303,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         datasets[dateTime] = minDuration > 30
                             ? 1
                             : minDuration > 0 && minDuration <= 30
-                            ? 2
-                            : 0;
+                                ? 2
+                                : 0;
                       });
                     }
 
@@ -327,14 +336,16 @@ class _SettingsPageState extends State<SettingsPage> {
                             width: double.infinity,
                             decoration: BoxDecoration(
                               border: const GradientBoxBorder(
-                                gradient: LinearGradient(colors: [Colors.red, Colors.blue]),
+                                gradient: LinearGradient(
+                                    colors: [Colors.red, Colors.blue]),
                                 width: 3,
                               ),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12.0),
                                 backgroundColor: const Color(0xFF6BF3B1),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(7.0),
@@ -380,7 +391,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   applicationLegalese: '2024 남인우 개인 프로젝트',
                 );
               },
-              splashColor: Colors.grey.withOpacity(0.2),
+              splashColor: Colors.grey.withValues(alpha: 0.2),
               highlightColor: Colors.transparent,
               child: Container(
                 width: double.infinity,

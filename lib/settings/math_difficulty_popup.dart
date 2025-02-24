@@ -40,7 +40,8 @@ class _MathDifficultyPopupState extends State<MathDifficultyPopup> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      backgroundColor: const Color(0xFFFFFBEA), // 부드러운 배경 색상
+      backgroundColor: const Color(0xFFFFFBEA),
+      // 부드러운 배경 색상
       title: const Text(
         '수학 문제 난이도 설정',
         style: TextStyle(
@@ -110,11 +111,13 @@ class _MathDifficultyPopupState extends State<MathDifficultyPopup> {
         _saveDifficulty(value); // 난이도 선택 시 SharedPreferences에 저장
       },
       child: Card(
-        color: _selectedDifficulty == value ? color.withOpacity(0.9) : Colors.white,
+        color: _selectedDifficulty == value
+            ? color.withValues(alpha: 0.9)
+            : Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        elevation: 4,
+        elevation: 2,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(

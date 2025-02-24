@@ -20,12 +20,20 @@ class Quote {
 
 class QuoteService {
   Future<Quote> fetchRandomQuote() async {
-    final response = await http.get(Uri.parse('https://quotes-api-self.vercel.app/quote'));
+    try {
+      final response =
+          await http.get(Uri.parse('https://quotes-api-self.vercel.app/quote'));
 
-    if (response.statusCode == 200) {
-      return Quote.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load quote');
+      if (response.statusCode == 200) {
+        return Quote.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('HTTP Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      return Quote(
+        quote: "Failed to load quote.",
+        author: e.toString(),
+      );
     }
   }
 }

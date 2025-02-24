@@ -86,18 +86,41 @@ class _AlarmEditPageState extends State<AlarmEditPage> {
     }
 
     final DateTime now = DateTime.now();
-    var updatedAlarmTime = DateTime(
+    int currentWeekday = now.weekday % 7; // 일요일(0) ~ 토요일(6)
+    int selectedHour = _selectedTime.hour;
+    int selectedMinute = _selectedTime.minute;
+
+    // 현재보다 전 시간이면 하루 건너뛰기
+    DateTime candidateAlarmTime = DateTime(
       now.year,
       now.month,
       now.day,
-      _selectedTime.hour,
-      _selectedTime.minute,
+      selectedHour,
+      selectedMinute,
     );
 
-    if (updatedAlarmTime.isBefore(now)) {
-      updatedAlarmTime = updatedAlarmTime.add(const Duration(days: 1));
+    if (candidateAlarmTime.isBefore(now)) {
+      candidateAlarmTime = candidateAlarmTime.add(const Duration(days: 1));
+      currentWeekday = (currentWeekday + 1) % 7; // 다음 요일로 변경
     }
 
+    // 현재 요일부터 반복 요일 중 가장 가까운 요일 찾기
+    int daysUntilNextAlarm = 0;
+
+    for (int i = 0; i < 7; i++) {
+      int closestRepeatDay = (currentWeekday + i) % 7; // 가장 가까운 반복 요일 찾기
+
+      if (_repeatDays[closestRepeatDay]) {
+        daysUntilNextAlarm = i;
+        break;
+      }
+    }
+
+    // 최종 알람 시간 설정
+    DateTime updatedAlarmTime =
+        candidateAlarmTime.add(Duration(days: daysUntilNextAlarm));
+
+    // 알람 설정 업데이트
     final updatedAlarmSettings = widget.alarmSettings.copyWith(
       dateTime: updatedAlarmTime,
       notificationBody: _memoController.text,
@@ -115,8 +138,6 @@ class _AlarmEditPageState extends State<AlarmEditPage> {
     if (context.mounted) {
       Navigator.pop(context, updatedAlarmItem);
     }
-
-    await Alarm.set(alarmSettings: updatedAlarmSettings);
   }
 
   @override

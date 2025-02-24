@@ -81,7 +81,6 @@ class AlarmListPage extends StatelessWidget {
           child: Opacity(
             opacity: alarmItem.isEnabled ? 1.0 : 0.5,
             child: Card(
-              elevation: 2,
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
@@ -178,34 +177,20 @@ class AlarmListPage extends StatelessWidget {
                       if (value) {
                         final now = DateTime.now();
                         final alarmTime = alarmItem.settings.dateTime;
+                        final difference = alarmTime.difference(now);
+                        final totalMinutes = (difference.inSeconds / 60).ceil();
+                        final hours = totalMinutes ~/ 60;
+                        final minutes = totalMinutes % 60;
 
-                        if (alarmTime.isAfter(now)) {
-                          final difference = alarmTime.difference(now);
-                          final totalMinutes =
-                              (difference.inSeconds / 60).ceil();
-                          final hours = totalMinutes ~/ 60;
-                          final minutes = totalMinutes % 60;
-
-                          Fluttertoast.showToast(
-                            msg: hours > 0
-                                ? '알람이 약 $hours시간 $minutes분 후에 울립니다.'
-                                : '알람이 약 $minutes분 후에 울립니다.',
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            backgroundColor:
-                                Colors.black.withValues(alpha: 0.8),
-                            textColor: Colors.white,
-                          );
-                        } else {
-                          Fluttertoast.showToast(
-                            msg: '알람 시간이 현재 시간보다 이전입니다.',
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            backgroundColor:
-                                Colors.redAccent.withValues(alpha: 0.8),
-                            textColor: Colors.white,
-                          );
-                        }
+                        Fluttertoast.showToast(
+                          msg: hours > 0
+                              ? '알람이 약 $hours시간 $minutes분 후에 울립니다.'
+                              : '알람이 약 $minutes분 후에 울립니다.',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.black.withValues(alpha: 0.8),
+                          textColor: Colors.white,
+                        );
                       }
                     },
                   ),

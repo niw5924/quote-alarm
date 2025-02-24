@@ -38,8 +38,11 @@ class AlarmHomePage extends StatefulWidget {
   final Function(bool) onThemeToggle;
   final bool isDarkTheme;
 
-  const AlarmHomePage(
-      {super.key, required this.onThemeToggle, required this.isDarkTheme});
+  const AlarmHomePage({
+    super.key,
+    required this.onThemeToggle,
+    required this.isDarkTheme,
+  });
 
   @override
   _AlarmHomePageState createState() => _AlarmHomePageState();
@@ -55,7 +58,7 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
     super.initState();
     _loadAlarms();
 
-    // 알람이 울릴 때 QuoteScreen으로 이동
+    // 알람이 울릴 때 처리
     Alarm.ringStream.stream.listen((alarmSettings) async {
       final matchingAlarm = _alarms.firstWhere(
         (alarm) => alarm.settings.id == alarmSettings.id,
@@ -67,40 +70,104 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
           repeatDays: List.filled(7, false),
         ),
       );
+      print("RingRingRingRingRingRing");
 
+      // 알람이 활성화된 경우만 처리
       if (matchingAlarm.isEnabled) {
         final DateTime alarmStartTime = DateTime.now();
 
-        // 명언 가져오는 서비스
-        await _showQuoteScreen(matchingAlarm.settings.id,
-            matchingAlarm.cancelMode, matchingAlarm.volume, alarmStartTime);
+        // 명언 화면 표시
+        await _showQuoteScreen(
+          matchingAlarm.settings.id,
+          matchingAlarm.cancelMode,
+          matchingAlarm.volume,
+          alarmStartTime,
+        );
       } else {
         await Alarm.stop(alarmSettings.id); // 알람 중지
       }
+
+      // 현재 알람이 반복 요일 설정되어 있다면 다음 알람을 등록
+      await _scheduleNextAlarm(matchingAlarm);
     });
   }
 
-  Future<void> _showQuoteScreen(int alarmId, AlarmCancelMode cancelMode,
-      double volume, DateTime alarmStartTime) async {
-    final quoteService = QuoteService();
-    try {
-      final quote = await quoteService.fetchRandomQuote();
-      if (context.mounted) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => QuoteScreen(
-              quote: quote,
-              alarmId: alarmId,
-              cancelMode: cancelMode,
-              volume: volume,
-              alarmStartTime: alarmStartTime,
-            ),
-          ),
-        );
+  // 다음 반복 요일에 대한 알람을 등록하는 함수
+  Future<void> _scheduleNextAlarm(AlarmItem alarmItem) async {
+    final DateTime now = DateTime.now();
+    int currentWeekday = now.weekday % 7; // 현재 요일 (0: 일요일, 6: 토요일)
+
+    // 기본적으로 다음 주 같은 요일로 설정
+    int daysUntilNextAlarm = 7;
+
+    // 현재 요일 이후 반복 요일 찾기
+    for (int i = 1; i < 7; i++) {
+      int nextDay = (currentWeekday + i) % 7;
+      if (alarmItem.repeatDays[nextDay]) {
+        daysUntilNextAlarm = i;
+        break;
       }
-    } catch (e) {
-      print('명언을 불러오는데 실패했습니다: $e');
+    }
+
+    // 오늘이 반복 요일이고, 다른 반복 요일이 없으면 +7일
+    if (alarmItem.repeatDays[currentWeekday] && daysUntilNextAlarm == 7) {
+      daysUntilNextAlarm = 7;
+    }
+
+    // 다음 울릴 날짜 업데이트
+    DateTime nextAlarmTime =
+        alarmItem.settings.dateTime.add(Duration(days: daysUntilNextAlarm));
+
+    // 기존 ID를 1 증가시켜 새롭게 설정
+    int newAlarmId = alarmItem.settings.id + 1;
+
+    // 로그 출력 (디버깅용)
+    print("알람 업데이트 - 기존 ID: ${alarmItem.settings.id} → 새로운 ID: $newAlarmId");
+    print(
+        "알람 업데이트 - 기존 날짜: ${alarmItem.settings.dateTime} → 새로운 날짜: $nextAlarmTime");
+
+    // 기존 알람을 유지하면서 ID와 dateTime을 변경
+    alarmItem.settings = alarmItem.settings.copyWith(
+      id: newAlarmId,
+      dateTime: nextAlarmTime,
+    );
+
+    setState(() {
+      // 기존 알람을 업데이트 (ID 변경 반영)
+      _alarms = _alarms.map((a) {
+        return (a.settings.id == newAlarmId - 1) ? alarmItem : a;
+      }).toList();
+    });
+
+    // 업데이트된 알람을 시스템에 등록
+    await Alarm.set(alarmSettings: alarmItem.settings);
+    print("알람 등록 - 새로운 ID: $newAlarmId, 울릴 시간: $nextAlarmTime");
+
+    _saveAlarms();
+  }
+
+  Future<void> _showQuoteScreen(
+    int alarmId,
+    AlarmCancelMode cancelMode,
+    double volume,
+    DateTime alarmStartTime,
+  ) async {
+    final quoteService = QuoteService();
+    final quote = await quoteService.fetchRandomQuote();
+
+    if (context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => QuoteScreen(
+            quote: quote,
+            alarmId: alarmId,
+            cancelMode: cancelMode,
+            volume: volume,
+            alarmStartTime: alarmStartTime,
+          ),
+        ),
+      );
     }
   }
 
@@ -134,27 +201,11 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
       setState(() {
         _alarms.add(updatedAlarmItem);
       });
+
+      await Alarm.set(alarmSettings: updatedAlarmItem.settings);
       _saveAlarms();
 
-      // 알람이 울리기까지 남은 시간 계산
-      final now = DateTime.now();
-      final alarmTime = updatedAlarmItem.settings.dateTime;
-
-      final difference = alarmTime.difference(now);
-      final totalMinutes =
-          (difference.inSeconds / 60).ceil(); // 초 단위까지 올림 후 분 계산
-      final hours = totalMinutes ~/ 60;
-      final minutes = totalMinutes % 60;
-
-      Fluttertoast.showToast(
-        msg: hours > 0
-            ? '알람이 약 $hours시간 $minutes분 후에 울립니다.'
-            : '알람이 약 $minutes분 후에 울립니다.',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black.withValues(alpha: 0.8),
-        textColor: Colors.white,
-      );
+      _showRemainingTimeToast(updatedAlarmItem.settings.dateTime);
     }
   }
 
@@ -181,6 +232,8 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
   Future<void> _loadAlarms() async {
     final prefs = await SharedPreferences.getInstance();
     final List<String>? alarmList = prefs.getStringList('alarms');
+    print(alarmList);
+
     if (alarmList != null) {
       setState(() {
         _alarms = alarmList.map((alarmString) {
@@ -213,11 +266,21 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
     }
   }
 
-  void _toggleAlarm(AlarmItem alarmItem) {
+  void _toggleAlarm(AlarmItem alarmItem) async {
     setState(() {
       alarmItem.isEnabled = !alarmItem.isEnabled;
-      _saveAlarms();
     });
+
+    // isEnabled 값에 따라 vibrate 설정
+    final updatedSettings = alarmItem.settings.copyWith(
+      vibrate: alarmItem.isEnabled,
+    );
+
+    alarmItem.settings = updatedSettings;
+
+    await Alarm.set(alarmSettings: updatedSettings);
+
+    _saveAlarms();
   }
 
   void deleteAlarm(int index, AlarmItem alarmItem) async {
@@ -232,6 +295,24 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void _showRemainingTimeToast(DateTime updatedAlarmTime) {
+    final DateTime now = DateTime.now();
+    final difference = updatedAlarmTime.difference(now);
+    final totalMinutes = (difference.inSeconds / 60).ceil();
+    final hours = totalMinutes ~/ 60;
+    final minutes = totalMinutes % 60;
+
+    Fluttertoast.showToast(
+      msg: hours > 0
+          ? '알람이 약 $hours시간 $minutes분 후에 울립니다.'
+          : '알람이 약 $minutes분 후에 울립니다.',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black.withValues(alpha: 0.8),
+      textColor: Colors.white,
+    );
   }
 
   @override
@@ -259,9 +340,21 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
 
               if (updatedAlarmItem != null) {
                 setState(() {
-                  _alarms[index] = updatedAlarmItem;
-                  _saveAlarms();
+                  _alarms[index] = AlarmItem(
+                    updatedAlarmItem.settings,
+                    _alarms[index].isEnabled,
+                    cancelMode: updatedAlarmItem.cancelMode,
+                    volume: updatedAlarmItem.volume,
+                    repeatDays: updatedAlarmItem.repeatDays,
+                  );
                 });
+
+                await Alarm.set(alarmSettings: updatedAlarmItem.settings);
+                _saveAlarms();
+
+                if (_alarms[index].isEnabled) {
+                  _showRemainingTimeToast(updatedAlarmItem.settings.dateTime);
+                }
               }
             },
           );
