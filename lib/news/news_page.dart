@@ -16,6 +16,7 @@ class _NewsPageState extends State<NewsPage> {
   final HtmlUnescape _unescape = HtmlUnescape(); // HTML 엔티티 변환기
   List<News> _newsList = [];
   bool _isLoading = true;
+  String _errorMessage = '';
 
   @override
   void initState() {
@@ -28,65 +29,83 @@ class _NewsPageState extends State<NewsPage> {
       final news = await _newsService.fetchNews(query: '오늘');
       setState(() {
         _newsList = news;
-        _isLoading = false;
       });
     } catch (e) {
       setState(() {
+        _errorMessage = '$e';
+      });
+    } finally {
+      setState(() {
         _isLoading = false;
       });
-      print('뉴스를 불러오는데 실패했습니다: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? ListView.builder(
-            itemCount: 10,
-            itemBuilder: (context, index) {
-              return Shimmer.fromColors(
-                baseColor: const Color(0xFF7F7F7F).withValues(alpha: 0.2),
-                highlightColor: const Color(0xFFD9D9D9).withValues(alpha: 0.2),
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  height: 140,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                ),
-              );
-            },
-          )
-        : ListView.builder(
-            itemCount: _newsList.length,
-            itemBuilder: (context, index) {
-              final news = _newsList[index];
-              final decodedTitle = _unescape.convert(news.title); // HTML 디코딩
-              final decodedDescription =
-                  _unescape.convert(news.description); // HTML 디코딩
-
-              return Card(
-                elevation: 2.0,
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(12.0),
-                  onTap: () => _openNewsLink(news.link),
-                  child: ListTile(
-                    title: Text(
-                      decodedTitle,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(decodedDescription),
-                  ),
-                ),
-              );
-            },
+    if (_isLoading) {
+      return ListView.builder(
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return Shimmer.fromColors(
+            baseColor: const Color(0xFF7F7F7F).withValues(alpha: 0.2),
+            highlightColor: const Color(0xFFD9D9D9).withValues(alpha: 0.2),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              height: 140,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+            ),
           );
+        },
+      );
+    }
+
+    if (_errorMessage.isNotEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('뉴스를 불러오는데 실패했습니다.'),
+              Text(_errorMessage),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: _newsList.length,
+      itemBuilder: (context, index) {
+        final news = _newsList[index];
+        final decodedTitle = _unescape.convert(news.title); // HTML 디코딩
+        final decodedDescription =
+            _unescape.convert(news.description); // HTML 디코딩
+
+        return Card(
+          elevation: 2.0,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(12.0),
+            onTap: () => _openNewsLink(news.link),
+            child: ListTile(
+              title: Text(
+                decodedTitle,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(decodedDescription),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void _openNewsLink(String url) async {

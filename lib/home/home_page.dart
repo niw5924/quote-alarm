@@ -60,34 +60,20 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
 
     // 알람이 울릴 때 처리
     Alarm.ringStream.stream.listen((alarmSettings) async {
-      final matchingAlarm = _alarms.firstWhere(
-        (alarm) => alarm.settings.id == alarmSettings.id,
-        orElse: () => AlarmItem(
-          alarmSettings,
-          false,
-          cancelMode: AlarmCancelMode.slider,
-          volume: 1.0,
-          repeatDays: List.filled(7, false),
-        ),
-      );
       print("RingRingRingRingRingRing");
+      final matchingAlarm =
+          _alarms.firstWhere((alarm) => alarm.settings.id == alarmSettings.id);
 
-      // 알람이 활성화된 경우만 처리
-      if (matchingAlarm.isEnabled) {
-        final DateTime alarmStartTime = DateTime.now();
+      // 명언 화면 표시
+      final DateTime alarmStartTime = DateTime.now();
+      await _showQuoteScreen(
+        matchingAlarm.settings.id,
+        matchingAlarm.cancelMode,
+        matchingAlarm.volume,
+        alarmStartTime,
+      );
 
-        // 명언 화면 표시
-        await _showQuoteScreen(
-          matchingAlarm.settings.id,
-          matchingAlarm.cancelMode,
-          matchingAlarm.volume,
-          alarmStartTime,
-        );
-      } else {
-        await Alarm.stop(alarmSettings.id); // 알람 중지
-      }
-
-      // 현재 알람이 반복 요일 설정되어 있다면 다음 알람을 등록
+      // 다음 반복 알람 예약
       await _scheduleNextAlarm(matchingAlarm);
     });
   }
@@ -121,10 +107,9 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
     // 기존 ID를 1 증가시켜 새롭게 설정
     int newAlarmId = alarmItem.settings.id + 1;
 
-    // 로그 출력 (디버깅용)
-    print("알람 업데이트 - 기존 ID: ${alarmItem.settings.id} → 새로운 ID: $newAlarmId");
     print(
         "알람 업데이트 - 기존 날짜: ${alarmItem.settings.dateTime} → 새로운 날짜: $nextAlarmTime");
+    print("알람 업데이트 - 기존 ID: ${alarmItem.settings.id} → 새로운 ID: $newAlarmId");
 
     // 기존 알람을 유지하면서 ID와 dateTime을 변경
     alarmItem.settings = alarmItem.settings.copyWith(
@@ -225,8 +210,8 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
       ].join("|");
     }).toList();
 
-    print(alarmList);
     await prefs.setStringList('alarms', alarmList);
+    print(alarmList);
   }
 
   Future<void> _loadAlarms() async {
@@ -271,14 +256,18 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
       alarmItem.isEnabled = !alarmItem.isEnabled;
     });
 
-    // isEnabled 값에 따라 vibrate 설정
-    final updatedSettings = alarmItem.settings.copyWith(
-      vibrate: alarmItem.isEnabled,
-    );
+    if (alarmItem.isEnabled) {
+      DateTime now = DateTime.now();
 
-    alarmItem.settings = updatedSettings;
-
-    await Alarm.set(alarmSettings: updatedSettings);
+      // 현재 시간이 알람 시간보다 이전이면 바로 등록
+      if (alarmItem.settings.dateTime.isBefore(now)) {
+        await _scheduleNextAlarm(alarmItem);
+      } else {
+        await Alarm.set(alarmSettings: alarmItem.settings);
+      }
+    } else {
+      await Alarm.stop(alarmItem.settings.id);
+    }
 
     _saveAlarms();
   }

@@ -5,11 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter_alarm_app_2/home/home_page.dart';
 import 'package:flutter_alarm_app_2/providers/auth_provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(); // .env 파일 로드
   await Firebase.initializeApp();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class News {
@@ -25,9 +26,10 @@ class News {
 }
 
 class NaverNewsService {
-  static const String _baseUrl = 'https://openapi.naver.com/v1/search/news.json';
-  static const String _clientId = 'Gwe7ECZ98jQaLqP3bJc0'; // 클라이언트 ID
-  static const String _clientSecret = 'N9CjNAqne7'; // 클라이언트 Secret
+  static const String _baseUrl =
+      'https://openapi.naver.com/v1/search/news.json';
+  final String _clientId = dotenv.env['NAVER_CLIENT_ID']!;
+  final String _clientSecret = dotenv.env['NAVER_CLIENT_SECRET']!;
 
   Future<List<News>> fetchNews({
     String query = '오늘',
@@ -36,7 +38,8 @@ class NaverNewsService {
     String sort = 'date',
   }) async {
     final response = await http.get(
-      Uri.parse('$_baseUrl?query=$query&display=$display&start=$start&sort=$sort'),
+      Uri.parse(
+          '$_baseUrl?query=$query&display=$display&start=$start&sort=$sort'),
       headers: {
         'X-Naver-Client-Id': _clientId,
         'X-Naver-Client-Secret': _clientSecret,
