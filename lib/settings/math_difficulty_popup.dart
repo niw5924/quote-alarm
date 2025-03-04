@@ -9,15 +9,14 @@ class MathDifficultyPopup extends StatefulWidget {
 }
 
 class _MathDifficultyPopupState extends State<MathDifficultyPopup> {
-  String _selectedDifficulty = 'easy'; // 기본 난이도는 'easy'로 설정
+  String _selectedDifficulty = 'easy';
 
   @override
   void initState() {
     super.initState();
-    _loadDifficulty(); // SharedPreferences에서 저장된 값을 불러옴
+    _loadDifficulty();
   }
 
-  // SharedPreferences에서 저장된 난이도 불러오기
   Future<void> _loadDifficulty() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -25,7 +24,6 @@ class _MathDifficultyPopupState extends State<MathDifficultyPopup> {
     });
   }
 
-  // 선택한 난이도를 SharedPreferences에 저장
   Future<void> _saveDifficulty(String difficulty) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('mathDifficulty', difficulty);
@@ -36,70 +34,77 @@ class _MathDifficultyPopupState extends State<MathDifficultyPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12.0),
       ),
       backgroundColor: const Color(0xFFFFFBEA),
-      // 부드러운 배경 색상
-      title: const Text(
-        '수학 문제 난이도 설정',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Color(0xFF1A1A1A),
-        ),
-        textAlign: TextAlign.center,
-      ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildDifficultyCard(
-            icon: Icons.looks_one,
-            title: '하 (한 자리수 덧셈)',
-            value: 'easy',
-            color: Colors.lightGreenAccent,
-          ),
-          _buildDifficultyCard(
-            icon: Icons.looks_two,
-            title: '중 (두 자리수 덧셈)',
-            value: 'medium',
-            color: Colors.orangeAccent,
-          ),
-          _buildDifficultyCard(
-            icon: Icons.looks_3,
-            title: '상 (세 자리수 덧셈)',
-            value: 'hard',
-            color: Colors.redAccent,
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context); // 팝업 닫기
-          },
-          style: TextButton.styleFrom(
-            backgroundColor: const Color(0xFF6BF3B1),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.calculate,
+              size: 50,
+              color: Colors.blueAccent,
             ),
-          ),
-          child: const Text(
-            '확인',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
+            const SizedBox(height: 15),
+            const Text(
+              '수학 문제 난이도 설정',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
             ),
-          ),
+            const SizedBox(height: 10),
+            _buildDifficultyCard(
+              icon: Icons.looks_one,
+              title: '하 (한 자리수 덧셈)',
+              value: 'easy',
+              color: Colors.lightGreenAccent,
+            ),
+            _buildDifficultyCard(
+              icon: Icons.looks_two,
+              title: '중 (두 자리수 덧셈)',
+              value: 'medium',
+              color: Colors.orangeAccent,
+            ),
+            _buildDifficultyCard(
+              icon: Icons.looks_3,
+              title: '상 (세 자리수 덧셈)',
+              value: 'hard',
+              color: Colors.redAccent,
+            ),
+            const SizedBox(height: 20),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: const Color(0xFF6BF3B1),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                '확인',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
-  // 난이도 선택 카드 빌드 메서드
   Widget _buildDifficultyCard({
     required IconData icon,
     required String title,
@@ -108,7 +113,7 @@ class _MathDifficultyPopupState extends State<MathDifficultyPopup> {
   }) {
     return GestureDetector(
       onTap: () {
-        _saveDifficulty(value); // 난이도 선택 시 SharedPreferences에 저장
+        _saveDifficulty(value);
       },
       child: Card(
         color: _selectedDifficulty == value

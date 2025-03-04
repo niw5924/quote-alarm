@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/auth/logout_popup.dart';
+import 'package:flutter_alarm_app_2/auth/login_required_popup.dart';
 import 'package:flutter_alarm_app_2/settings/settings_tile.dart';
 import 'package:flutter_alarm_app_2/settings/sound_addition_page.dart';
 import 'package:flutter_alarm_app_2/settings/star_grade_explanation_popup.dart';
@@ -155,56 +156,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 if (!authProvider.isLoggedIn) {
                   showDialog(
                     context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        backgroundColor: const Color(0xFFFFFBEA),
-                        title: const Text(
-                          '로그인이 필요합니다',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF1A1A1A),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        content: const Text(
-                          '이 기능을 사용하려면 로그인 해주세요!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        actionsAlignment: MainAxisAlignment.center,
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor: const Color(0xFF6BF3B1),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: const Text(
-                              '확인',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
+                    builder: (BuildContext context) =>
+                        const LoginRequiredPopup(),
                   );
                 } else {
                   Navigator.push(
@@ -331,7 +284,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       height: 100,
                     ),
                   ),
-                  applicationLegalese: '2024 남인우 개인 프로젝트',
+                  applicationLegalese: '2025 남인우 개인 프로젝트',
                 );
               },
             ),
