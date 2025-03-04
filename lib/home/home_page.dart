@@ -338,12 +338,12 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
                   );
                 });
 
-                await Alarm.set(alarmSettings: updatedAlarmItem.settings);
-                _saveAlarms();
-
                 if (_alarms[index].isEnabled) {
+                  await Alarm.set(alarmSettings: updatedAlarmItem.settings);
                   _showRemainingTimeToast(updatedAlarmItem.settings.dateTime);
                 }
+
+                _saveAlarms();
               }
             },
           );
