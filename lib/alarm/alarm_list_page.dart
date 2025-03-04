@@ -62,8 +62,8 @@ class AlarmListPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
             ),
             alignment: Alignment.centerRight,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: const Icon(
               Icons.delete,
               color: Colors.white,
@@ -81,7 +81,7 @@ class AlarmListPage extends StatelessWidget {
           child: Opacity(
             opacity: alarmItem.isEnabled ? 1.0 : 0.5,
             child: Card(
-              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),

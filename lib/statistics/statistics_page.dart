@@ -16,7 +16,7 @@ class StatisticsPage extends StatelessWidget {
     final uid = authProvider.user?.uid;
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -70,11 +70,7 @@ class StatisticsPage extends StatelessWidget {
                           },
                           child: const Text(
                             '로그인하고 통계 확인하기',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                            style: TextStyle(color: Colors.black),
                           ),
                         ),
                       ),
@@ -236,7 +232,7 @@ class StatisticsPage extends StatelessWidget {
                                       getTitlesWidget:
                                           (double value, TitleMeta meta) {
                                         TextStyle style = const TextStyle(
-                                            fontWeight: FontWeight.bold);
+                                            fontWeight: FontWeight.w600);
                                         switch (value.toInt()) {
                                           case 0:
                                             return Text('슬라이더', style: style);
@@ -307,7 +303,7 @@ class StatisticsPage extends StatelessWidget {
                 Text(
                   '$modeLabel ${averageTime.toStringAsFixed(1)}초',
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                      fontSize: 16, fontWeight: FontWeight.w600),
                 ),
               ],
             ),

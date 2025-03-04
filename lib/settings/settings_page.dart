@@ -30,7 +30,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -81,11 +81,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     }
 
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Row(
                         children: [
                           starIcon,
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 4),
                           Text(
                             '${authProvider.user?.email} 님',
                             style: const TextStyle(
@@ -93,7 +93,6 @@ class _SettingsPageState extends State<SettingsPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(width: 8),
                           IconButton(
                             icon: const Icon(Icons.info_outline, size: 20),
                             onPressed: () {
@@ -133,7 +132,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 }
               },
             ),
-            const SizedBox(height: 20),
             SettingsTile(
               icon: Icons.calculate,
               iconBackgroundColor: const Color(0xFF00796B),
@@ -147,7 +145,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 );
               },
             ),
-            const SizedBox(height: 20),
             SettingsTile(
               icon: Icons.music_note,
               iconBackgroundColor: const Color(0xFF6A1B9A),
@@ -168,95 +165,94 @@ class _SettingsPageState extends State<SettingsPage> {
                 }
               },
             ),
-            const SizedBox(height: 20),
-            Stack(
-              children: [
-                StreamBuilder<DocumentSnapshot>(
-                  stream: uid != null
-                      ? FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(uid)
-                          .snapshots()
-                      : null,
-                  builder: (context, snapshot) {
-                    Map<DateTime, int> datasets = {};
-                    if (snapshot.connectionState == ConnectionState.active &&
-                        snapshot.hasData &&
-                        authProvider.isLoggedIn) {
-                      final data =
-                          snapshot.data?.data() as Map<String, dynamic>?;
-                      final alarmDismissals = data?['alarmDismissals'] ?? {};
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Stack(
+                children: [
+                  StreamBuilder<DocumentSnapshot>(
+                    stream: uid != null
+                        ? FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(uid)
+                            .snapshots()
+                        : null,
+                    builder: (context, snapshot) {
+                      Map<DateTime, int> datasets = {};
+                      if (snapshot.connectionState == ConnectionState.active &&
+                          snapshot.hasData &&
+                          authProvider.isLoggedIn) {
+                        final data =
+                            snapshot.data?.data() as Map<String, dynamic>?;
+                        final alarmDismissals = data?['alarmDismissals'] ?? {};
 
-                      alarmDismissals.forEach((date, alarms) {
-                        int minDuration = alarms.values
-                            .map((alarm) => alarm['duration'])
-                            .reduce((a, b) => a < b ? a : b);
+                        alarmDismissals.forEach((date, alarms) {
+                          int minDuration = alarms.values
+                              .map((alarm) => alarm['duration'])
+                              .reduce((a, b) => a < b ? a : b);
 
-                        DateTime dateTime = DateTime.parse(date);
-                        datasets[dateTime] = minDuration > 30
-                            ? 1
-                            : minDuration > 0 && minDuration <= 30
-                                ? 2
-                                : 0;
-                      });
-                    }
+                          DateTime dateTime = DateTime.parse(date);
+                          datasets[dateTime] = minDuration > 30
+                              ? 1
+                              : minDuration > 0 && minDuration <= 30
+                                  ? 2
+                                  : 0;
+                        });
+                      }
 
-                    return HeatMapCalendar(
-                      datasets: datasets,
-                      defaultColor: const Color(0xFFB0BEC5),
-                      fontSize: 20,
-                      monthFontSize: 22,
-                      weekFontSize: 14,
-                      textColor: const Color(0xFF263238),
-                      flexible: true,
-                      colorMode: ColorMode.color,
-                      showColorTip: false,
-                      colorsets: const {
-                        0: Color(0xFFB0BEC5),
-                        1: Color(0xFF78909C),
-                        2: Color(0xFF455A64),
-                      },
-                    );
-                  },
-                ),
-                if (!authProvider.isLoggedIn)
-                  Positioned.fill(
-                    child: ClipRect(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                        child: Center(
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: const GradientBoxBorder(
-                                gradient: LinearGradient(
-                                    colors: [Colors.red, Colors.blue]),
-                                width: 3,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 12.0),
-                                backgroundColor: const Color(0xFF6BF3B1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7.0),
+                      return HeatMapCalendar(
+                        datasets: datasets,
+                        defaultColor: const Color(0xFFB0BEC5),
+                        fontSize: 20,
+                        monthFontSize: 22,
+                        weekFontSize: 14,
+                        textColor: const Color(0xFF263238),
+                        flexible: true,
+                        colorMode: ColorMode.color,
+                        showColorTip: false,
+                        colorsets: const {
+                          0: Color(0xFFB0BEC5),
+                          1: Color(0xFF78909C),
+                          2: Color(0xFF455A64),
+                        },
+                      );
+                    },
+                  ),
+                  if (!authProvider.isLoggedIn)
+                    Positioned.fill(
+                      child: ClipRect(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                          child: Center(
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                border: const GradientBoxBorder(
+                                  gradient: LinearGradient(
+                                      colors: [Colors.red, Colors.blue]),
+                                  width: 3,
                                 ),
+                                borderRadius: BorderRadius.circular(10.0),
                               ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const LoginPage()),
-                                );
-                              },
-                              child: const Text(
-                                '로그인하고 잔디 채우기',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 12.0),
+                                  backgroundColor: const Color(0xFF6BF3B1),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(7.0),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginPage()),
+                                  );
+                                },
+                                child: const Text(
+                                  '로그인하고 잔디 채우기',
+                                  style: TextStyle(color: Colors.black),
                                 ),
                               ),
                             ),
@@ -264,10 +260,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
-            const SizedBox(height: 20),
             SettingsTile(
               icon: Icons.book,
               iconBackgroundColor: const Color(0xFF00796B),
@@ -277,7 +272,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   context: context,
                   applicationName: '울림소리',
                   applicationIcon: const Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8),
                     child: Image(
                       image: AssetImage('assets/image/quote_alarm_icon.png'),
                       width: 100,

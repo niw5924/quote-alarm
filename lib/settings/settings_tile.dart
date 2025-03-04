@@ -17,13 +17,12 @@ class SettingsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      borderRadius: BorderRadius.circular(20),
       onTap: onTap,
-      splashColor: Colors.grey.withValues(alpha: 0.2),
-      highlightColor: Colors.transparent,
-      child: Container(
-        width: double.infinity,
-        color: Colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             CircleAvatar(
               radius: 20,
