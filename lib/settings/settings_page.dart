@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/auth/logout_popup.dart';
+import 'package:flutter_alarm_app_2/settings/settings_tile.dart';
 import 'package:flutter_alarm_app_2/settings/sound_addition_page.dart';
 import 'package:flutter_alarm_app_2/settings/star_grade_explanation_popup.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
@@ -113,7 +114,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   return const Center(child: CircularProgressIndicator());
                 },
               ),
-            InkWell(
+            SettingsTile(
+              icon: Icons.person,
+              iconBackgroundColor: const Color(0xFF8D8D58),
+              title: authProvider.isLoggedIn ? '로그아웃' : '로그인',
               onTap: () async {
                 if (!authProvider.isLoggedIn) {
                   Navigator.push(
@@ -121,39 +125,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 } else {
-                  // 팝업을 UI에서 호출
                   bool? shouldLogout = await LogoutPopup.show(context);
                   if (shouldLogout == true) {
                     await authProvider.signOut();
                   }
                 }
               },
-              splashColor: Colors.grey.withValues(alpha: 0.2),
-              highlightColor: Colors.transparent,
-              child: Container(
-                width: double.infinity,
-                color: Colors.transparent,
-                child: Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Color(0xFF8D8D58),
-                      child: Icon(Icons.person, color: Colors.black),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      authProvider.isLoggedIn ? '로그아웃' : '로그인',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
             const SizedBox(height: 20),
-            InkWell(
+            SettingsTile(
+              icon: Icons.calculate,
+              iconBackgroundColor: const Color(0xFF00796B),
+              title: '수학 문제 난이도 설정',
               onTap: () {
                 showDialog(
                   context: context,
@@ -162,32 +145,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                 );
               },
-              splashColor: Colors.grey.withValues(alpha: 0.2),
-              highlightColor: Colors.transparent,
-              child: Container(
-                width: double.infinity,
-                color: Colors.transparent,
-                child: const Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Color(0xFF00796B),
-                      child: Icon(Icons.calculate, color: Colors.black),
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                      '수학 문제 난이도 설정',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
             const SizedBox(height: 20),
-            InkWell(
+            SettingsTile(
+              icon: Icons.music_note,
+              iconBackgroundColor: const Color(0xFF6A1B9A),
+              title: '나만의 사운드 추가하기',
               onTap: () {
                 if (!authProvider.isLoggedIn) {
                   showDialog(
@@ -251,29 +214,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   );
                 }
               },
-              splashColor: Colors.grey.withValues(alpha: 0.2),
-              highlightColor: Colors.transparent,
-              child: Container(
-                width: double.infinity,
-                color: Colors.transparent,
-                child: const Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Color(0xFF6A1B9A),
-                      child: Icon(Icons.music_note, color: Colors.black),
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                      '나만의 사운드 추가하기',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
             const SizedBox(height: 20),
             Stack(
@@ -375,7 +315,10 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             const SizedBox(height: 20),
-            InkWell(
+            SettingsTile(
+              icon: Icons.book,
+              iconBackgroundColor: const Color(0xFF00796B),
+              title: '오픈소스 라이선스',
               onTap: () {
                 showLicensePage(
                   context: context,
@@ -391,29 +334,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   applicationLegalese: '2024 남인우 개인 프로젝트',
                 );
               },
-              splashColor: Colors.grey.withValues(alpha: 0.2),
-              highlightColor: Colors.transparent,
-              child: Container(
-                width: double.infinity,
-                color: Colors.transparent,
-                child: const Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Color(0xFF00796B),
-                      child: Icon(Icons.book, color: Colors.white),
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                      '오픈소스 라이선스',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
           ],
         ),
