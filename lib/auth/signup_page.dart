@@ -17,7 +17,6 @@ class SignupPage extends StatelessWidget {
     Future<void> signUp() async {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
-      // 비밀번호 확인 로직
       if (passwordController.text != confirmPasswordController.text) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -25,7 +24,7 @@ class SignupPage extends StatelessWidget {
             backgroundColor: Colors.red,
           ),
         );
-        return; // 검증 실패 시 회원가입 중단
+        return;
       }
 
       showDialog(
@@ -45,10 +44,13 @@ class SignupPage extends StatelessWidget {
           passwordController.text.trim(),
         );
 
-        if (context.mounted) Navigator.pop(context); // 로딩 닫기
-        Navigator.pop(context); // 회원가입 성공 후 이전 화면으로 이동
+        if (context.mounted) {
+          Navigator.pop(context); // 로딩 다이얼로그 닫기
+          Navigator.pop(context); // 회원가입 페이지 닫기
+          Navigator.pop(context); // 로그인 페이지 닫기
+        }
       } catch (e) {
-        if (context.mounted) Navigator.pop(context); // 로딩 닫기
+        if (context.mounted) Navigator.pop(context); // 로딩 다이얼로그 닫기
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('회원가입 실패: $e'),
@@ -90,11 +92,12 @@ class SignupPage extends StatelessWidget {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.email, color: textColor),
                     labelText: 'Email ID',
-                    labelStyle: TextStyle(color: textColor.withOpacity(0.7)),
+                    labelStyle:
+                        TextStyle(color: textColor.withValues(alpha: 0.7)),
                     filled: true,
                     fillColor: isDarkMode
-                        ? Colors.white.withOpacity(0.1)
-                        : Colors.black.withOpacity(0.05),
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.black.withValues(alpha: 0.05),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
@@ -109,11 +112,12 @@ class SignupPage extends StatelessWidget {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock, color: textColor),
                     labelText: 'Password',
-                    labelStyle: TextStyle(color: textColor.withOpacity(0.7)),
+                    labelStyle:
+                        TextStyle(color: textColor.withValues(alpha: 0.7)),
                     filled: true,
                     fillColor: isDarkMode
-                        ? Colors.white.withOpacity(0.1)
-                        : Colors.black.withOpacity(0.05),
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.black.withValues(alpha: 0.05),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
@@ -128,11 +132,12 @@ class SignupPage extends StatelessWidget {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock_outline, color: textColor),
                     labelText: 'Confirm Password',
-                    labelStyle: TextStyle(color: textColor.withOpacity(0.7)),
+                    labelStyle:
+                        TextStyle(color: textColor.withValues(alpha: 0.7)),
                     filled: true,
                     fillColor: isDarkMode
-                        ? Colors.white.withOpacity(0.1)
-                        : Colors.black.withOpacity(0.05),
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.black.withValues(alpha: 0.05),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,

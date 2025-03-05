@@ -6,6 +6,7 @@ class AuthProvider extends ChangeNotifier {
   User? _user;
 
   User? get user => _user;
+
   bool get isLoggedIn => _user != null;
 
   AuthProvider() {
@@ -16,7 +17,7 @@ class AuthProvider extends ChangeNotifier {
   void _checkAuthStatus() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       _user = user;
-      print("Auth State Changed: $user"); // 디버그 메시지
+      print("Auth State Changed: $user");
       notifyListeners();
     });
   }
@@ -27,40 +28,39 @@ class AuthProvider extends ChangeNotifier {
       email: email,
       password: password,
     );
-    _user = FirebaseAuth.instance.currentUser;
-    print("로그인 성공");
-    print(_user);
-    notifyListeners(); // 로그인 후 UI에 알림
   }
 
   // 로그아웃
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
-    _user = null;
-    notifyListeners();
   }
 
-  // 회원가입 (데이터 저장 구조 수정)
+  // 회원가입
   Future<void> signUp(String email, String password) async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+    UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-      // Firestore에 사용자 정보 저장
-      await FirebaseFirestore.instance.collection('users').doc(userCredential.user?.uid).set({
-        'email': email,
-        'createdAt': DateTime.now(),
-        'alarmDismissals': {},  // 알람 해제 기록을 저장할 필드
-      });
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userCredential.user?.uid)
+        .set({
+      'email': email,
+      'createdAt': DateTime.now(),
+      'alarmDismissals': {},
+    });
+  }
 
-      // 현재 사용자를 저장
-      _user = userCredential.user;
-      notifyListeners();
-    } catch (e) {
-      print('회원가입 실패: $e');
-      rethrow;
-    }
+  // 계정 삭제
+  Future<void> deleteAccount() async {
+    String uid = _user!.uid;
+
+    // Firestore에서 사용자 데이터 삭제
+    await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+
+    // Firebase Authentication에서 계정 삭제
+    await _user!.delete();
   }
 }

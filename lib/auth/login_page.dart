@@ -87,11 +87,12 @@ class LoginPage extends StatelessWidget {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.email, color: textColor),
                     labelText: 'Email ID',
-                    labelStyle: TextStyle(color: textColor.withOpacity(0.7)),
+                    labelStyle:
+                        TextStyle(color: textColor.withValues(alpha: 0.7)),
                     filled: true,
                     fillColor: isDarkMode
-                        ? Colors.white.withOpacity(0.1)
-                        : Colors.black.withOpacity(0.05),
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.black.withValues(alpha: 0.05),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
@@ -106,11 +107,12 @@ class LoginPage extends StatelessWidget {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock, color: textColor),
                     labelText: 'Password',
-                    labelStyle: TextStyle(color: textColor.withOpacity(0.7)),
+                    labelStyle:
+                        TextStyle(color: textColor.withValues(alpha: 0.7)),
                     filled: true,
                     fillColor: isDarkMode
-                        ? Colors.white.withOpacity(0.1)
-                        : Colors.black.withOpacity(0.05),
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.black.withValues(alpha: 0.05),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
@@ -149,7 +151,7 @@ class LoginPage extends StatelessWidget {
                   child: Text(
                     'Sign Up',
                     style: TextStyle(
-                      color: textColor.withOpacity(0.7),
+                      color: textColor.withValues(alpha: 0.7),
                       fontSize: 16,
                     ),
                   ),

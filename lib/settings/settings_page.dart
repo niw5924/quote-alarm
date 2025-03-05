@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_app_2/auth/account_deletion_popup.dart';
 import 'package:flutter_alarm_app_2/auth/logout_popup.dart';
 import 'package:flutter_alarm_app_2/auth/login_required_popup.dart';
 import 'package:flutter_alarm_app_2/settings/settings_tile.dart';
@@ -283,6 +284,32 @@ class _SettingsPageState extends State<SettingsPage> {
                 );
               },
             ),
+            if (authProvider.isLoggedIn)
+              SettingsTile(
+                icon: Icons.delete_forever,
+                iconBackgroundColor: Colors.redAccent,
+                title: '계정 삭제',
+                onTap: () async {
+                  bool? shouldDelete = await showDialog<bool>(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        const AccountDeletionPopup(),
+                  );
+
+                  if (shouldDelete == true) {
+                    try {
+                      await authProvider.deleteAccount();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("계정이 삭제되었습니다.")),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("계정 삭제 실패: $e")),
+                      );
+                    }
+                  }
+                },
+              ),
           ],
         ),
       ),
