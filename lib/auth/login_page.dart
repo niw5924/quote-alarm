@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
@@ -19,17 +20,7 @@ class LoginPage extends StatelessWidget {
     Future<void> signIn() async {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
-      // 로딩 인디케이터 표시
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        barrierColor: Colors.black54,
-        builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      );
+      OverlayLoader.show(context); // 로딩 오버레이 표시
 
       try {
         await authProvider.signIn(
@@ -37,9 +28,8 @@ class LoginPage extends StatelessWidget {
           passwordController.text.trim(),
         );
 
-        // 로그인 성공
         if (context.mounted) {
-          Navigator.pop(context); // 로딩 창 닫기
+          OverlayLoader.hide(); // 로딩 오버레이 닫기
           Fluttertoast.showToast(
             msg: '${emailController.text.trim()}님, 환영합니다!',
             toastLength: Toast.LENGTH_SHORT,
@@ -50,8 +40,7 @@ class LoginPage extends StatelessWidget {
           Navigator.pop(context); // 로그인 페이지 닫기
         }
       } catch (e) {
-        // 로그인 실패
-        if (context.mounted) Navigator.pop(context); // 로딩 창 닫기
+        if (context.mounted) OverlayLoader.hide(); // 로딩 오버레이 닫기
         Fluttertoast.showToast(
           msg: '로그인 실패: $e',
           toastLength: Toast.LENGTH_SHORT,
@@ -79,7 +68,7 @@ class LoginPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Image.asset(
-                  'assets/image/gear.gif', // gear.gif 이미지 추가
+                  'assets/image/gear.gif',
                 ),
                 Text(
                   'LOGIN',

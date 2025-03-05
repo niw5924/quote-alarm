@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
@@ -29,16 +30,7 @@ class SignupPage extends StatelessWidget {
         return;
       }
 
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        barrierColor: Colors.black54,
-        builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      );
+      OverlayLoader.show(context); // 로딩 오버레이 표시
 
       try {
         await authProvider.signUp(
@@ -47,7 +39,7 @@ class SignupPage extends StatelessWidget {
         );
 
         if (context.mounted) {
-          Navigator.pop(context); // 로딩 다이얼로그 닫기
+          OverlayLoader.hide(); // 로딩 오버레이 닫기
           Fluttertoast.showToast(
             msg: '회원가입 성공! 자동 로그인 되었습니다.',
             toastLength: Toast.LENGTH_SHORT,
@@ -59,7 +51,7 @@ class SignupPage extends StatelessWidget {
           Navigator.pop(context); // 로그인 페이지 닫기
         }
       } catch (e) {
-        if (context.mounted) Navigator.pop(context); // 로딩 다이얼로그 닫기
+        if (context.mounted) OverlayLoader.hide(); // 로딩 오버레이 닫기
         Fluttertoast.showToast(
           msg: '회원가입 실패: $e',
           toastLength: Toast.LENGTH_SHORT,

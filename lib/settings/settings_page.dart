@@ -6,6 +6,7 @@ import 'package:flutter_alarm_app_2/auth/login_required_popup.dart';
 import 'package:flutter_alarm_app_2/settings/settings_tile.dart';
 import 'package:flutter_alarm_app_2/settings/sound_addition_page.dart';
 import 'package:flutter_alarm_app_2/settings/star_grade_explanation_popup.dart';
+import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gradient_borders/gradient_borders.dart';
@@ -129,7 +130,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 } else {
                   bool? shouldLogout = await LogoutPopup.show(context);
                   if (shouldLogout == true) {
+                    OverlayLoader.show(context); // 로딩 오버레이 표시
                     await authProvider.signOut();
+                    OverlayLoader.hide(); // 로딩 오버레이 닫기
+                    Fluttertoast.showToast(
+                      msg: '로그아웃 되었습니다.',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: const Color(0xFF6BF3B1),
+                      textColor: Colors.black,
+                    );
                   }
                 }
               },
@@ -298,8 +308,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   );
 
                   if (shouldDelete == true) {
+                    OverlayLoader.show(context); // 로딩 오버레이 표시
                     try {
                       await authProvider.deleteAccount();
+                      OverlayLoader.hide(); // 로딩 오버레이 닫기
                       Fluttertoast.showToast(
                         msg: "계정이 삭제되었습니다.",
                         toastLength: Toast.LENGTH_SHORT,
@@ -308,6 +320,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         textColor: Colors.black,
                       );
                     } catch (e) {
+                      OverlayLoader.hide(); // 로딩 오버레이 닫기
                       Fluttertoast.showToast(
                         msg: "계정 삭제 실패: $e",
                         toastLength: Toast.LENGTH_SHORT,
