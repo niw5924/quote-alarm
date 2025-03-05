@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 
@@ -18,11 +19,12 @@ class SignupPage extends StatelessWidget {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
       if (passwordController.text != confirmPasswordController.text) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('비밀번호가 일치하지 않습니다.'),
-            backgroundColor: Colors.red,
-          ),
+        Fluttertoast.showToast(
+          msg: '비밀번호가 일치하지 않습니다.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
         );
         return;
       }
@@ -46,16 +48,24 @@ class SignupPage extends StatelessWidget {
 
         if (context.mounted) {
           Navigator.pop(context); // 로딩 다이얼로그 닫기
+          Fluttertoast.showToast(
+            msg: '회원가입 성공! 자동 로그인 되었습니다.',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: const Color(0xFF6BF3B1),
+            textColor: Colors.black,
+          );
           Navigator.pop(context); // 회원가입 페이지 닫기
           Navigator.pop(context); // 로그인 페이지 닫기
         }
       } catch (e) {
         if (context.mounted) Navigator.pop(context); // 로딩 다이얼로그 닫기
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('회원가입 실패: $e'),
-            backgroundColor: Colors.red,
-          ),
+        Fluttertoast.showToast(
+          msg: '회원가입 실패: $e',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
         );
       }
     }

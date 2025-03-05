@@ -7,6 +7,7 @@ import 'package:flutter_alarm_app_2/settings/settings_tile.dart';
 import 'package:flutter_alarm_app_2/settings/sound_addition_page.dart';
 import 'package:flutter_alarm_app_2/settings/star_grade_explanation_popup.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -299,12 +300,20 @@ class _SettingsPageState extends State<SettingsPage> {
                   if (shouldDelete == true) {
                     try {
                       await authProvider.deleteAccount();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("계정이 삭제되었습니다.")),
+                      Fluttertoast.showToast(
+                        msg: "계정이 삭제되었습니다.",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: const Color(0xFF6BF3B1),
+                        textColor: Colors.black,
                       );
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("계정 삭제 실패: $e")),
+                      Fluttertoast.showToast(
+                        msg: "계정 삭제 실패: $e",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
                       );
                     }
                   }

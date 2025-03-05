@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import 'signup_page.dart';
@@ -21,11 +22,11 @@ class LoginPage extends StatelessWidget {
       // 로딩 인디케이터 표시
       showDialog(
         context: context,
-        barrierDismissible: false, // 사용자가 닫을 수 없도록 설정
-        barrierColor: Colors.black54, // 배경을 어둡게 처리
+        barrierDismissible: false,
+        barrierColor: Colors.black54,
         builder: (context) {
           return const Center(
-            child: CircularProgressIndicator(), // 로딩 인디케이터
+            child: CircularProgressIndicator(),
           );
         },
       );
@@ -36,17 +37,27 @@ class LoginPage extends StatelessWidget {
           passwordController.text.trim(),
         );
 
-        // 로그인 성공 시 로딩 인디케이터 닫기 및 페이지 닫기
-        if (context.mounted) Navigator.pop(context); // 로딩 창 닫기
-        Navigator.pop(context);
+        // 로그인 성공
+        if (context.mounted) {
+          Navigator.pop(context); // 로딩 창 닫기
+          Fluttertoast.showToast(
+            msg: '${emailController.text.trim()}님, 환영합니다!',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: const Color(0xFF6BF3B1),
+            textColor: Colors.black,
+          );
+          Navigator.pop(context); // 로그인 페이지 닫기
+        }
       } catch (e) {
-        // 로그인 실패 처리
+        // 로그인 실패
         if (context.mounted) Navigator.pop(context); // 로딩 창 닫기
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('로그인 실패: $e'),
-            backgroundColor: Colors.red,
-          ),
+        Fluttertoast.showToast(
+          msg: '로그인 실패: $e',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
         );
       }
     }
