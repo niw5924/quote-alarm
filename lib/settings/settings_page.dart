@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/auth/account_deletion_popup.dart';
 import 'package:flutter_alarm_app_2/auth/logout_popup.dart';
 import 'package:flutter_alarm_app_2/auth/login_required_popup.dart';
+import 'package:flutter_alarm_app_2/settings/quote_language_popup.dart';
 import 'package:flutter_alarm_app_2/settings/settings_tile.dart';
 import 'package:flutter_alarm_app_2/settings/sound_addition_page.dart';
 import 'package:flutter_alarm_app_2/settings/star_grade_explanation_popup.dart';
@@ -119,7 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             SettingsTile(
               icon: Icons.person,
-              iconBackgroundColor: const Color(0xFF8D8D58),
+              iconBackgroundColor: Colors.blueGrey,
               title: authProvider.isLoggedIn ? '로그아웃' : '로그인',
               onTap: () async {
                 if (!authProvider.isLoggedIn) {
@@ -146,7 +147,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             SettingsTile(
               icon: Icons.calculate,
-              iconBackgroundColor: const Color(0xFF00796B),
+              iconBackgroundColor: Colors.teal,
               title: '수학 문제 난이도 설정',
               onTap: () {
                 showDialog(
@@ -158,8 +159,21 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             SettingsTile(
+              icon: Icons.translate,
+              iconBackgroundColor: Colors.indigo,
+              title: '명언 언어 설정',
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const QuoteLanguagePopup();
+                  },
+                );
+              },
+            ),
+            SettingsTile(
               icon: Icons.music_note,
-              iconBackgroundColor: const Color(0xFF6A1B9A),
+              iconBackgroundColor: Colors.purple,
               title: '나만의 사운드 추가하기',
               onTap: () {
                 if (!authProvider.isLoggedIn) {
@@ -277,7 +291,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             SettingsTile(
               icon: Icons.book,
-              iconBackgroundColor: const Color(0xFF00796B),
+              iconBackgroundColor: Colors.amber,
               title: '오픈소스 라이선스',
               onTap: () {
                 showLicensePage(

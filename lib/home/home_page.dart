@@ -9,6 +9,7 @@ import 'package:flutter_alarm_app_2/settings/settings_page.dart';
 import 'package:flutter_alarm_app_2/statistics/statistics_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:translator/translator.dart';
 import 'package:uuid/uuid.dart';
 
 enum AlarmCancelMode {
@@ -137,8 +138,19 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
     double volume,
     DateTime alarmStartTime,
   ) async {
+    final prefs = await SharedPreferences.getInstance();
+    final language = prefs.getString('quoteLanguage') ?? 'en';
+
     final quoteService = QuoteService();
-    final quote = await quoteService.fetchRandomQuote();
+    var quote = await quoteService.fetchRandomQuote();
+
+    if (language == 'ko') {
+      final translator = GoogleTranslator();
+      quote = Quote(
+        quote: (await translator.translate(quote.quote, to: 'ko')).text,
+        author: (await translator.translate(quote.author, to: 'ko')).text,
+      );
+    }
 
     if (context.mounted) {
       Navigator.push(

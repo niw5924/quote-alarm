@@ -99,12 +99,14 @@ class QuoteScreenState extends State<QuoteScreen> {
   }
 
   Future<void> _speakQuote() async {
-    await _flutterTts.setLanguage("en-US");
+    final prefs = await SharedPreferences.getInstance();
+    final language = prefs.getString('quoteLanguage') ?? 'en';
+
+    await _flutterTts.setLanguage(language == 'ko' ? "ko-KR" : "en-US");
     await _flutterTts.setPitch(1.0);
     await _flutterTts.setSpeechRate(0.5);
     await _flutterTts.setVolume(widget.volume);
-    await _flutterTts
-        .speak('"${widget.quote.quote}" by ${widget.quote.author}');
+    await _flutterTts.speak('"${widget.quote.quote}" - ${widget.quote.author}');
   }
 
   Future<void> _generateMathProblem() async {
