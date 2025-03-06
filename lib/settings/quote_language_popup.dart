@@ -5,11 +5,11 @@ class QuoteLanguagePopup extends StatefulWidget {
   const QuoteLanguagePopup({super.key});
 
   @override
-  _QuoteLanguagePopupState createState() => _QuoteLanguagePopupState();
+  QuoteLanguagePopupState createState() => QuoteLanguagePopupState();
 }
 
-class _QuoteLanguagePopupState extends State<QuoteLanguagePopup> {
-  String _selectedLanguage = 'en';
+class QuoteLanguagePopupState extends State<QuoteLanguagePopup> {
+  String _selectedLanguage = 'ko';
 
   @override
   void initState() {
@@ -20,7 +20,7 @@ class _QuoteLanguagePopupState extends State<QuoteLanguagePopup> {
   Future<void> _loadLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _selectedLanguage = prefs.getString('quoteLanguage') ?? 'en';
+      _selectedLanguage = prefs.getString('quoteLanguage') ?? 'ko';
     });
   }
 
@@ -61,16 +61,16 @@ class _QuoteLanguagePopupState extends State<QuoteLanguagePopup> {
             ),
             const SizedBox(height: 10),
             _buildLanguageCard(
-              icon: Icons.language,
-              title: '영어 (English)',
-              value: 'en',
-              color: Colors.lightBlueAccent,
-            ),
-            _buildLanguageCard(
               icon: Icons.translate,
               title: '한국어 (Korean)',
               value: 'ko',
               color: Colors.orangeAccent,
+            ),
+            _buildLanguageCard(
+              icon: Icons.language,
+              title: '영어 (English)',
+              value: 'en',
+              color: Colors.lightBlueAccent,
             ),
             const SizedBox(height: 20),
             TextButton(

@@ -100,7 +100,7 @@ class QuoteScreenState extends State<QuoteScreen> {
 
   Future<void> _speakQuote() async {
     final prefs = await SharedPreferences.getInstance();
-    final language = prefs.getString('quoteLanguage') ?? 'en';
+    final language = prefs.getString('quoteLanguage') ?? 'ko';
 
     await _flutterTts.setLanguage(language == 'ko' ? "ko-KR" : "en-US");
     await _flutterTts.setPitch(1.0);
