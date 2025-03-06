@@ -175,7 +175,6 @@ class StatisticsPage extends StatelessWidget {
                             child: BarChart(
                               BarChartData(
                                 alignment: BarChartAlignment.center,
-                                maxY: 60,
                                 groupsSpace: 60,
                                 gridData: const FlGridData(show: false),
                                 borderData: FlBorderData(show: false),
