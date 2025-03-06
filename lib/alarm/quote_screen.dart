@@ -80,9 +80,13 @@ class QuoteScreenState extends State<QuoteScreen> {
   }
 
   Future<void> cancelAlarm() async {
-    await _saveAlarmDismissalRecord(); // 해제 기록 저장
     await Alarm.stop(widget.alarmId); // 알람 중단
     await _flutterTts.stop(); // TTS 중단
+    try {
+      await _saveAlarmDismissalRecord(); // 해제 기록 저장
+    } catch (e) {
+      print("Firebase 저장 실패: $e");
+    }
     print('알람이 취소되었습니다.');
 
     if (!mounted) return; // 위젯이 활성 상태가 아니면 중단
@@ -203,34 +207,31 @@ class QuoteScreenState extends State<QuoteScreen> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final uid = authProvider.user?.uid;
 
-    if (uid != null) {
-      // 날짜를 'yyyy-MM-dd' 형식으로 포맷팅
-      String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    if (uid == null) return; // 로그인되지 않은 경우 저장하지 않음
 
-      // 알람 설정 시간 포맷팅
-      String alarmStartTimeFormatted =
-          DateFormat('HH:mm:ss').format(widget.alarmStartTime);
+    // 날짜 및 시간 포맷
+    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    String alarmStartTimeFormatted =
+        DateFormat('HH:mm:ss').format(widget.alarmStartTime);
+    String alarmEndTimeFormatted =
+        DateFormat('HH:mm:ss').format(DateTime.now());
+    int duration = DateTime.now().difference(widget.alarmStartTime).inSeconds;
 
-      // 알람 해제 시간 포맷팅
-      String alarmEndTimeFormatted =
-          DateFormat('HH:mm:ss').format(DateTime.now());
+    // 저장할 데이터
+    Map<String, dynamic> alarmData = {
+      'cancelMode': widget.cancelMode.toString().split('.').last,
+      'alarmStartTime': alarmStartTimeFormatted,
+      'alarmEndTime': alarmEndTimeFormatted,
+      'duration': duration,
+    };
 
-      // duration 계산
-      int duration = DateTime.now().difference(widget.alarmStartTime).inSeconds;
-
-      await FirebaseFirestore.instance.collection('users').doc(uid).set({
-        'alarmDismissals': {
-          formattedDate: {
-            '${widget.alarmId}': {
-              'cancelMode': widget.cancelMode.toString().split('.').last,
-              'alarmStartTime': alarmStartTimeFormatted, // 알람 설정 시간
-              'alarmEndTime': alarmEndTimeFormatted, // 알람 해제 시간
-              'duration': duration, // 알람 설정 시간과 해제 시간의 차이 (초)
-            }
-          }
-        }
-      }, SetOptions(merge: true));
-    }
+    // Firestore에 알람 해제 기록 저장
+    await FirebaseFirestore.instance.collection('users').doc(uid).set({
+      'alarmDismissals': {
+        formattedDate: {'${widget.alarmId}': alarmData}
+      }
+    }, SetOptions(merge: true)).timeout(
+        const Duration(seconds: 2)); // 타임아웃 설정(인터넷 연결 X)
   }
 
   @override

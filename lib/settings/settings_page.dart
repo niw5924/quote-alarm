@@ -45,8 +45,16 @@ class _SettingsPageState extends State<SettingsPage> {
                         .collection('users')
                         .doc(uid)
                         .snapshots()
+                        .handleError((error) {
+                        print("Firestore 스트림 오류 발생: $error");
+                      })
                     : null,
                 builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    print("Firestore 데이터 로드 실패: ${snapshot.error}");
+                    return const Center(child: Text("데이터를 불러올 수 없습니다."));
+                  }
+
                   if (!snapshot.hasData) {
                     print("유저 알람 해제 기록을 불러오는 중입니다...");
                   }
@@ -201,9 +209,18 @@ class _SettingsPageState extends State<SettingsPage> {
                             .collection('users')
                             .doc(uid)
                             .snapshots()
+                            .handleError((error) {
+                            print("Firestore 스트림 오류 발생: $error");
+                          })
                         : null,
                     builder: (context, snapshot) {
                       Map<DateTime, int> datasets = {};
+
+                      if (snapshot.hasError) {
+                        print("Firestore 데이터 로드 실패: ${snapshot.error}");
+                        return const Center(child: Text("데이터를 불러올 수 없습니다."));
+                      }
+
                       if (snapshot.connectionState == ConnectionState.active &&
                           snapshot.hasData &&
                           authProvider.isLoggedIn) {
