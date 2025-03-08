@@ -231,7 +231,7 @@ class QuoteScreenState extends State<QuoteScreen> {
         formattedDate: {'${widget.alarmId}': alarmData}
       }
     }, SetOptions(merge: true)).timeout(
-        const Duration(seconds: 2)); // 타임아웃 설정(인터넷 연결 X)
+        const Duration(seconds: 1)); // 타임아웃 설정(인터넷 연결 X)
   }
 
   @override

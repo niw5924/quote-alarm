@@ -5,22 +5,27 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import 'signup_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
+  State<LoginPage> createState() => _LoginPageState();
+}
 
-    // 현재 테마 모드 확인
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool obscureText = true;
+
+  @override
+  Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final textColor = isDarkMode ? Colors.white : Colors.black;
 
     Future<void> signIn() async {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
-      OverlayLoader.show(context); // 로딩 오버레이 표시
+      OverlayLoader.show(context);
 
       try {
         await authProvider.signIn(
@@ -29,7 +34,7 @@ class LoginPage extends StatelessWidget {
         );
 
         if (context.mounted) {
-          OverlayLoader.hide(); // 로딩 오버레이 닫기
+          OverlayLoader.hide();
           Fluttertoast.showToast(
             msg: '${emailController.text.trim()}님, 환영합니다!',
             toastLength: Toast.LENGTH_SHORT,
@@ -37,10 +42,10 @@ class LoginPage extends StatelessWidget {
             backgroundColor: const Color(0xFF6BF3B1),
             textColor: Colors.black,
           );
-          Navigator.pop(context); // 로그인 페이지 닫기
+          Navigator.pop(context);
         }
       } catch (e) {
-        if (context.mounted) OverlayLoader.hide(); // 로딩 오버레이 닫기
+        if (context.mounted) OverlayLoader.hide();
         Fluttertoast.showToast(
           msg: '로그인 실패: $e',
           toastLength: Toast.LENGTH_SHORT,
@@ -53,7 +58,6 @@ class LoginPage extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // 화면을 터치하면 키보드 해제
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
@@ -102,7 +106,7 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 TextField(
                   controller: passwordController,
-                  obscureText: true,
+                  obscureText: obscureText,
                   style: TextStyle(color: textColor),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock, color: textColor),
@@ -116,6 +120,17 @@ class LoginPage extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        obscureText ? Icons.visibility_off : Icons.visibility,
+                        color: textColor.withValues(alpha: 0.7),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          obscureText = !obscureText;
+                        });
+                      },
                     ),
                   ),
                 ),

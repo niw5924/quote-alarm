@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_app_2/auth/login_page.dart';
 
 class LoginRequiredPopup extends StatelessWidget {
   const LoginRequiredPopup({super.key});
@@ -40,22 +41,40 @@ class LoginRequiredPopup extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: const Color(0xFF6BF3B1),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text(
+                    '취소',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
-              ),
-              child: const Text(
-                '확인',
-                style: TextStyle(color: Colors.black),
-              ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: const Color(0xFF6BF3B1),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text(
+                    '로그인',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
