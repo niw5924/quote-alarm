@@ -17,16 +17,9 @@ import '../providers/auth_provider.dart';
 import '../auth/login_page.dart';
 import 'math_difficulty_popup.dart';
 
-class SettingsPage extends StatefulWidget {
-  final bool isDarkTheme;
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
 
-  const SettingsPage({super.key, required this.isDarkTheme});
-
-  @override
-  _SettingsPageState createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);

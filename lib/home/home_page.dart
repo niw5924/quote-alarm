@@ -352,7 +352,7 @@ class _AlarmHomePageState extends State<AlarmHomePage> {
         case 2:
           return const NewsPage();
         case 3:
-          return SettingsPage(isDarkTheme: widget.isDarkTheme);
+          return const SettingsPage();
         default:
           return const Center(child: Text('페이지를 찾을 수 없습니다.'));
       }
