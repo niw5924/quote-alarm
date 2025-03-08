@@ -45,10 +45,10 @@ class AlarmHomePage extends StatefulWidget {
   });
 
   @override
-  _AlarmHomePageState createState() => _AlarmHomePageState();
+  AlarmHomePageState createState() => AlarmHomePageState();
 }
 
-class _AlarmHomePageState extends State<AlarmHomePage> {
+class AlarmHomePageState extends State<AlarmHomePage> {
   final Uuid _uuid = const Uuid();
   List<AlarmItem> _alarms = [];
   int _selectedIndex = 0;

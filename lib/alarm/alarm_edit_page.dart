@@ -19,10 +19,10 @@ class AlarmEditPage extends StatefulWidget {
   });
 
   @override
-  _AlarmEditPageState createState() => _AlarmEditPageState();
+  AlarmEditPageState createState() => AlarmEditPageState();
 }
 
-class _AlarmEditPageState extends State<AlarmEditPage> {
+class AlarmEditPageState extends State<AlarmEditPage> {
   late TimeOfDay _selectedTime;
   late TextEditingController _memoController;
   late AlarmCancelMode _cancelMode;

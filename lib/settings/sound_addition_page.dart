@@ -10,10 +10,10 @@ class SoundAdditionPage extends StatefulWidget {
   const SoundAdditionPage({super.key});
 
   @override
-  _SoundAdditionPageState createState() => _SoundAdditionPageState();
+  SoundAdditionPageState createState() => SoundAdditionPageState();
 }
 
-class _SoundAdditionPageState extends State<SoundAdditionPage> {
+class SoundAdditionPageState extends State<SoundAdditionPage> {
   late AudioPlayer _player;
   String _currentSound = '';
   String _searchQuery = '';
@@ -113,12 +113,6 @@ class _SoundAdditionPageState extends State<SoundAdditionPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('내 사운드 추가'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: textColor),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -128,18 +122,21 @@ class _SoundAdditionPageState extends State<SoundAdditionPage> {
               margin: const EdgeInsets.symmetric(vertical: 16.0),
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.white.withOpacity(0.1) : const Color(0xFFEAD3B2),
+                color: isDarkMode
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.search, color: textColor.withOpacity(0.7)),
+                  Icon(Icons.search, color: textColor.withValues(alpha: 0.7)),
                   const SizedBox(width: 8),
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
                         hintText: '사운드 검색',
-                        hintStyle: TextStyle(color: textColor.withOpacity(0.5)),
+                        hintStyle:
+                            TextStyle(color: textColor.withValues(alpha: 0.7)),
                         border: InputBorder.none,
                       ),
                       onChanged: (query) {
@@ -157,11 +154,14 @@ class _SoundAdditionPageState extends State<SoundAdditionPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
                       child: Text(
                         '기본',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     ListView.builder(
@@ -170,30 +170,34 @@ class _SoundAdditionPageState extends State<SoundAdditionPage> {
                       itemCount: filteredDefaultSoundFiles.length,
                       itemBuilder: (context, index) {
                         final soundFile = filteredDefaultSoundFiles[index];
-                        final soundName = soundFile.split('/').last.split('.')[0].split('_').last;
+                        final soundName = soundFile
+                            .split('/')
+                            .last
+                            .split('.')[0]
+                            .split('_')
+                            .last;
 
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
                           child: ListTile(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 0.0),
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 0.0),
                             leading: Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: isDarkMode ? Colors.white.withOpacity(0.1) : const Color(0xFFEAD3B2),
+                                color: isDarkMode
+                                    ? Colors.white.withValues(alpha: 0.1)
+                                    : const Color(0xFFEAD3B2),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Icon(Icons.music_note, color: textColor),
                             ),
-                            title: Text(
-                              soundName,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: textColor,
-                              ),
-                            ),
+                            title: Text(soundName),
                             trailing: IconButton(
                               icon: Icon(
-                                _currentSound == soundFile ? Icons.stop : Icons.volume_up,
+                                _currentSound == soundFile
+                                    ? Icons.stop
+                                    : Icons.volume_up,
                                 color: textColor,
                               ),
                               onPressed: () => _playSound(soundFile),
@@ -202,11 +206,14 @@ class _SoundAdditionPageState extends State<SoundAdditionPage> {
                         );
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
                       child: Text(
                         '나만의 사운드',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     ListView.builder(
@@ -220,25 +227,24 @@ class _SoundAdditionPageState extends State<SoundAdditionPage> {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
                           child: ListTile(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 0.0),
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 0.0),
                             leading: Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: isDarkMode ? Colors.white.withOpacity(0.1) : const Color(0xFFEAD3B2),
+                                color: isDarkMode
+                                    ? Colors.white.withValues(alpha: 0.1)
+                                    : const Color(0xFFEAD3B2),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Icon(Icons.music_note, color: textColor),
                             ),
-                            title: Text(
-                              soundName,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: textColor,
-                              ),
-                            ),
+                            title: Text(soundName),
                             trailing: IconButton(
                               icon: Icon(
-                                _currentSound == soundFile ? Icons.stop : Icons.volume_up,
+                                _currentSound == soundFile
+                                    ? Icons.stop
+                                    : Icons.volume_up,
                                 color: textColor,
                               ),
                               onPressed: () => _playSound(soundFile),
@@ -260,8 +266,11 @@ class _SoundAdditionPageState extends State<SoundAdditionPage> {
                               style: TextStyle(color: textColor),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: isDarkMode ? Colors.white.withOpacity(0.1) : const Color(0xFFEAD3B2),
-                              padding: const EdgeInsets.symmetric(vertical: 12.0),
+                              backgroundColor: isDarkMode
+                                  ? Colors.white.withValues(alpha: 0.1)
+                                  : const Color(0xFFEAD3B2),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 12.0),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),

@@ -135,6 +135,7 @@ class SignupPageState extends State<SignupPage> {
                         _isPasswordVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
+                        color: textColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -166,6 +167,7 @@ class SignupPageState extends State<SignupPage> {
                         _isConfirmPasswordVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
+                        color: textColor,
                       ),
                       onPressed: () {
                         setState(() {

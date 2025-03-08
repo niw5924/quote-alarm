@@ -8,10 +8,10 @@ class NewsPage extends StatefulWidget {
   const NewsPage({super.key});
 
   @override
-  _NewsPageState createState() => _NewsPageState();
+  NewsPageState createState() => NewsPageState();
 }
 
-class _NewsPageState extends State<NewsPage> {
+class NewsPageState extends State<NewsPage> {
   final NaverNewsService _newsService = NaverNewsService();
   final HtmlUnescape _unescape = HtmlUnescape(); // HTML 엔티티 변환기
   List<News> _newsList = [];

@@ -5,10 +5,10 @@ class AlarmSuccessScreen extends StatefulWidget {
   const AlarmSuccessScreen({super.key});
 
   @override
-  _AlarmSuccessScreenState createState() => _AlarmSuccessScreenState();
+  AlarmSuccessScreenState createState() => AlarmSuccessScreenState();
 }
 
-class _AlarmSuccessScreenState extends State<AlarmSuccessScreen> {
+class AlarmSuccessScreenState extends State<AlarmSuccessScreen> {
   String displayText = '좋은 아침!';
 
   @override

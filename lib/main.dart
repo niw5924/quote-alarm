@@ -36,10 +36,10 @@ class QuoteAlarmApp extends StatefulWidget {
   const QuoteAlarmApp({super.key, required this.isDarkTheme});
 
   @override
-  _QuoteAlarmAppState createState() => _QuoteAlarmAppState();
+  QuoteAlarmAppState createState() => QuoteAlarmAppState();
 }
 
-class _QuoteAlarmAppState extends State<QuoteAlarmApp> {
+class QuoteAlarmAppState extends State<QuoteAlarmApp> {
   bool _isDarkTheme = true;
 
   @override
