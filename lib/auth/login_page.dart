@@ -74,10 +74,9 @@ class _LoginPageState extends State<LoginPage> {
                 Image.asset(
                   'assets/image/gear.gif',
                 ),
-                Text(
+                const Text(
                   'LOGIN',
                   style: TextStyle(
-                    color: textColor,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2,
@@ -87,7 +86,6 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 30),
                 TextField(
                   controller: emailController,
-                  style: TextStyle(color: textColor),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.email, color: textColor),
                     labelText: 'Email ID',
@@ -107,7 +105,6 @@ class _LoginPageState extends State<LoginPage> {
                 TextField(
                   controller: passwordController,
                   obscureText: obscureText,
-                  style: TextStyle(color: textColor),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock, color: textColor),
                     labelText: 'Password',
@@ -124,7 +121,6 @@ class _LoginPageState extends State<LoginPage> {
                     suffixIcon: IconButton(
                       icon: Icon(
                         obscureText ? Icons.visibility_off : Icons.visibility,
-                        color: textColor.withValues(alpha: 0.7),
                       ),
                       onPressed: () {
                         setState(() {
@@ -147,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Text(
                     'LOGIN',
                     style: TextStyle(
-                      color: Color(0xFF00796B),
+                      color: Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 2,

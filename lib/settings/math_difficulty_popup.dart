@@ -5,10 +5,10 @@ class MathDifficultyPopup extends StatefulWidget {
   const MathDifficultyPopup({super.key});
 
   @override
-  _MathDifficultyPopupState createState() => _MathDifficultyPopupState();
+  MathDifficultyPopupState createState() => MathDifficultyPopupState();
 }
 
-class _MathDifficultyPopupState extends State<MathDifficultyPopup> {
+class MathDifficultyPopupState extends State<MathDifficultyPopup> {
   String _selectedDifficulty = 'easy';
 
   @override

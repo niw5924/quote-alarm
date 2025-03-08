@@ -4,15 +4,24 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final confirmPasswordController = TextEditingController();
+  SignupPageState createState() => SignupPageState();
+}
 
+class SignupPageState extends State<SignupPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+
+  @override
+  Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final textColor = isDarkMode ? Colors.white : Colors.black;
 
@@ -77,10 +86,9 @@ class SignupPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Image.asset('assets/image/gear.gif'),
-                Text(
+                const Text(
                   'SIGN UP',
                   style: TextStyle(
-                    color: textColor,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2,
@@ -90,7 +98,6 @@ class SignupPage extends StatelessWidget {
                 const SizedBox(height: 30),
                 TextField(
                   controller: emailController,
-                  style: TextStyle(color: textColor),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.email, color: textColor),
                     labelText: 'Email ID',
@@ -109,8 +116,7 @@ class SignupPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 TextField(
                   controller: passwordController,
-                  obscureText: true,
-                  style: TextStyle(color: textColor),
+                  obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock, color: textColor),
                     labelText: 'Password',
@@ -124,13 +130,24 @@ class SignupPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
                     ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 TextField(
                   controller: confirmPasswordController,
-                  obscureText: true,
-                  style: TextStyle(color: textColor),
+                  obscureText: !_isConfirmPasswordVisible,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock_outline, color: textColor),
                     labelText: 'Confirm Password',
@@ -143,6 +160,19 @@ class SignupPage extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isConfirmPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isConfirmPasswordVisible =
+                              !_isConfirmPasswordVisible;
+                        });
+                      },
                     ),
                   ),
                 ),
@@ -159,7 +189,7 @@ class SignupPage extends StatelessWidget {
                   child: const Text(
                     'SIGN UP',
                     style: TextStyle(
-                      color: Color(0xFF00796B),
+                      color: Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 2,
