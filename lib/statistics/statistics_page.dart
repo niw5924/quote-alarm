@@ -278,15 +278,11 @@ class StatisticsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMedalRanking(List<MapEntry<String, double>> sortedAverages,
-      List<MapEntry<String, double>> zeroAverages) {
+  Widget _buildMedalRanking(
+    List<MapEntry<String, double>> sortedAverages,
+    List<MapEntry<String, double>> zeroAverages,
+  ) {
     final medalColors = [Colors.amber, Colors.grey, Colors.brown];
-    final icons = [
-      Icons.emoji_events, // 1등 트로피
-      Icons.emoji_events, // 2등 트로피
-      Icons.emoji_events, // 3등 트로피
-      Icons.sentiment_dissatisfied, // 순위권 밖
-    ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -301,9 +297,8 @@ class StatisticsPage extends StatelessWidget {
             child: Row(
               children: [
                 Icon(
-                  icons[index],
+                  index < 3 ? Icons.emoji_events : Icons.sentiment_dissatisfied,
                   color: index < 3 ? medalColors[index] : Colors.grey,
-                  // 순위권 밖은 회색 아이콘
                   size: 28,
                 ),
                 const SizedBox(width: 8),
@@ -325,15 +320,15 @@ class StatisticsPage extends StatelessWidget {
               child: Row(
                 children: [
                   const Icon(
-                    Icons.sentiment_dissatisfied, // 기록 없음 아이콘
-                    color: Colors.grey,
+                    Icons.block, // 기록 없음 아이콘
+                    color: Colors.red,
                     size: 28,
                   ),
                   const SizedBox(width: 8),
                   Text(
                     '$modeLabel 기록 없음',
                     style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
+                        fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),

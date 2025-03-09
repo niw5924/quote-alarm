@@ -48,8 +48,8 @@ class NewsPageState extends State<NewsPage> {
         itemCount: 10,
         itemBuilder: (context, index) {
           return Shimmer.fromColors(
-            baseColor: const Color(0xFF7F7F7F).withValues(alpha: 0.2),
-            highlightColor: const Color(0xFFD9D9D9).withValues(alpha: 0.2),
+            baseColor: Colors.grey.withValues(alpha: 0.3),
+            highlightColor: Colors.white.withValues(alpha: 0.3),
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               height: 140,
