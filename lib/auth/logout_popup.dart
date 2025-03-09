@@ -3,13 +3,6 @@ import 'package:flutter/material.dart';
 class LogoutPopup extends StatelessWidget {
   const LogoutPopup({super.key});
 
-  static Future<bool?> show(BuildContext context) async {
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) => const LogoutPopup(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Dialog(

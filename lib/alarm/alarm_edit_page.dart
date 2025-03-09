@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AlarmEditPage extends StatefulWidget {
+  final bool isDarkTheme;
   final AlarmSettings alarmSettings;
   final AlarmCancelMode cancelMode;
   final double volume;
@@ -12,6 +13,7 @@ class AlarmEditPage extends StatefulWidget {
 
   const AlarmEditPage({
     super.key,
+    required this.isDarkTheme,
     required this.alarmSettings,
     required this.cancelMode,
     required this.volume,
@@ -23,6 +25,7 @@ class AlarmEditPage extends StatefulWidget {
 }
 
 class AlarmEditPageState extends State<AlarmEditPage> {
+  late bool _isDarkTheme;
   late TimeOfDay _selectedTime;
   late TextEditingController _memoController;
   late AlarmCancelMode _cancelMode;
@@ -42,6 +45,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
   @override
   void initState() {
     super.initState();
+    _isDarkTheme = widget.isDarkTheme;
     _selectedTime = TimeOfDay.fromDateTime(widget.alarmSettings.dateTime);
     _memoController =
         TextEditingController(text: widget.alarmSettings.notificationBody);
@@ -163,33 +167,41 @@ class AlarmEditPageState extends State<AlarmEditPage> {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: const Color(0xFF1A1A1A),
+                color:
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
                 borderRadius: BorderRadius.circular(10),
               ),
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: ListTile(
-                title: const Text(
+                title: Text(
                   '알람 시간',
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: _isDarkTheme ? Colors.white70 : Colors.black87,
+                  ),
                 ),
                 subtitle: Text(
                   _selectedTime.format(context),
-                  style: const TextStyle(color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: _isDarkTheme ? Colors.white70 : Colors.black87,
+                  ),
                 ),
-                trailing: const Icon(
+                trailing: Icon(
                   Icons.access_time,
-                  color: Colors.grey,
+                  color: _isDarkTheme ? Colors.white70 : Colors.black87,
                 ),
                 onTap: _selectTime,
               ),
             ),
             const SizedBox(height: 16),
-            const Text('반복 요일', style: TextStyle(fontSize: 16)),
+            const Text('반복 요일', style: TextStyle(fontSize: 18)),
             const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
-                color: const Color(0xFF1A1A1A),
+                color:
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -207,18 +219,21 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                       decoration: BoxDecoration(
                         color: _repeatDays[index]
                             ? const Color(0xFF94FFCB)
-                            : const Color(0xFF1A1A1A),
+                            : _isDarkTheme
+                                ? Colors.grey[850]
+                                : const Color(0xFFF3E5CF),
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.grey, width: 0.5),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         days[index],
                         style: TextStyle(
                           color: _repeatDays[index]
-                              ? const Color(0xFF1A1A1A)
-                              : Colors.grey,
-                          fontWeight: FontWeight.w500,
+                              ? Colors.grey[850]
+                              : _isDarkTheme
+                                  ? Colors.white70
+                                  : const Color(0xFF524944),
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -227,13 +242,14 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text('알람 해제 방법', style: TextStyle(fontSize: 16)),
+            const Text('알람 해제 방법', style: TextStyle(fontSize: 18)),
             const SizedBox(height: 8),
             Container(
               height: 50,
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: const Color(0xFF1A1A1A),
+                color:
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
                 borderRadius: BorderRadius.circular(25),
               ),
               child: Stack(
@@ -264,9 +280,11 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                               '슬라이더',
                               style: TextStyle(
                                 color: _cancelMode == AlarmCancelMode.slider
-                                    ? const Color(0xFF1A1A1A)
-                                    : Colors.grey,
-                                fontWeight: FontWeight.bold,
+                                    ? Colors.grey[850]
+                                    : _isDarkTheme
+                                        ? Colors.white70
+                                        : const Color(0xFF524944),
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -285,9 +303,11 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                               style: TextStyle(
                                 color:
                                     _cancelMode == AlarmCancelMode.mathProblem
-                                        ? const Color(0xFF1A1A1A)
-                                        : Colors.grey,
-                                fontWeight: FontWeight.bold,
+                                        ? Colors.grey[850]
+                                        : _isDarkTheme
+                                            ? Colors.white70
+                                            : const Color(0xFF524944),
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -305,9 +325,11 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                               '퍼즐',
                               style: TextStyle(
                                 color: _cancelMode == AlarmCancelMode.puzzle
-                                    ? const Color(0xFF1A1A1A)
-                                    : Colors.grey,
-                                fontWeight: FontWeight.bold,
+                                    ? Colors.grey[850]
+                                    : _isDarkTheme
+                                        ? Colors.white70
+                                        : const Color(0xFF524944),
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -326,9 +348,11 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                               style: TextStyle(
                                 color: _cancelMode ==
                                         AlarmCancelMode.voiceRecognition
-                                    ? const Color(0xFF1A1A1A)
-                                    : Colors.grey,
-                                fontWeight: FontWeight.bold,
+                                    ? Colors.grey[850]
+                                    : _isDarkTheme
+                                        ? Colors.white70
+                                        : const Color(0xFF524944),
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -340,20 +364,23 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text('알람 소리 선택', style: TextStyle(fontSize: 16)),
+            const Text('알람 소리 선택', style: TextStyle(fontSize: 18)),
             const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               decoration: BoxDecoration(
-                color: const Color(0xFF1A1A1A),
+                color:
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   value: _selectedAudioPath,
-                  icon: const Icon(Icons.arrow_drop_down),
+                  icon: Icon(Icons.arrow_drop_down,
+                      color: _isDarkTheme ? Colors.white70 : Colors.black87),
                   isExpanded: true,
-                  dropdownColor: const Color(0xFF1A1A1A),
+                  dropdownColor:
+                      _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedAudioPath = newValue!;
@@ -367,9 +394,9 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                         value.contains('assets/sound/')
                             ? value.split('/').last.replaceAll('.mp3', '')
                             : 'Custom: ${value.split('/').last.replaceAll('.mp3', '')}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
+                        style: TextStyle(
+                          color: _isDarkTheme ? Colors.white70 : Colors.black87,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     );
@@ -378,17 +405,19 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text('명언 소리 크기', style: TextStyle(fontSize: 16)),
+            const Text('명언 소리 크기', style: TextStyle(fontSize: 18)),
             const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               decoration: BoxDecoration(
-                color: const Color(0xFF1A1A1A),
+                color:
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.volume_up, color: Colors.grey),
+                  Icon(Icons.volume_up,
+                      color: _isDarkTheme ? Colors.white70 : Colors.black87),
                   Expanded(
                     child: Slider(
                       value: _volume,
@@ -406,24 +435,29 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text('메모', style: TextStyle(fontSize: 16)),
+            const Text('메모', style: TextStyle(fontSize: 18)),
             const SizedBox(height: 8),
             Container(
               decoration: BoxDecoration(
-                color: const Color(0xFF1A1A1A),
+                color:
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
                 borderRadius: BorderRadius.circular(10),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 controller: _memoController,
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.note, color: Colors.grey),
+                style: TextStyle(
+                    color: _isDarkTheme ? Colors.white70 : Colors.black87),
+                decoration: InputDecoration(
+                  icon: Icon(Icons.note,
+                      color: _isDarkTheme ? Colors.white70 : Colors.black87),
                   labelText: '메모',
-                  labelStyle: TextStyle(color: Colors.grey),
+                  labelStyle: TextStyle(
+                      color: _isDarkTheme ? Colors.white70 : Colors.black87),
                   border: InputBorder.none,
                   hintText: '알람에 대한 메모를 입력하세요.',
-                  hintStyle: TextStyle(color: Colors.grey),
+                  hintStyle: TextStyle(
+                      color: _isDarkTheme ? Colors.white70 : Colors.black87),
                 ),
               ),
             ),

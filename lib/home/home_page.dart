@@ -174,6 +174,7 @@ class AlarmHomePageState extends State<AlarmHomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => AlarmEditPage(
+          isDarkTheme: widget.isDarkTheme,
           alarmSettings: newAlarmSettings,
           cancelMode: AlarmCancelMode.slider,
           volume: 1.0,
@@ -319,6 +320,7 @@ class AlarmHomePageState extends State<AlarmHomePage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AlarmEditPage(
+                    isDarkTheme: widget.isDarkTheme,
                     alarmSettings: _alarms[index].settings,
                     cancelMode: _alarms[index].cancelMode,
                     volume: _alarms[index].volume,

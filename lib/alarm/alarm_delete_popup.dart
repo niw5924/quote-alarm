@@ -3,13 +3,6 @@ import 'package:flutter/material.dart';
 class AlarmDeletePopup extends StatelessWidget {
   const AlarmDeletePopup({super.key});
 
-  static Future<bool?> show(BuildContext context) async {
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) => const AlarmDeletePopup(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Dialog(

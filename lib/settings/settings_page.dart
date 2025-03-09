@@ -130,8 +130,13 @@ class SettingsPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 } else {
-                  bool? shouldLogout = await LogoutPopup.show(context);
+                  bool? shouldLogout = await showDialog<bool>(
+                    context: context,
+                    builder: (BuildContext context) => const LogoutPopup(),
+                  );
+
                   if (shouldLogout == true) {
+                    if (!context.mounted) return;
                     OverlayLoader.show(context); // 로딩 오버레이 표시
                     await authProvider.signOut();
                     OverlayLoader.hide(); // 로딩 오버레이 닫기
@@ -345,6 +350,7 @@ class SettingsPage extends StatelessWidget {
                   );
 
                   if (shouldDelete == true) {
+                    if (!context.mounted) return;
                     OverlayLoader.show(context); // 로딩 오버레이 표시
                     try {
                       await authProvider.deleteAccount();

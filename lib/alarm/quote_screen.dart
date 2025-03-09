@@ -89,7 +89,7 @@ class QuoteScreenState extends State<QuoteScreen> {
     }
     print('알람이 취소되었습니다.');
 
-    if (!mounted) return; // 위젯이 활성 상태가 아니면 중단
+    if (!mounted) return;
 
     // 알람 성공 스크린으로 이동
     await Navigator.push(
@@ -99,6 +99,7 @@ class QuoteScreenState extends State<QuoteScreen> {
       ),
     );
 
+    if (!mounted) return;
     Navigator.pop(context);
   }
 

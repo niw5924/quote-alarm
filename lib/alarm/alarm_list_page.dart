@@ -72,7 +72,10 @@ class AlarmListPage extends StatelessWidget {
           ),
           direction: DismissDirection.endToStart,
           confirmDismiss: (direction) async {
-            final shouldDelete = await AlarmDeletePopup.show(context);
+            final shouldDelete = await showDialog<bool>(
+              context: context,
+              builder: (BuildContext context) => const AlarmDeletePopup(),
+            );
             return shouldDelete ?? false; // null이면 삭제 취소
           },
           onDismissed: (direction) {
