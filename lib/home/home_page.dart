@@ -140,20 +140,20 @@ class AlarmHomePageState extends State<AlarmHomePage> {
     final quoteService = QuoteService();
     final quote = await quoteService.fetchRandomQuote();
 
-    if (context.mounted) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => QuoteScreen(
-            quote: quote,
-            alarmId: alarmId,
-            cancelMode: cancelMode,
-            volume: volume,
-            alarmStartTime: alarmStartTime,
-          ),
+    if (!mounted) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => QuoteScreen(
+          quote: quote,
+          alarmId: alarmId,
+          cancelMode: cancelMode,
+          volume: volume,
+          alarmStartTime: alarmStartTime,
         ),
-      );
-    }
+      ),
+    );
   }
 
   Future<void> _addAlarm() async {

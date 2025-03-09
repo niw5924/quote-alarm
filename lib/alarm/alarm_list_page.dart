@@ -170,6 +170,12 @@ class AlarmListPage extends StatelessWidget {
                   ),
                   trailing: Switch(
                     value: alarmItem.isEnabled,
+                    activeColor: Colors.white,
+                    activeTrackColor:
+                        isDarkTheme ? Colors.lightBlueAccent : Colors.lightBlue,
+                    inactiveThumbColor: Colors.grey,
+                    inactiveTrackColor:
+                        isDarkTheme ? Colors.grey[700] : Colors.grey[300],
                     onChanged: (value) {
                       HapticFeedback.mediumImpact();
                       onToggleAlarm(alarmItem);
