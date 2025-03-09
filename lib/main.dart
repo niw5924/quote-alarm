@@ -62,7 +62,6 @@ class QuoteAlarmAppState extends State<QuoteAlarmApp> {
       theme: _isDarkTheme
           ? ThemeData(
               brightness: Brightness.dark,
-              primaryColor: const Color(0xFF101317),
               scaffoldBackgroundColor: const Color(0xFF101317),
               appBarTheme: const AppBarTheme(
                 backgroundColor: Color(0xFF151922),
@@ -76,7 +75,6 @@ class QuoteAlarmAppState extends State<QuoteAlarmApp> {
             )
           : ThemeData(
               brightness: Brightness.light,
-              primaryColor: const Color(0xFFFFFBEA),
               scaffoldBackgroundColor: const Color(0xFFFFFBEA),
               appBarTheme: const AppBarTheme(
                 backgroundColor: Color(0xFFF8EDD8),

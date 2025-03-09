@@ -304,18 +304,31 @@ class SettingsPage extends StatelessWidget {
               iconBackgroundColor: Colors.amber,
               title: '오픈소스 라이선스',
               onTap: () {
-                showLicensePage(
-                  context: context,
-                  applicationName: '울림소리',
-                  applicationIcon: const Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Image(
-                      image: AssetImage('assets/image/quote_alarm_icon.png'),
-                      width: 100,
-                      height: 100,
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Theme(
+                      data: Theme.of(context).copyWith(
+                        cardColor:
+                            Theme.of(context).brightness == Brightness.dark
+                                ? const Color(0xFF101317) // 다크 모드 배경색
+                                : const Color(0xFFFFFBEA), // 라이트 모드 배경색
+                      ),
+                      child: const LicensePage(
+                        applicationName: '울림소리',
+                        applicationIcon: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Image(
+                            image:
+                                AssetImage('assets/image/quote_alarm_icon.png'),
+                            width: 100,
+                            height: 100,
+                          ),
+                        ),
+                        applicationLegalese: '2025 남인우 개인 프로젝트',
+                      ),
                     ),
                   ),
-                  applicationLegalese: '2025 남인우 개인 프로젝트',
                 );
               },
             ),
