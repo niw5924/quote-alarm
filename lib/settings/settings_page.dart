@@ -232,29 +232,50 @@ class SettingsPage extends StatelessWidget {
                               .reduce((a, b) => a < b ? a : b);
 
                           DateTime dateTime = DateTime.parse(date);
-                          datasets[dateTime] = minDuration > 30
-                              ? 1
-                              : minDuration > 0 && minDuration <= 30
+                          datasets[dateTime] =
+                              (minDuration >= 0 && minDuration < 30)
                                   ? 2
-                                  : 0;
+                                  : (minDuration >= 30)
+                                      ? 1
+                                      : 0;
                         });
                       }
 
-                      return HeatMapCalendar(
-                        datasets: datasets,
-                        defaultColor: const Color(0xFFB0BEC5),
-                        fontSize: 20,
-                        monthFontSize: 22,
-                        weekFontSize: 14,
-                        textColor: const Color(0xFF263238),
-                        flexible: true,
-                        colorMode: ColorMode.color,
-                        showColorTip: false,
-                        colorsets: const {
-                          0: Color(0xFFB0BEC5),
-                          1: Color(0xFF78909C),
-                          2: Color(0xFF455A64),
-                        },
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          HeatMapCalendar(
+                            datasets: datasets,
+                            defaultColor: const Color(0xFFB0BEC5),
+                            borderRadius: 4,
+                            fontSize: 20,
+                            monthFontSize: 22,
+                            weekFontSize: 14,
+                            textColor: const Color(0xFF263238),
+                            flexible: true,
+                            colorMode: ColorMode.color,
+                            showColorTip: false,
+                            colorsets: const {
+                              0: Color(0xFFB0BEC5),
+                              1: Color(0xFF78909C),
+                              2: Color(0xFF455A64),
+                            },
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              _buildColorIndicator(
+                                  "기록 없음", const Color(0xFFB0BEC5)),
+                              const SizedBox(width: 12),
+                              _buildColorIndicator(
+                                  "30초 이상", const Color(0xFF78909C)),
+                              const SizedBox(width: 12),
+                              _buildColorIndicator(
+                                  "30초 미만", const Color(0xFF455A64)),
+                            ],
+                          ),
+                        ],
                       );
                     },
                   ),
@@ -262,7 +283,7 @@ class SettingsPage extends StatelessWidget {
                     Positioned.fill(
                       child: ClipRect(
                         child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                          filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
                           child: Center(
                             child: Container(
                               width: double.infinity,
@@ -378,6 +399,25 @@ class SettingsPage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  // 색상 인디케이터 위젯
+  Widget _buildColorIndicator(String label, Color color) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 12)),
+        const SizedBox(width: 4),
+        Container(
+          width: 18,
+          height: 18,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+      ],
     );
   }
 }

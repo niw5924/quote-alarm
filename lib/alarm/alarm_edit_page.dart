@@ -122,7 +122,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
 
     // 최종 알람 시간 설정
     DateTime updatedAlarmTime =
-    candidateAlarmTime.add(Duration(days: daysUntilNextAlarm));
+        candidateAlarmTime.add(Duration(days: daysUntilNextAlarm));
 
     // 알람 설정 업데이트
     final updatedAlarmSettings = widget.alarmSettings.copyWith(
@@ -168,7 +168,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
             Container(
               decoration: BoxDecoration(
                 color:
-                _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -201,7 +201,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
                 color:
-                _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -220,8 +220,8 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                         color: _repeatDays[index]
                             ? const Color(0xFF94FFCB)
                             : _isDarkTheme
-                            ? Colors.grey[850]
-                            : const Color(0xFFEAD3B2),
+                                ? Colors.grey[850]
+                                : const Color(0xFFEAD3B2),
                         shape: BoxShape.circle,
                       ),
                       alignment: Alignment.center,
@@ -231,8 +231,8 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                           color: _repeatDays[index]
                               ? Colors.grey[850]
                               : _isDarkTheme
-                              ? Colors.white70
-                              : const Color(0xFF524944),
+                                  ? Colors.white70
+                                  : const Color(0xFF524944),
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -249,7 +249,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color:
-                _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(25),
               ),
               child: Stack(
@@ -282,8 +282,8 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                                 color: _cancelMode == AlarmCancelMode.slider
                                     ? Colors.grey[850]
                                     : _isDarkTheme
-                                    ? Colors.white70
-                                    : const Color(0xFF524944),
+                                        ? Colors.white70
+                                        : const Color(0xFF524944),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -302,11 +302,11 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                               '수학 문제',
                               style: TextStyle(
                                 color:
-                                _cancelMode == AlarmCancelMode.mathProblem
-                                    ? Colors.grey[850]
-                                    : _isDarkTheme
-                                    ? Colors.white70
-                                    : const Color(0xFF524944),
+                                    _cancelMode == AlarmCancelMode.mathProblem
+                                        ? Colors.grey[850]
+                                        : _isDarkTheme
+                                            ? Colors.white70
+                                            : const Color(0xFF524944),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -327,8 +327,8 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                                 color: _cancelMode == AlarmCancelMode.puzzle
                                     ? Colors.grey[850]
                                     : _isDarkTheme
-                                    ? Colors.white70
-                                    : const Color(0xFF524944),
+                                        ? Colors.white70
+                                        : const Color(0xFF524944),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -347,11 +347,11 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                               '음성 인식',
                               style: TextStyle(
                                 color: _cancelMode ==
-                                    AlarmCancelMode.voiceRecognition
+                                        AlarmCancelMode.voiceRecognition
                                     ? Colors.grey[850]
                                     : _isDarkTheme
-                                    ? Colors.white70
-                                    : const Color(0xFF524944),
+                                        ? Colors.white70
+                                        : const Color(0xFF524944),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -370,7 +370,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               decoration: BoxDecoration(
                 color:
-                _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: DropdownButtonHideUnderline(
@@ -380,7 +380,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                       color: _isDarkTheme ? Colors.white70 : Colors.black87),
                   isExpanded: true,
                   dropdownColor:
-                  _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                      _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedAudioPath = newValue!;
@@ -411,7 +411,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               decoration: BoxDecoration(
                 color:
-                _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -440,7 +440,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
             Container(
               decoration: BoxDecoration(
                 color:
-                _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16),
