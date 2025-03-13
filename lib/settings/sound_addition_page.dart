@@ -110,9 +110,14 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
       return soundName.toLowerCase().contains(_searchQuery.toLowerCase());
     }).toList();
 
+    final filteredCustomSoundFiles = _customSoundFiles.where((file) {
+      final soundName = path.basenameWithoutExtension(file); // 파일명에서 확장자 제거
+      return soundName.toLowerCase().contains(_searchQuery.toLowerCase());
+    }).toList();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('내 사운드 추가'),
+        title: const Text('나만의 사운드 추가'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -122,9 +127,7 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
               margin: const EdgeInsets.symmetric(vertical: 16.0),
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               decoration: BoxDecoration(
-                color: isDarkMode
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : const Color(0xFFEAD3B2),
+                color: isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
@@ -186,7 +189,7 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 color: isDarkMode
-                                    ? Colors.white.withValues(alpha: 0.1)
+                                    ? Colors.grey[850]
                                     : const Color(0xFFEAD3B2),
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -219,10 +222,12 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _customSoundFiles.length,
+                      itemCount: filteredCustomSoundFiles.length, // 필터링된 리스트 적용
                       itemBuilder: (context, index) {
-                        final soundFile = _customSoundFiles[index];
-                        final soundName = soundFile.split('/').last;
+                        final soundFile =
+                            filteredCustomSoundFiles[index]; // 필터링된 리스트 사용
+                        final soundName =
+                            path.basenameWithoutExtension(soundFile); // 확장자 제거
 
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -233,7 +238,7 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 color: isDarkMode
-                                    ? Colors.white.withValues(alpha: 0.1)
+                                    ? Colors.grey[850]
                                     : const Color(0xFFEAD3B2),
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -267,7 +272,7 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: isDarkMode
-                                  ? Colors.white.withValues(alpha: 0.1)
+                                  ? Colors.grey[850]
                                   : const Color(0xFFEAD3B2),
                               padding:
                                   const EdgeInsets.symmetric(vertical: 12.0),

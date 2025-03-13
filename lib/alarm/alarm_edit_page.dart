@@ -168,7 +168,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
             Container(
               decoration: BoxDecoration(
                 color:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -201,7 +201,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
                 color:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -221,7 +221,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                             ? const Color(0xFF94FFCB)
                             : _isDarkTheme
                                 ? Colors.grey[850]
-                                : const Color(0xFFF3E5CF),
+                                : const Color(0xFFEAD3B2),
                         shape: BoxShape.circle,
                       ),
                       alignment: Alignment.center,
@@ -249,7 +249,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(25),
               ),
               child: Stack(
@@ -370,7 +370,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               decoration: BoxDecoration(
                 color:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: DropdownButtonHideUnderline(
@@ -380,7 +380,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                       color: _isDarkTheme ? Colors.white70 : Colors.black87),
                   isExpanded: true,
                   dropdownColor:
-                      _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
+                      _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedAudioPath = newValue!;
@@ -411,7 +411,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               decoration: BoxDecoration(
                 color:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -440,7 +440,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
             Container(
               decoration: BoxDecoration(
                 color:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFF3E5CF),
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16),

@@ -18,6 +18,8 @@ class AlarmCancelMathProblem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       children: [
         Text(
@@ -33,17 +35,21 @@ class AlarmCancelMathProblem extends StatelessWidget {
           controller: answerController,
           decoration: InputDecoration(
             filled: true,
-            fillColor: const Color(0xFF1A1A1A),
+            fillColor: isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
             hintText: '정답을 입력하세요',
-            hintStyle: TextStyle(color: Colors.grey.shade400),
+            hintStyle: TextStyle(
+                color: isDarkTheme
+                    ? Colors.white.withValues(alpha: 0.7)
+                    : Colors.black.withValues(alpha: 0.7)),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             errorText: errorMessage,
           ),
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: isDarkTheme ? Colors.white : Colors.black),
           keyboardType: TextInputType.number,
         ),
         const SizedBox(height: 20),
