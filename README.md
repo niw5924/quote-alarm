@@ -1,16 +1,26 @@
-# 서비스명
+# 울림소리 📢  
 
-울림소리
+**울림소리**는 단순한 알람이 아닌, 사용자의 아침을 더욱 의미 있게 만들어주는 **맞춤형 알람 애플리케이션**입니다.  
+사용자가 원하는 알람 소리를 직접 설정할 수 있으며, 알람이 울릴 때 **동기부여 문구**를 제공하여 하루를 긍정적인 에너지로 시작할 수 있도록 돕습니다.  
 
-## Getting Started
+## 💡 개발 배경  
 
-This project is a starting point for a Flutter application.
+늦은 밤까지 작업을 하던 중, 아버지의 알람이 울리면서 **날씨 정보 안내 음성이 알람 소리로 출력되는** 경험을 하게 되었습니다.  
+이 경험을 통해 **"단순한 알람음이 아니라, 무의식적으로라도 긍정적인 메시지를 들을 수 있다면 더욱 의미 있는 아침이 되지 않을까?"** 하는 생각을 하게 되었습니다.  
+알람이 울릴 때 **하루를 기분 좋게 시작할 수 있는 동기부여 문구를 제공한다면**, 단순히 알람을 끄는 행위를 넘어 보다 유용한 경험을 제공할 수 있을 것이라 판단하였고, 이를 바탕으로 **울림소리**를 개발하게 되었습니다.  
 
-A few resources to get you started if this is your first Flutter project:
+## 🎶 알람 기능  
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+울림소리는 기본 알람음 외에도 **사용자가 직접 추가한 맞춤형 알람 소리**를 지원합니다.  
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **사용자 지정 알람음 설정** 🎵: 기기에 저장된 음악 파일을 알람음으로 선택 가능  
+- **다양한 알람 해제 방식 지원** 🔢: 슬라이드 해제, 수학 문제 풀이, 퍼즐 맞추기 등 원하는 방식 선택 가능  
+- **동기부여 메시지 제공** ✨: 알람이 울릴 때 무작위 명언 또는 동기부여 문구 출력  
+
+## 🛠️ 주요 기능  
+
+✅ **맞춤형 알람음 설정** - 사용자가 직접 음악 파일을 선택하여 알람음으로 지정 가능  
+✅ **알람 해제 방식 선택** - 슬라이드, 수학 문제 풀이, 퍼즐 등 다양한 방식 제공  
+✅ **동기부여 명언 제공** - 알람이 울릴 때 긍정적인 에너지를 제공하는 문구 출력  
+✅ **출석 기록 기능** - 알람 해제 기록을 히트맵(heatmap) 형식으로 저장하여 시각적으로 확인 가능  
+✅ **통계 분석 기능** - 사용자의 기상 패턴을 분석하여 데이터 제공  
