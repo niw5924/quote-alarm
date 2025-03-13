@@ -100,8 +100,15 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
         });
 
         await _saveCustomSounds(); // 파일 경로를 저장
+
+        Fluttertoast.showToast(
+          msg: "'${path.basenameWithoutExtension(fileName)}'이(가) 추가되었습니다!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: const Color(0xFF6BF3B1),
+          textColor: Colors.black,
+        );
       } else {
-        // 이미 추가된 파일일 경우 사용자에게 알림 표시
         Fluttertoast.showToast(
           msg: "이미 추가된 파일입니다.",
           toastLength: Toast.LENGTH_SHORT,
