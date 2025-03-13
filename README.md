@@ -35,3 +35,18 @@
 ✅ **출석 기록 기능** - 알람 해제 기록을 히트맵(heatmap) 형식으로 저장하여 시각적으로 확인 (**로그인 필요**)  
 ✅ **통계 분석 기능** - 알람 해제까지 걸린 시간을 그래프 형식으로 제공 (**로그인 필요**)  
 ✅ **오늘의 뉴스 제공** - 뉴스 탭에서 10개의 최신 뉴스 기사 표시 (**네이버 뉴스 API 활용**)  
+
+## 🛠 Skills  
+
+✅ **Flutter, Dart**  
+✅ **Provider**  
+✅ **Firebase Authentication, Firestore Database**  
+✅ **SharedPreferences, Path Provider**  
+✅ **http**  
+✅ **FilePicker**  
+✅ **Flutter TTS, Speech to Text**  
+✅ **Audioplayers**  
+✅ **Flutter Heatmap Calendar, fl_chart**  
+✅ **Intl**  
+✅ **Android Alarm Manager Plus, Alarm**  
+✅ **Shimmer**  
