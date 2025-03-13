@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as path;
@@ -88,15 +89,27 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
       final file = File(result.files.single.path!);
       final appDir = await getApplicationDocumentsDirectory();
       final fileName = path.basename(file.path);
+      final localFilePath = '${appDir.path}/$fileName';
 
-      // 로컬 디렉토리에 파일 복사
-      final localFile = await file.copy('${appDir.path}/$fileName');
+      // 중복 확인 후 추가 (같은 파일이 있으면 추가하지 않음)
+      if (!_customSoundFiles.contains(localFilePath)) {
+        final localFile = await file.copy(localFilePath);
 
-      setState(() {
-        _customSoundFiles.add(localFile.path);
-      });
+        setState(() {
+          _customSoundFiles.add(localFile.path);
+        });
 
-      await _saveCustomSounds(); // 파일 경로를 저장
+        await _saveCustomSounds(); // 파일 경로를 저장
+      } else {
+        // 이미 추가된 파일일 경우 사용자에게 알림 표시
+        Fluttertoast.showToast(
+          msg: "이미 추가된 파일입니다.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
     }
   }
 
