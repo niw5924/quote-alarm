@@ -86,15 +86,14 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 30),
                 TextField(
                   controller: emailController,
+                  style: TextStyle(color: textColor),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.email, color: textColor),
                     labelText: 'Email ID',
-                    labelStyle:
-                        TextStyle(color: textColor.withValues(alpha: 0.7)),
+                    labelStyle: TextStyle(color: textColor),
                     filled: true,
-                    fillColor: isDarkMode
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.black.withValues(alpha: 0.05),
+                    fillColor:
+                        isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
@@ -105,15 +104,14 @@ class _LoginPageState extends State<LoginPage> {
                 TextField(
                   controller: passwordController,
                   obscureText: obscureText,
+                  style: TextStyle(color: textColor),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock, color: textColor),
                     labelText: 'Password',
-                    labelStyle:
-                        TextStyle(color: textColor.withValues(alpha: 0.7)),
+                    labelStyle: TextStyle(color: textColor),
                     filled: true,
-                    fillColor: isDarkMode
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.black.withValues(alpha: 0.05),
+                    fillColor:
+                        isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,

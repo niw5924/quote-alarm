@@ -19,6 +19,7 @@ class AlarmCancelMathProblem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDarkTheme ? Colors.white : Colors.black;
 
     return Column(
       children: [
@@ -33,23 +34,20 @@ class AlarmCancelMathProblem extends StatelessWidget {
         const SizedBox(height: 20),
         TextField(
           controller: answerController,
+          style: TextStyle(color: textColor),
           decoration: InputDecoration(
             filled: true,
             fillColor: isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
             hintText: '정답을 입력하세요',
-            hintStyle: TextStyle(
-                color: isDarkTheme
-                    ? Colors.white.withValues(alpha: 0.7)
-                    : Colors.black.withValues(alpha: 0.7)),
+            hintStyle: TextStyle(color: textColor.withValues(alpha: 0.7)),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
             ),
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             errorText: errorMessage,
           ),
-          style: TextStyle(color: isDarkTheme ? Colors.white : Colors.black),
           keyboardType: TextInputType.number,
         ),
         const SizedBox(height: 20),
@@ -57,17 +55,16 @@ class AlarmCancelMathProblem extends StatelessWidget {
           onPressed: onValidateAnswer,
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF6BF3B1),
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
           child: const Text(
             '확인',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               color: Colors.black,
-              fontWeight: FontWeight.bold,
             ),
           ),
         ),

@@ -20,11 +20,30 @@ class AlarmCancelVoiceRecognition extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDarkMode ? Colors.white : Colors.black;
+
     return Column(
       children: [
-        Text(
-          "랜덤 단어: $randomWord",
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "랜덤 단어",
+              style: TextStyle(fontSize: 18, color: textColor),
+            ),
+            const SizedBox(width: 8),
+            Icon(Icons.double_arrow, size: 24, color: textColor),
+            const SizedBox(width: 8),
+            Text(
+              randomWord,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: textColor,
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 16),
         ElevatedButton.icon(
@@ -37,22 +56,37 @@ class AlarmCancelVoiceRecognition extends StatelessWidget {
             isListening ? '그만하기' : '말하기',
             style: const TextStyle(
               color: Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontSize: 16,
             ),
           ),
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF6BF3B1),
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
         ),
         const SizedBox(height: 16),
-        Text(
-          "들린 단어: $lastWords",
-          style: const TextStyle(fontSize: 18),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "들린 단어",
+              style: TextStyle(fontSize: 18, color: textColor),
+            ),
+            const SizedBox(width: 8),
+            Icon(Icons.double_arrow, size: 24, color: textColor),
+            const SizedBox(width: 8),
+            Text(
+              lastWords,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: textColor,
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 16),
         if (resultMessage.isNotEmpty)

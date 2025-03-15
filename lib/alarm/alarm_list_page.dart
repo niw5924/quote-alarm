@@ -37,6 +37,7 @@ class AlarmListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = isDarkTheme ? Colors.white : Colors.black;
     final List<String> days = ['일', '월', '화', '수', '목', '금', '토'];
 
     return ListView.builder(
@@ -111,13 +112,10 @@ class AlarmListPage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: (isDarkTheme
-                                        ? Colors.white
-                                        : Colors.black)
-                                    .withValues(
-                                        alpha: alarmItem.repeatDays[dayIndex]
-                                            ? 1.0
-                                            : 0.5),
+                                color: textColor.withValues(
+                                    alpha: alarmItem.repeatDays[dayIndex]
+                                        ? 1.0
+                                        : 0.5),
                               ),
                             );
                           }),
@@ -130,8 +128,7 @@ class AlarmListPage extends StatelessWidget {
                             TextSpan(
                               text: '${formattedTime.split(' ')[0]} ',
                               style: TextStyle(
-                                color:
-                                    isDarkTheme ? Colors.white : Colors.black,
+                                color: textColor,
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -139,8 +136,7 @@ class AlarmListPage extends StatelessWidget {
                             TextSpan(
                               text: formattedTime.split(' ')[1],
                               style: TextStyle(
-                                color:
-                                    isDarkTheme ? Colors.white : Colors.black,
+                                color: textColor,
                                 fontSize: 32,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -156,7 +152,7 @@ class AlarmListPage extends StatelessWidget {
                       Text(
                         cancelModeText,
                         style: TextStyle(
-                          color: isDarkTheme ? Colors.white70 : Colors.black87,
+                          color: textColor,
                           fontSize: 16,
                         ),
                       ),
@@ -165,7 +161,7 @@ class AlarmListPage extends StatelessWidget {
                             ? '메모 없음'
                             : alarmItem.settings.notificationBody,
                         style: TextStyle(
-                          color: isDarkTheme ? Colors.white70 : Colors.black87,
+                          color: textColor,
                           fontSize: 18,
                         ),
                       ),

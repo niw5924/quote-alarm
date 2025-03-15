@@ -28,17 +28,16 @@ class AlarmCancelPuzzle extends StatelessWidget {
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF6BF3B1),
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(8),
         ),
       ),
       child: const Text(
         '퍼즐 해제',
         style: TextStyle(
-          fontSize: 18,
+          fontSize: 16,
           color: Colors.black,
-          fontWeight: FontWeight.bold,
         ),
       ),
     );

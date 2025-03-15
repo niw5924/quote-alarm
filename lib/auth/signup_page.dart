@@ -98,15 +98,14 @@ class SignupPageState extends State<SignupPage> {
                 const SizedBox(height: 30),
                 TextField(
                   controller: emailController,
+                  style: TextStyle(color: textColor),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.email, color: textColor),
                     labelText: 'Email ID',
-                    labelStyle:
-                        TextStyle(color: textColor.withValues(alpha: 0.7)),
+                    labelStyle: TextStyle(color: textColor),
                     filled: true,
-                    fillColor: isDarkMode
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.black.withValues(alpha: 0.05),
+                    fillColor:
+                        isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
@@ -117,15 +116,14 @@ class SignupPageState extends State<SignupPage> {
                 TextField(
                   controller: passwordController,
                   obscureText: !_isPasswordVisible,
+                  style: TextStyle(color: textColor),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock, color: textColor),
                     labelText: 'Password',
-                    labelStyle:
-                        TextStyle(color: textColor.withValues(alpha: 0.7)),
+                    labelStyle: TextStyle(color: textColor),
                     filled: true,
-                    fillColor: isDarkMode
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.black.withValues(alpha: 0.05),
+                    fillColor:
+                        isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
@@ -149,15 +147,14 @@ class SignupPageState extends State<SignupPage> {
                 TextField(
                   controller: confirmPasswordController,
                   obscureText: !_isConfirmPasswordVisible,
+                  style: TextStyle(color: textColor),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock_outline, color: textColor),
                     labelText: 'Confirm Password',
-                    labelStyle:
-                        TextStyle(color: textColor.withValues(alpha: 0.7)),
+                    labelStyle: TextStyle(color: textColor),
                     filled: true,
-                    fillColor: isDarkMode
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.black.withValues(alpha: 0.05),
+                    fillColor:
+                        isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,

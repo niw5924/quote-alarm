@@ -139,46 +139,41 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
       appBar: AppBar(
         title: const Text('나만의 사운드 추가'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 16.0),
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
-                borderRadius: BorderRadius.circular(12),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+            child: TextField(
+              style: TextStyle(color: textColor),
+              decoration: InputDecoration(
+                prefixIcon:
+                    Icon(Icons.search, color: textColor.withValues(alpha: 0.7)),
+                hintText: '사운드 검색',
+                hintStyle: TextStyle(color: textColor.withValues(alpha: 0.7)),
+                filled: true,
+                fillColor:
+                    isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
               ),
-              child: Row(
-                children: [
-                  Icon(Icons.search, color: textColor.withValues(alpha: 0.7)),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: '사운드 검색',
-                        hintStyle:
-                            TextStyle(color: textColor.withValues(alpha: 0.7)),
-                        border: InputBorder.none,
-                      ),
-                      onChanged: (query) {
-                        setState(() {
-                          _searchQuery = query;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              onChanged: (query) {
+                setState(() {
+                  _searchQuery = query;
+                });
+              },
             ),
-            Expanded(
-              child: SingleChildScrollView(
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      padding: EdgeInsets.symmetric(vertical: 4.0),
                       child: Text(
                         '기본',
                         style: TextStyle(
@@ -230,7 +225,7 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
                       },
                     ),
                     const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      padding: EdgeInsets.symmetric(vertical: 4.0),
                       child: Text(
                         '나만의 사운드',
                         style: TextStyle(
@@ -278,28 +273,23 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
                         );
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: Center(
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton.icon(
-                            onPressed: _addCustomSound,
-                            icon: Icon(Icons.add, color: textColor),
-                            label: Text(
-                              '추가하기',
-                              style: TextStyle(color: textColor),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: isDarkMode
-                                  ? Colors.grey[850]
-                                  : const Color(0xFFEAD3B2),
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 12.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: ElevatedButton.icon(
+                        onPressed: _addCustomSound,
+                        icon: Icon(Icons.add, color: textColor),
+                        label: Text(
+                          '추가하기',
+                          style: TextStyle(color: textColor),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isDarkMode
+                              ? Colors.grey[850]
+                              : const Color(0xFFEAD3B2),
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),
@@ -308,8 +298,8 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
