@@ -47,8 +47,8 @@ class AlarmEditPageState extends State<AlarmEditPage> {
     super.initState();
     _isDarkTheme = widget.isDarkTheme;
     _selectedTime = TimeOfDay.fromDateTime(widget.alarmSettings.dateTime);
-    _memoController =
-        TextEditingController(text: widget.alarmSettings.notificationBody);
+    _memoController = TextEditingController(
+        text: widget.alarmSettings.notificationSettings.body);
     _cancelMode = widget.cancelMode;
     _selectedAudioPath = widget.alarmSettings.assetAudioPath;
     _volume = widget.volume;
@@ -127,7 +127,10 @@ class AlarmEditPageState extends State<AlarmEditPage> {
     // 알람 설정 업데이트
     final updatedAlarmSettings = widget.alarmSettings.copyWith(
       dateTime: updatedAlarmTime,
-      notificationBody: _memoController.text,
+      notificationSettings: widget.alarmSettings.notificationSettings.copyWith(
+        title: widget.alarmSettings.notificationSettings.title,
+        body: _memoController.text,
+      ),
       assetAudioPath: _selectedAudioPath,
     );
 

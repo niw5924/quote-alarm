@@ -17,6 +17,9 @@ Future<void> main() async {
 
   await Alarm.init();
 
+  await Alarm.setWarningNotificationOnKill(
+      '🥺 울림소리 앱을 다시 켜주세요', '알람이 원활하게 동작하려면 앱을 실행해주세요.');
+
   final prefs = await SharedPreferences.getInstance();
   final isDarkTheme = prefs.getBool('isDarkTheme') ?? true;
 

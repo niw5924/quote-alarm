@@ -165,9 +165,12 @@ class AlarmHomePageState extends State<AlarmHomePage> {
       assetAudioPath: 'assets/sound/alarm_sound.mp3',
       loopAudio: true,
       vibrate: true,
-      notificationTitle: '울림소리',
-      notificationBody: '',
-      enableNotificationOnKill: true,
+      volume: 1.0,
+      warningNotificationOnKill: true,
+      notificationSettings: const NotificationSettings(
+        title: '울림소리',
+        body: '',
+      ),
     );
 
     final updatedAlarmItem = await Navigator.push(
@@ -206,7 +209,7 @@ class AlarmHomePageState extends State<AlarmHomePage> {
         alarm.cancelMode.index,
         alarm.volume,
         alarm.settings.assetAudioPath,
-        alarm.settings.notificationBody,
+        alarm.settings.notificationSettings.body,
         alarm.repeatDays.join(","),
       ].join("|");
     }).toList();
@@ -230,9 +233,12 @@ class AlarmHomePageState extends State<AlarmHomePage> {
             assetAudioPath: parts[5],
             loopAudio: true,
             vibrate: true,
-            notificationTitle: '알람',
-            notificationBody: parts[6],
-            enableNotificationOnKill: true,
+            volume: 1.0,
+            warningNotificationOnKill: true,
+            notificationSettings: NotificationSettings(
+              title: '알람',
+              body: parts[6],
+            ),
           );
           final isEnabled = parts[2] == 'true';
           final cancelMode = AlarmCancelMode.values[int.parse(parts[3])];

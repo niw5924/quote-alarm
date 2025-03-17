@@ -157,9 +157,9 @@ class AlarmListPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        alarmItem.settings.notificationBody.isEmpty
+                        alarmItem.settings.notificationSettings.body.isEmpty
                             ? '메모 없음'
-                            : alarmItem.settings.notificationBody,
+                            : alarmItem.settings.notificationSettings.body,
                         style: TextStyle(
                           color: textColor,
                           fontSize: 18,
