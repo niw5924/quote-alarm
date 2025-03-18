@@ -11,14 +11,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await dotenv.load(); // .env 파일 로드
   await Firebase.initializeApp();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await Alarm.init();
 
   await Alarm.setWarningNotificationOnKill(
-      '🥺 울림소리 앱을 다시 켜주세요', '알람이 원활하게 동작하려면 앱을 실행해주세요.');
+      '🥺 울림소리 앱을 다시 켜주세요', '앱이 종료되면 알람이 정상적으로 작동하지 않을 수 있습니다.');
 
   final prefs = await SharedPreferences.getInstance();
   final isDarkTheme = prefs.getBool('isDarkTheme') ?? true;

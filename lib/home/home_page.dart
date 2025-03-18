@@ -20,17 +20,17 @@ enum AlarmCancelMode {
 
 class AlarmItem {
   AlarmSettings settings;
-  bool isEnabled;
-  AlarmCancelMode cancelMode;
-  double volume;
   List<bool> repeatDays;
+  AlarmCancelMode cancelMode;
+  double quoteVolume;
+  bool isEnabled;
 
   AlarmItem(
-    this.settings,
-    this.isEnabled, {
-    this.cancelMode = AlarmCancelMode.slider,
-    this.volume = 1.0,
+    this.settings, {
     this.repeatDays = const [false, false, false, false, false, false, false],
+    this.cancelMode = AlarmCancelMode.slider,
+    this.quoteVolume = 1.0,
+    this.isEnabled = true,
   });
 }
 
@@ -69,7 +69,7 @@ class AlarmHomePageState extends State<AlarmHomePage> {
       await _showQuoteScreen(
         matchingAlarm.settings.id,
         matchingAlarm.cancelMode,
-        matchingAlarm.volume,
+        matchingAlarm.quoteVolume,
         alarmStartTime,
       );
 
@@ -134,7 +134,7 @@ class AlarmHomePageState extends State<AlarmHomePage> {
   Future<void> _showQuoteScreen(
     int alarmId,
     AlarmCancelMode cancelMode,
-    double volume,
+    double quoteVolume,
     DateTime alarmStartTime,
   ) async {
     final quoteService = QuoteService();
@@ -149,7 +149,7 @@ class AlarmHomePageState extends State<AlarmHomePage> {
           quote: quote,
           alarmId: alarmId,
           cancelMode: cancelMode,
-          volume: volume,
+          quoteVolume: quoteVolume,
           alarmStartTime: alarmStartTime,
         ),
       ),
@@ -163,14 +163,14 @@ class AlarmHomePageState extends State<AlarmHomePage> {
       id: newAlarmId.hashCode,
       dateTime: DateTime.now(),
       assetAudioPath: 'assets/sound/alarm_sound.mp3',
-      loopAudio: true,
-      vibrate: true,
-      volume: 1.0,
-      warningNotificationOnKill: true,
       notificationSettings: const NotificationSettings(
         title: '울림소리',
         body: '',
       ),
+      loopAudio: true,
+      vibrate: true,
+      volume: 1.0,
+      warningNotificationOnKill: true,
     );
 
     final updatedAlarmItem = await Navigator.push(
@@ -179,9 +179,9 @@ class AlarmHomePageState extends State<AlarmHomePage> {
         builder: (context) => AlarmEditPage(
           isDarkTheme: widget.isDarkTheme,
           alarmSettings: newAlarmSettings,
-          cancelMode: AlarmCancelMode.slider,
-          volume: 1.0,
           repeatDays: List.filled(7, false),
+          cancelMode: AlarmCancelMode.slider,
+          quoteVolume: 1.0,
         ),
       ),
     );
@@ -205,12 +205,13 @@ class AlarmHomePageState extends State<AlarmHomePage> {
       return [
         alarm.settings.id,
         alarm.settings.dateTime.toIso8601String(),
-        alarm.isEnabled,
-        alarm.cancelMode.index,
-        alarm.volume,
-        alarm.settings.assetAudioPath,
-        alarm.settings.notificationSettings.body,
         alarm.repeatDays.join(","),
+        alarm.cancelMode.index,
+        alarm.settings.assetAudioPath,
+        alarm.settings.volume,
+        alarm.quoteVolume,
+        alarm.settings.notificationSettings.body,
+        alarm.isEnabled,
       ].join("|");
     }).toList();
 
@@ -230,28 +231,28 @@ class AlarmHomePageState extends State<AlarmHomePage> {
           final alarmSettings = AlarmSettings(
             id: int.parse(parts[0]),
             dateTime: DateTime.parse(parts[1]),
-            assetAudioPath: parts[5],
+            assetAudioPath: parts[4],
+            notificationSettings: NotificationSettings(
+              title: '울림소리',
+              body: parts[7],
+            ),
             loopAudio: true,
             vibrate: true,
-            volume: 1.0,
+            volume: double.parse(parts[5]),
             warningNotificationOnKill: true,
-            notificationSettings: NotificationSettings(
-              title: '알람',
-              body: parts[6],
-            ),
           );
-          final isEnabled = parts[2] == 'true';
-          final cancelMode = AlarmCancelMode.values[int.parse(parts[3])];
-          final volume = double.parse(parts[4]);
           final repeatDays =
-              parts[7].split(',').map((e) => e == 'true').toList();
+              parts[2].split(',').map((e) => e == 'true').toList();
+          final cancelMode = AlarmCancelMode.values[int.parse(parts[3])];
+          final quoteVolume = double.parse(parts[6]);
+          final isEnabled = parts[8] == 'true';
 
           return AlarmItem(
             alarmSettings,
-            isEnabled,
-            cancelMode: cancelMode,
-            volume: volume,
             repeatDays: repeatDays,
+            cancelMode: cancelMode,
+            quoteVolume: quoteVolume,
+            isEnabled: isEnabled,
           );
         }).toList();
       });
@@ -317,10 +318,8 @@ class AlarmHomePageState extends State<AlarmHomePage> {
       switch (_selectedIndex) {
         case 0:
           return AlarmListPage(
-            alarms: _alarms,
             isDarkTheme: widget.isDarkTheme,
-            onToggleAlarm: _toggleAlarm,
-            onDeleteAlarm: deleteAlarm,
+            alarms: _alarms,
             onTapAlarm: (index) async {
               final updatedAlarmItem = await Navigator.push(
                 context,
@@ -328,9 +327,9 @@ class AlarmHomePageState extends State<AlarmHomePage> {
                   builder: (context) => AlarmEditPage(
                     isDarkTheme: widget.isDarkTheme,
                     alarmSettings: _alarms[index].settings,
-                    cancelMode: _alarms[index].cancelMode,
-                    volume: _alarms[index].volume,
                     repeatDays: _alarms[index].repeatDays,
+                    cancelMode: _alarms[index].cancelMode,
+                    quoteVolume: _alarms[index].quoteVolume,
                   ),
                 ),
               );
@@ -339,10 +338,10 @@ class AlarmHomePageState extends State<AlarmHomePage> {
                 setState(() {
                   _alarms[index] = AlarmItem(
                     updatedAlarmItem.settings,
-                    _alarms[index].isEnabled,
-                    cancelMode: updatedAlarmItem.cancelMode,
-                    volume: updatedAlarmItem.volume,
                     repeatDays: updatedAlarmItem.repeatDays,
+                    cancelMode: updatedAlarmItem.cancelMode,
+                    quoteVolume: updatedAlarmItem.quoteVolume,
+                    isEnabled: _alarms[index].isEnabled,
                   );
                 });
 
@@ -354,6 +353,8 @@ class AlarmHomePageState extends State<AlarmHomePage> {
                 _saveAlarms();
               }
             },
+            onToggleAlarm: _toggleAlarm,
+            onDeleteAlarm: deleteAlarm,
           );
         case 1:
           return const StatisticsPage();

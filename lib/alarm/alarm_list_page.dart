@@ -6,19 +6,19 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 class AlarmListPage extends StatelessWidget {
-  final List<AlarmItem> alarms;
   final bool isDarkTheme;
+  final List<AlarmItem> alarms;
+  final Function(int) onTapAlarm;
   final Function(AlarmItem) onToggleAlarm;
   final Function(int, AlarmItem) onDeleteAlarm;
-  final Function(int) onTapAlarm;
 
   const AlarmListPage({
     super.key,
-    required this.alarms,
     required this.isDarkTheme,
+    required this.alarms,
+    required this.onTapAlarm,
     required this.onToggleAlarm,
     required this.onDeleteAlarm,
-    required this.onTapAlarm,
   });
 
   // 알람 해제 유형을 텍스트로 변환

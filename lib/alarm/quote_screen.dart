@@ -22,7 +22,7 @@ class QuoteScreen extends StatefulWidget {
   final Quote quote;
   final int alarmId;
   final AlarmCancelMode cancelMode;
-  final double volume;
+  final double quoteVolume;
   final DateTime alarmStartTime;
 
   const QuoteScreen({
@@ -30,7 +30,7 @@ class QuoteScreen extends StatefulWidget {
     required this.quote,
     required this.alarmId,
     required this.cancelMode,
-    required this.volume,
+    required this.quoteVolume,
     required this.alarmStartTime,
   });
 
@@ -110,7 +110,7 @@ class QuoteScreenState extends State<QuoteScreen> {
     await _flutterTts.setLanguage(language == 'ko' ? "ko-KR" : "en-US");
     await _flutterTts.setPitch(1.0);
     await _flutterTts.setSpeechRate(0.5);
-    await _flutterTts.setVolume(widget.volume);
+    await _flutterTts.setVolume(widget.quoteVolume);
     await _flutterTts.speak('"${widget.quote.quote}" - ${widget.quote.author}');
   }
 

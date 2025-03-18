@@ -7,17 +7,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AlarmEditPage extends StatefulWidget {
   final bool isDarkTheme;
   final AlarmSettings alarmSettings;
-  final AlarmCancelMode cancelMode;
-  final double volume;
   final List<bool> repeatDays;
+  final AlarmCancelMode cancelMode;
+  final double quoteVolume;
 
   const AlarmEditPage({
     super.key,
     required this.isDarkTheme,
     required this.alarmSettings,
-    required this.cancelMode,
-    required this.volume,
     required this.repeatDays,
+    required this.cancelMode,
+    required this.quoteVolume,
   });
 
   @override
@@ -27,13 +27,8 @@ class AlarmEditPage extends StatefulWidget {
 class AlarmEditPageState extends State<AlarmEditPage> {
   late bool _isDarkTheme;
   late TimeOfDay _selectedTime;
-  late TextEditingController _memoController;
-  late AlarmCancelMode _cancelMode;
-  String _selectedAudioPath = 'assets/sound/alarm_sound.mp3';
-  late double _volume;
-  List<String> _customSoundFiles = []; // 사용자 사운드 파일 목록
   late List<bool> _repeatDays; // 요일 선택 상태
-
+  late AlarmCancelMode _cancelMode;
   final List<String> _defaultSoundFiles = [
     'assets/sound/alarm_cuckoo.mp3',
     'assets/sound/alarm_sound.mp3',
@@ -41,19 +36,24 @@ class AlarmEditPageState extends State<AlarmEditPage> {
     'assets/sound/alarm_gun.mp3',
     'assets/sound/alarm_emergency.mp3',
   ];
+  String _selectedAudioPath = 'assets/sound/alarm_sound.mp3';
+  List<String> _customSoundFiles = []; // 사용자 사운드 파일 목록
+  late double _alarmVolume;
+  late double _quoteVolume;
+  late TextEditingController _memoController;
 
   @override
   void initState() {
     super.initState();
     _isDarkTheme = widget.isDarkTheme;
     _selectedTime = TimeOfDay.fromDateTime(widget.alarmSettings.dateTime);
-    _memoController = TextEditingController(
-        text: widget.alarmSettings.notificationSettings.body);
+    _repeatDays = List.from(widget.repeatDays);
     _cancelMode = widget.cancelMode;
     _selectedAudioPath = widget.alarmSettings.assetAudioPath;
-    _volume = widget.volume;
-    _repeatDays = List.from(widget.repeatDays);
-    print(_repeatDays);
+    _alarmVolume = widget.alarmSettings.volume!;
+    _quoteVolume = widget.quoteVolume;
+    _memoController = TextEditingController(
+        text: widget.alarmSettings.notificationSettings.body);
 
     _loadCustomSounds(); // 사용자 사운드 파일 불러오기
   }
@@ -70,6 +70,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
       context: context,
       initialTime: _selectedTime,
     );
+
     if (pickedTime != null && pickedTime != _selectedTime) {
       setState(() {
         _selectedTime = pickedTime;
@@ -127,19 +128,19 @@ class AlarmEditPageState extends State<AlarmEditPage> {
     // 알람 설정 업데이트
     final updatedAlarmSettings = widget.alarmSettings.copyWith(
       dateTime: updatedAlarmTime,
+      assetAudioPath: _selectedAudioPath,
       notificationSettings: widget.alarmSettings.notificationSettings.copyWith(
         title: widget.alarmSettings.notificationSettings.title,
         body: _memoController.text,
       ),
-      assetAudioPath: _selectedAudioPath,
+      volume: _alarmVolume,
     );
 
     final updatedAlarmItem = AlarmItem(
       updatedAlarmSettings,
-      true,
-      cancelMode: _cancelMode,
-      volume: _volume,
       repeatDays: _repeatDays,
+      cancelMode: _cancelMode,
+      quoteVolume: _quoteVolume,
     );
 
     if (context.mounted) {
@@ -150,11 +151,11 @@ class AlarmEditPageState extends State<AlarmEditPage> {
   @override
   Widget build(BuildContext context) {
     final textColor = _isDarkTheme ? Colors.white : Colors.black;
+    final List<String> days = ['일', '월', '화', '수', '목', '금', '토'];
     final allSoundFiles = [
       ..._defaultSoundFiles,
       ..._customSoundFiles
     ]; // 기본 사운드와 사용자 사운드를 합친 리스트
-    final List<String> days = ['일', '월', '화', '수', '목', '금', '토'];
 
     return Scaffold(
       appBar: AppBar(
@@ -224,7 +225,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                       height: MediaQuery.of(context).size.width / 10,
                       decoration: BoxDecoration(
                         color: _repeatDays[index]
-                            ? const Color(0xFF94FFCB)
+                            ? const Color(0xFF6BF3B1)
                             : Colors.transparent,
                         shape: BoxShape.circle,
                       ),
@@ -260,7 +261,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                     child: Container(
                       width: (MediaQuery.of(context).size.width - 48) / 4,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF94FFCB),
+                        color: const Color(0xFF6BF3B1),
                         borderRadius: BorderRadius.circular(25),
                       ),
                     ),
@@ -395,6 +396,37 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               }).toList(),
             ),
             const SizedBox(height: 16),
+            const Text('알람 소리 크기', style: TextStyle(fontSize: 18)),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              decoration: BoxDecoration(
+                color:
+                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.volume_up, color: textColor),
+                  Expanded(
+                    child: Slider(
+                      value: _alarmVolume,
+                      min: 0.0,
+                      max: 1.0,
+                      divisions: 10,
+                      activeColor: const Color(0xFF6BF3B1),
+                      inactiveColor: Colors.white,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _alarmVolume = newValue;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
             const Text('명언 소리 크기', style: TextStyle(fontSize: 18)),
             const SizedBox(height: 8),
             Container(
@@ -409,13 +441,15 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                   Icon(Icons.volume_up, color: textColor),
                   Expanded(
                     child: Slider(
-                      value: _volume,
+                      value: _quoteVolume,
                       min: 0.0,
                       max: 1.0,
                       divisions: 10,
+                      activeColor: const Color(0xFF6BF3B1),
+                      inactiveColor: Colors.white,
                       onChanged: (newValue) {
                         setState(() {
-                          _volume = newValue;
+                          _quoteVolume = newValue;
                         });
                       },
                     ),
