@@ -61,16 +61,27 @@ class AlarmHomePageState extends State<AlarmHomePage> {
     // 알람이 울릴 때 처리
     Alarm.ringStream.stream.listen((alarmSettings) async {
       print("RingRingRingRingRingRing");
+
       final matchingAlarm =
           _alarms.firstWhere((alarm) => alarm.settings.id == alarmSettings.id);
 
-      // 명언 화면 표시
       final DateTime alarmStartTime = DateTime.now();
-      await _showQuoteScreen(
-        matchingAlarm.settings.id,
-        matchingAlarm.cancelMode,
-        matchingAlarm.quoteVolume,
-        alarmStartTime,
+      final quoteService = QuoteService();
+      final quote = await quoteService.fetchRandomQuote();
+
+      if (!mounted) return;
+
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => QuoteScreen(
+            quote: quote,
+            alarmId: matchingAlarm.settings.id,
+            cancelMode: matchingAlarm.cancelMode,
+            quoteVolume: matchingAlarm.quoteVolume,
+            alarmStartTime: alarmStartTime,
+          ),
+        ),
       );
 
       // 다음 반복 알람 예약
@@ -129,31 +140,6 @@ class AlarmHomePageState extends State<AlarmHomePage> {
     print("알람 등록 - 새로운 ID: $newAlarmId, 울릴 시간: $nextAlarmTime");
 
     _saveAlarms();
-  }
-
-  Future<void> _showQuoteScreen(
-    int alarmId,
-    AlarmCancelMode cancelMode,
-    double quoteVolume,
-    DateTime alarmStartTime,
-  ) async {
-    final quoteService = QuoteService();
-    final quote = await quoteService.fetchRandomQuote();
-
-    if (!mounted) return;
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => QuoteScreen(
-          quote: quote,
-          alarmId: alarmId,
-          cancelMode: cancelMode,
-          quoteVolume: quoteVolume,
-          alarmStartTime: alarmStartTime,
-        ),
-      ),
-    );
   }
 
   Future<void> _addAlarm() async {

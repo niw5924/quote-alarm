@@ -30,7 +30,8 @@ class QuoteService {
           ? 'https://korean-advice-open-api.vercel.app/api/advice' // 한국어 명언 API
           : 'https://quotes-api-self.vercel.app/quote'; // 영어 명언 API
 
-      final response = await http.get(Uri.parse(url));
+      final response =
+          await http.get(Uri.parse(url)).timeout(const Duration(seconds: 1));
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
