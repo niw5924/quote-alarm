@@ -1,3 +1,4 @@
+import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter_alarm_app_2/home/home_page.dart';
@@ -63,19 +64,6 @@ class AlarmEditPageState extends State<AlarmEditPage> {
     setState(() {
       _customSoundFiles = prefs.getStringList('customSoundFiles') ?? [];
     });
-  }
-
-  Future<void> _selectTime() async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: _selectedTime,
-    );
-
-    if (pickedTime != null && pickedTime != _selectedTime) {
-      setState(() {
-        _selectedTime = pickedTime;
-      });
-    }
   }
 
   Future<void> _saveAlarm() async {
@@ -198,7 +186,25 @@ class AlarmEditPageState extends State<AlarmEditPage> {
                   Icons.access_time,
                   color: textColor,
                 ),
-                onTap: _selectTime,
+                onTap: () {
+                  Navigator.of(context).push(
+                    showPicker(
+                      context: context,
+                      value: Time(
+                          hour: _selectedTime.hour,
+                          minute: _selectedTime.minute),
+                      onChange: (newTime) {
+                        setState(() {
+                          _selectedTime = TimeOfDay(
+                              hour: newTime.hour, minute: newTime.minute);
+                        });
+                      },
+                      sunrise: Time(hour: 6, minute: 0),
+                      sunset: Time(hour: 18, minute: 0),
+                      duskSpanInMinutes: 120,
+                    ),
+                  );
+                },
               ),
             ),
             const SizedBox(height: 16),
