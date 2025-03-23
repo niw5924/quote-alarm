@@ -40,6 +40,7 @@
 
 ✅ **Flutter, Dart**  
 ✅ **Provider**  
+✅ **Stream**  
 ✅ **Firebase Authentication, Firestore Database**  
 ✅ **SharedPreferences, Path Provider**  
 ✅ **http**  
