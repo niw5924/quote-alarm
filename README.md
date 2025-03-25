@@ -39,6 +39,7 @@
 ## 🛠 Skills  
 
 ✅ **Flutter, Dart**  
+✅ **alarm**  
 ✅ **Provider**  
 ✅ **Stream**  
 ✅ **Firebase Authentication, Firestore Database**  
