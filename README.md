@@ -39,7 +39,7 @@
 ## 🛠 Skills  
 
 ✅ **Flutter, Dart**  
-✅ **Android Alarm Manager Plus, Alarm**  
+✅ **Alarm**  
 ✅ **Provider**  
 ✅ **Stream**  
 ✅ **Firebase Authentication, Firestore Database**  
