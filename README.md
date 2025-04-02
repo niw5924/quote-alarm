@@ -39,7 +39,9 @@
 ## 🛠 Skills  
 
 ✅ **Flutter, Dart**  
+✅ **Alarm**  
 ✅ **Provider**  
+✅ **Stream**  
 ✅ **Firebase Authentication, Firestore Database**  
 ✅ **SharedPreferences, Path Provider**  
 ✅ **http**  
@@ -48,5 +50,4 @@
 ✅ **Audioplayers**  
 ✅ **Flutter Heatmap Calendar, fl_chart**  
 ✅ **Intl**  
-✅ **Android Alarm Manager Plus, Alarm**  
 ✅ **Shimmer**  
