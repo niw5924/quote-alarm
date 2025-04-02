@@ -92,52 +92,69 @@ class AlarmHomePageState extends State<AlarmHomePage> {
   // 다음 반복 요일에 대한 알람을 등록하는 함수
   Future<void> _scheduleNextAlarm(AlarmItem alarmItem) async {
     final DateTime now = DateTime.now();
-    int currentWeekday = now.weekday % 7; // 현재 요일 (0: 일요일, 6: 토요일)
+    final TimeOfDay alarmTimeOfDay =
+        TimeOfDay.fromDateTime(alarmItem.settings.dateTime);
 
-    // 기본적으로 다음 주 같은 요일로 설정
-    int daysUntilNextAlarm = 7;
+    DateTime? nextAlarmTime;
+    int currentWeekday = now.weekday % 7; // 0: 일요일, 6: 토요일
 
-    // 현재 요일 이후 반복 요일 찾기
-    for (int i = 1; i < 7; i++) {
+    print("현재 시간: $now");
+    print("반복 요일 설정: ${alarmItem.repeatDays}");
+
+    for (int i = 0; i < 7; i++) {
       int nextDay = (currentWeekday + i) % 7;
       if (alarmItem.repeatDays[nextDay]) {
-        daysUntilNextAlarm = i;
-        break;
+        DateTime candidate = DateTime(
+          now.year,
+          now.month,
+          now.day + i,
+          alarmTimeOfDay.hour,
+          alarmTimeOfDay.minute,
+        );
+
+        print("후보 날짜 확인: $candidate");
+
+        if (candidate.isAfter(now)) {
+          nextAlarmTime = candidate;
+          print("선택된 다음 알람 날짜: $nextAlarmTime");
+          break;
+        }
       }
     }
 
-    // 오늘이 반복 요일이고, 다른 반복 요일이 없으면 +7일
-    if (alarmItem.repeatDays[currentWeekday] && daysUntilNextAlarm == 7) {
-      daysUntilNextAlarm = 7;
+    // 후보가 없었다면 → 다음 주 같은 요일
+    if (nextAlarmTime == null) {
+      nextAlarmTime = DateTime(
+        now.year,
+        now.month,
+        now.day + 7,
+        alarmTimeOfDay.hour,
+        alarmTimeOfDay.minute,
+      );
+      print("이번 주에 울릴 요일 없음 → 다음 주 예약: $nextAlarmTime");
     }
 
-    // 다음 울릴 날짜 업데이트
-    DateTime nextAlarmTime =
-        alarmItem.settings.dateTime.add(Duration(days: daysUntilNextAlarm));
-
-    // 기존 ID를 1 증가시켜 새롭게 설정
+    // 기존 알람 ID + 1
     int newAlarmId = alarmItem.settings.id + 1;
 
     print(
         "알람 업데이트 - 기존 날짜: ${alarmItem.settings.dateTime} → 새로운 날짜: $nextAlarmTime");
     print("알람 업데이트 - 기존 ID: ${alarmItem.settings.id} → 새로운 ID: $newAlarmId");
 
-    // 기존 알람을 유지하면서 ID와 dateTime을 변경
+    // 알람 정보 업데이트
     alarmItem.settings = alarmItem.settings.copyWith(
       id: newAlarmId,
       dateTime: nextAlarmTime,
     );
 
     setState(() {
-      // 기존 알람을 업데이트 (ID 변경 반영)
       _alarms = _alarms.map((a) {
         return (a.settings.id == newAlarmId - 1) ? alarmItem : a;
       }).toList();
     });
 
-    // 업데이트된 알람을 시스템에 등록
     await Alarm.set(alarmSettings: alarmItem.settings);
-    print("알람 등록 - 새로운 ID: $newAlarmId, 울릴 시간: $nextAlarmTime");
+    print("알람 등록 완료 - ID: $newAlarmId, 시간: $nextAlarmTime");
 
     _saveAlarms();
   }
