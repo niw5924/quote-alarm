@@ -22,6 +22,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final authProvider = Provider.of<AuthProvider>(context);
     final uid = authProvider.user?.uid;
 
@@ -88,7 +89,7 @@ class SettingsPage extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark
+                        color: isDarkMode
                             ? Colors.grey[850]
                             : const Color(0xFFEAD3B2),
                         borderRadius: BorderRadius.circular(16),
@@ -341,10 +342,9 @@ class SettingsPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => Theme(
                       data: Theme.of(context).copyWith(
-                        cardColor:
-                            Theme.of(context).brightness == Brightness.dark
-                                ? const Color(0xFF101317) // 다크 모드 배경색
-                                : const Color(0xFFFFFBEA), // 라이트 모드 배경색
+                        cardColor: isDarkMode
+                            ? const Color(0xFF101317)
+                            : const Color(0xFFFFFBEA),
                       ),
                       child: const LicensePage(
                         applicationName: '울림소리',
