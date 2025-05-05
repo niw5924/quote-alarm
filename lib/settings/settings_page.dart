@@ -48,49 +48,58 @@ class SettingsPage extends StatelessWidget {
                     return const Center(child: Text("데이터를 불러올 수 없습니다."));
                   }
 
-                  if (!snapshot.hasData) {
-                    print("유저 알람 해제 기록을 불러오는 중입니다...");
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    print("Firestore 데이터 로딩 중...");
+                    return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (snapshot.connectionState == ConnectionState.active) {
-                    final data = snapshot.data?.data() as Map<String, dynamic>?;
-                    final alarmDismissals = data?['alarmDismissals'] ?? {};
+                  if (!snapshot.hasData || snapshot.data == null) {
+                    print("Firestore에 유저 데이터가 없습니다.");
+                    return const Center(child: Text("데이터가 없습니다."));
+                  }
 
-                    // 월별 알람 해제 횟수 합산
-                    int currentMonthDismissals = 0;
-                    String currentMonthKey =
-                        '${DateTime.now().year}-${DateTime.now().month}';
+                  final data = snapshot.data!.data() as Map<String, dynamic>?;
+                  final alarmDismissals = data?['alarmDismissals'] ?? {};
 
-                    alarmDismissals.forEach((date, alarms) {
-                      DateTime dateTime = DateTime.parse(date);
-                      String monthKey = '${dateTime.year}-${dateTime.month}';
+                  int currentMonthDismissals = 0;
+                  String currentMonthKey =
+                      '${DateTime.now().year}-${DateTime.now().month}';
 
-                      if (monthKey == currentMonthKey) {
-                        currentMonthDismissals += (alarms as Map).length;
-                      }
-                    });
-
-                    print('이번 달 알람 해제 횟수: $currentMonthDismissals');
-
-                    // 해제 횟수에 따른 별 색상 설정
-                    Icon starIcon;
-                    if (currentMonthDismissals >= 10) {
-                      starIcon = const Icon(Icons.star,
-                          color: Colors.amber, size: 24); // 금색 별
-                    } else if (currentMonthDismissals >= 5) {
-                      starIcon = const Icon(Icons.star,
-                          color: Colors.grey, size: 24); // 은색 별
-                    } else {
-                      starIcon = const Icon(Icons.star,
-                          color: Colors.brown, size: 24); // 동색 별
+                  alarmDismissals.forEach((date, alarms) {
+                    DateTime dateTime = DateTime.parse(date);
+                    String monthKey = '${dateTime.year}-${dateTime.month}';
+                    if (monthKey == currentMonthKey) {
+                      currentMonthDismissals += (alarms as Map).length;
                     }
+                  });
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  Icon starIcon;
+                  if (currentMonthDismissals >= 10) {
+                    starIcon =
+                        const Icon(Icons.star, color: Colors.amber, size: 30);
+                  } else if (currentMonthDismissals >= 5) {
+                    starIcon =
+                        const Icon(Icons.star, color: Colors.grey, size: 30);
+                  } else {
+                    starIcon =
+                        const Icon(Icons.star, color: Colors.brown, size: 30);
+                  }
+
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey[850]
+                            : const Color(0xFFEAD3B2),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           starIcon,
-                          const SizedBox(width: 4),
+                          const SizedBox(width: 8),
                           Text(
                             '${authProvider.user?.email} 님',
                             style: const TextStyle(
@@ -105,18 +114,17 @@ class SettingsPage extends StatelessWidget {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return StarGradeExplanationPopup(
-                                      currentMonthDismissals:
-                                          currentMonthDismissals);
+                                    currentMonthDismissals:
+                                        currentMonthDismissals,
+                                  );
                                 },
                               );
                             },
                           ),
                         ],
                       ),
-                    );
-                  }
-
-                  return const Center(child: CircularProgressIndicator());
+                    ),
+                  );
                 },
               ),
             SettingsTile(
