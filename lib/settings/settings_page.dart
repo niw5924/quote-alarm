@@ -33,15 +33,13 @@ class SettingsPage extends StatelessWidget {
           children: [
             if (authProvider.isLoggedIn)
               StreamBuilder<DocumentSnapshot>(
-                stream: uid != null
-                    ? FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(uid)
-                        .snapshots()
-                        .handleError((error) {
-                        print("Firestore 스트림 오류 발생: $error");
-                      })
-                    : null,
+                stream: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(uid)
+                    .snapshots()
+                    .handleError((error) {
+                  print("Firestore 스트림 오류 발생: $error");
+                }),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     print("Firestore 데이터 로드 실패: ${snapshot.error}");
