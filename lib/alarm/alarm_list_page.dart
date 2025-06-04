@@ -1,8 +1,8 @@
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_alarm_app_2/alarm/alarm_delete_popup.dart';
 import 'package:flutter_alarm_app_2/home/home_page.dart';
+import 'package:flutter_alarm_app_2/widgets/confirm_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
@@ -160,11 +160,17 @@ class AlarmListPage extends StatelessWidget {
                 ),
                 direction: DismissDirection.endToStart,
                 confirmDismiss: (direction) async {
-                  final shouldDelete = await showDialog<bool>(
+                  final confirmed = await showDialog<bool>(
                     context: context,
-                    builder: (BuildContext context) => const AlarmDeletePopup(),
+                    builder: (context) => const ConfirmDialog(
+                      icon: Icons.delete_forever,
+                      title: '알람 삭제',
+                      message: '이 알람을 삭제하시겠습니까?',
+                      cancelText: '취소',
+                      confirmText: '삭제',
+                    ),
                   );
-                  return shouldDelete ?? false; // null이면 삭제 취소
+                  return confirmed ?? false;
                 },
                 onDismissed: (direction) {
                   onDeleteAlarm(index, alarmItem);
