@@ -208,44 +208,77 @@ class AlarmEditPageState extends State<AlarmEditPage> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text('반복 요일', style: TextStyle(fontSize: 18)),
-            const SizedBox(height: 8),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color:
                     _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(7, (index) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _repeatDays[index] = !_repeatDays[index];
-                      });
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width / 10,
-                      height: MediaQuery.of(context).size.width / 10,
-                      decoration: BoxDecoration(
-                        color: _repeatDays[index]
-                            ? const Color(0xFF6BF3B1)
-                            : Colors.transparent,
-                        shape: BoxShape.circle,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        '반복 요일 설정',
+                        style: TextStyle(fontSize: 18),
                       ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        days[index],
-                        style: TextStyle(
-                          color: _repeatDays[index] ? Colors.black : textColor,
-                          fontWeight: FontWeight.w600,
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _repeatDays = List.filled(7, false);
+                          });
+                        },
+                        child: Icon(Icons.refresh, color: textColor),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildQuickRepeatButton('매일', List.filled(7, true)),
+                      _buildQuickRepeatButton(
+                          '평일', [false, true, true, true, true, true, false]),
+                      _buildQuickRepeatButton('주말',
+                          [true, false, false, false, false, false, true]),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(7, (index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _repeatDays[index] = !_repeatDays[index];
+                          });
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 10,
+                          height: MediaQuery.of(context).size.width / 10,
+                          decoration: BoxDecoration(
+                            color: _repeatDays[index]
+                                ? const Color(0xFF6BF3B1)
+                                : Colors.transparent,
+                            shape: BoxShape.circle,
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            days[index],
+                            style: TextStyle(
+                              color:
+                                  _repeatDays[index] ? Colors.black : textColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                }),
+                      );
+                    }),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 16),
@@ -503,5 +536,44 @@ class AlarmEditPageState extends State<AlarmEditPage> {
       case AlarmCancelMode.voiceRecognition:
         return const Alignment(1.0, 0.0); // 마지막 위치
     }
+  }
+
+  Widget _buildQuickRepeatButton(String label, List<bool> days) {
+    final isSame = _listsAreEqual(_repeatDays, days);
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _repeatDays = isSame ? List.filled(7, false) : List.from(days);
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: isSame
+              ? const Color(0xFF6BF3B1)
+              : (_isDarkTheme
+                  ? const Color(0xFF151922)
+                  : const Color(0xFFF8EDD8)),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSame
+                ? Colors.black
+                : (_isDarkTheme ? Colors.white : Colors.black),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
+  bool _listsAreEqual(List<bool> a, List<bool> b) {
+    if (a.length != b.length) return false;
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
   }
 }
