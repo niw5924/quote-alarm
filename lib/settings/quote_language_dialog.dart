@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class QuoteLanguagePopup extends StatefulWidget {
-  const QuoteLanguagePopup({super.key});
+class QuoteLanguageDialog extends StatefulWidget {
+  const QuoteLanguageDialog({super.key});
 
   @override
-  QuoteLanguagePopupState createState() => QuoteLanguagePopupState();
+  QuoteLanguageDialogState createState() => QuoteLanguageDialogState();
 }
 
-class QuoteLanguagePopupState extends State<QuoteLanguagePopup> {
+class QuoteLanguageDialogState extends State<QuoteLanguageDialog> {
   String _selectedLanguage = 'ko';
 
   @override

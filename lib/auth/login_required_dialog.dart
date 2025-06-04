@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/auth/login_page.dart';
 
-class LoginRequiredPopup extends StatelessWidget {
-  const LoginRequiredPopup({super.key});
+class LoginRequiredDialog extends StatelessWidget {
+  const LoginRequiredDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

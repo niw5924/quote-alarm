@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MathDifficultyPopup extends StatefulWidget {
-  const MathDifficultyPopup({super.key});
+class MathDifficultyDialog extends StatefulWidget {
+  const MathDifficultyDialog({super.key});
 
   @override
-  MathDifficultyPopupState createState() => MathDifficultyPopupState();
+  MathDifficultyDialogState createState() => MathDifficultyDialogState();
 }
 
-class MathDifficultyPopupState extends State<MathDifficultyPopup> {
+class MathDifficultyDialogState extends State<MathDifficultyDialog> {
   String _selectedDifficulty = 'easy';
 
   @override

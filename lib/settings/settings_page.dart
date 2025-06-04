@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_app_2/auth/login_required_popup.dart';
-import 'package:flutter_alarm_app_2/settings/quote_language_popup.dart';
+import 'package:flutter_alarm_app_2/auth/login_required_dialog.dart';
+import 'package:flutter_alarm_app_2/settings/quote_language_dialog.dart';
 import 'package:flutter_alarm_app_2/settings/settings_tile.dart';
 import 'package:flutter_alarm_app_2/settings/sound_addition_page.dart';
-import 'package:flutter_alarm_app_2/settings/star_grade_explanation_popup.dart';
+import 'package:flutter_alarm_app_2/settings/star_grade_explanation_dialog.dart';
 import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
 import 'package:flutter_alarm_app_2/widgets/confirm_dialog.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../providers/auth_provider.dart';
 import '../auth/login_page.dart';
-import 'math_difficulty_popup.dart';
+import 'math_difficulty_dialog.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -111,7 +111,7 @@ class SettingsPage extends StatelessWidget {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return StarGradeExplanationPopup(
+                                  return StarGradeExplanationDialog(
                                     currentMonthDismissals:
                                         currentMonthDismissals,
                                   );
@@ -171,7 +171,7 @@ class SettingsPage extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const MathDifficultyPopup();
+                    return const MathDifficultyDialog();
                   },
                 );
               },
@@ -184,7 +184,7 @@ class SettingsPage extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const QuoteLanguagePopup();
+                    return const QuoteLanguageDialog();
                   },
                 );
               },
@@ -198,7 +198,7 @@ class SettingsPage extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) =>
-                        const LoginRequiredPopup(),
+                        const LoginRequiredDialog(),
                   );
                 } else {
                   Navigator.push(

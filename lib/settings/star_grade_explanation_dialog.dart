@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-class StarGradeExplanationPopup extends StatelessWidget {
+class StarGradeExplanationDialog extends StatelessWidget {
   final int currentMonthDismissals;
 
-  const StarGradeExplanationPopup(
-      {super.key, required this.currentMonthDismissals});
+  const StarGradeExplanationDialog({
+    super.key,
+    required this.currentMonthDismissals,
+  });
 
   @override
   Widget build(BuildContext context) {
