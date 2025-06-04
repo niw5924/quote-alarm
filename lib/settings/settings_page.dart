@@ -1,13 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_app_2/auth/account_deletion_popup.dart';
-import 'package:flutter_alarm_app_2/auth/logout_popup.dart';
 import 'package:flutter_alarm_app_2/auth/login_required_popup.dart';
 import 'package:flutter_alarm_app_2/settings/quote_language_popup.dart';
 import 'package:flutter_alarm_app_2/settings/settings_tile.dart';
 import 'package:flutter_alarm_app_2/settings/sound_addition_page.dart';
 import 'package:flutter_alarm_app_2/settings/star_grade_explanation_popup.dart';
 import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
+import 'package:flutter_alarm_app_2/widgets/confirm_dialog.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gradient_borders/gradient_borders.dart';
@@ -137,16 +136,22 @@ class SettingsPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 } else {
-                  bool? shouldLogout = await showDialog<bool>(
+                  final confirmed = await showDialog<bool>(
                     context: context,
-                    builder: (BuildContext context) => const LogoutPopup(),
+                    builder: (BuildContext context) => const ConfirmDialog(
+                      icon: Icons.logout,
+                      title: '로그아웃',
+                      message: '정말로 로그아웃 하시겠습니까?',
+                      cancelText: '취소',
+                      confirmText: '로그아웃',
+                    ),
                   );
 
-                  if (shouldLogout == true) {
+                  if (confirmed == true) {
                     if (!context.mounted) return;
-                    OverlayLoader.show(context); // 로딩 오버레이 표시
+                    OverlayLoader.show(context);
                     await authProvider.signOut();
-                    OverlayLoader.hide(); // 로딩 오버레이 닫기
+                    OverlayLoader.hide();
                     Fluttertoast.showToast(
                       msg: '로그아웃 되었습니다.',
                       toastLength: Toast.LENGTH_SHORT,
@@ -370,18 +375,23 @@ class SettingsPage extends StatelessWidget {
                 iconBackgroundColor: Colors.redAccent,
                 title: '계정 삭제',
                 onTap: () async {
-                  bool? shouldDelete = await showDialog<bool>(
+                  final confirmed = await showDialog<bool>(
                     context: context,
-                    builder: (BuildContext context) =>
-                        const AccountDeletionPopup(),
+                    builder: (BuildContext context) => const ConfirmDialog(
+                      icon: Icons.warning_amber_rounded,
+                      title: '계정 삭제',
+                      message: '계정을 삭제하면 복구할 수 없습니다.\n정말 삭제하시겠습니까?',
+                      cancelText: '취소',
+                      confirmText: '삭제',
+                    ),
                   );
 
-                  if (shouldDelete == true) {
+                  if (confirmed == true) {
                     if (!context.mounted) return;
-                    OverlayLoader.show(context); // 로딩 오버레이 표시
+                    OverlayLoader.show(context);
                     try {
                       await authProvider.deleteAccount();
-                      OverlayLoader.hide(); // 로딩 오버레이 닫기
+                      OverlayLoader.hide();
                       Fluttertoast.showToast(
                         msg: "계정이 삭제되었습니다.",
                         toastLength: Toast.LENGTH_SHORT,
@@ -390,7 +400,7 @@ class SettingsPage extends StatelessWidget {
                         textColor: Colors.black,
                       );
                     } catch (e) {
-                      OverlayLoader.hide(); // 로딩 오버레이 닫기
+                      OverlayLoader.hide();
                       Fluttertoast.showToast(
                         msg: "계정 삭제 실패: $e",
                         toastLength: Toast.LENGTH_SHORT,
