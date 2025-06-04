@@ -85,9 +85,9 @@ class QuoteScreenState extends State<QuoteScreen> {
     try {
       await _saveAlarmDismissalRecord(); // 해제 기록 저장
     } catch (e) {
-      print("Firebase 저장 실패: $e");
+      debugPrint("Firebase 저장 실패: $e");
     }
-    print('알람이 취소되었습니다.');
+    debugPrint('알람이 취소되었습니다.');
 
     if (!mounted) return;
 

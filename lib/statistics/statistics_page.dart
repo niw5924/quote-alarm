@@ -82,11 +82,11 @@ class StatisticsPage extends StatelessWidget {
                         .doc(uid)
                         .snapshots()
                         .handleError((error) {
-                      print("Firestore 스트림 오류 발생: $error");
+                      debugPrint("Firestore 스트림 오류 발생: $error");
                     }),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
-                        print("Firestore 데이터 로드 실패: ${snapshot.error}");
+                        debugPrint("Firestore 데이터 로드 실패: ${snapshot.error}");
                         return const Center(child: Text("데이터를 불러올 수 없습니다."));
                       }
 

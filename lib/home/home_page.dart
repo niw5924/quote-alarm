@@ -60,7 +60,7 @@ class AlarmHomePageState extends State<AlarmHomePage> {
 
     // 알람이 울릴 때 처리
     Alarm.ringStream.stream.listen((alarmSettings) async {
-      print("RingRingRingRingRingRing");
+      debugPrint("RingRingRingRingRingRing");
 
       final matchingAlarm =
           _alarms.firstWhere((alarm) => alarm.settings.id == alarmSettings.id);
@@ -98,8 +98,8 @@ class AlarmHomePageState extends State<AlarmHomePage> {
     DateTime? nextAlarmTime;
     int currentWeekday = now.weekday % 7; // 0: 일요일, 6: 토요일
 
-    print("현재 시간: $now");
-    print("반복 요일 설정: ${alarmItem.repeatDays}");
+    debugPrint("현재 시간: $now");
+    debugPrint("반복 요일 설정: ${alarmItem.repeatDays}");
 
     for (int i = 0; i < 7; i++) {
       int nextDay = (currentWeekday + i) % 7;
@@ -112,11 +112,11 @@ class AlarmHomePageState extends State<AlarmHomePage> {
           alarmTimeOfDay.minute,
         );
 
-        print("후보 날짜 확인: $candidate");
+        debugPrint("후보 날짜 확인: $candidate");
 
         if (candidate.isAfter(now)) {
           nextAlarmTime = candidate;
-          print("선택된 다음 알람 날짜: $nextAlarmTime");
+          debugPrint("선택된 다음 알람 날짜: $nextAlarmTime");
           break;
         }
       }
@@ -131,15 +131,15 @@ class AlarmHomePageState extends State<AlarmHomePage> {
         alarmTimeOfDay.hour,
         alarmTimeOfDay.minute,
       );
-      print("이번 주에 울릴 요일 없음 → 다음 주 예약: $nextAlarmTime");
+      debugPrint("이번 주에 울릴 요일 없음 → 다음 주 예약: $nextAlarmTime");
     }
 
     // 기존 알람 ID + 1
     int newAlarmId = alarmItem.settings.id + 1;
 
-    print(
+    debugPrint(
         "알람 업데이트 - 기존 날짜: ${alarmItem.settings.dateTime} → 새로운 날짜: $nextAlarmTime");
-    print("알람 업데이트 - 기존 ID: ${alarmItem.settings.id} → 새로운 ID: $newAlarmId");
+    debugPrint("알람 업데이트 - 기존 ID: ${alarmItem.settings.id} → 새로운 ID: $newAlarmId");
 
     // 알람 정보 업데이트
     alarmItem.settings = alarmItem.settings.copyWith(
@@ -154,7 +154,7 @@ class AlarmHomePageState extends State<AlarmHomePage> {
     });
 
     await Alarm.set(alarmSettings: alarmItem.settings);
-    print("알람 등록 완료 - ID: $newAlarmId, 시간: $nextAlarmTime");
+    debugPrint("알람 등록 완료 - ID: $newAlarmId, 시간: $nextAlarmTime");
 
     _saveAlarms();
   }
@@ -219,13 +219,13 @@ class AlarmHomePageState extends State<AlarmHomePage> {
     }).toList();
 
     await prefs.setStringList('alarms', alarmList);
-    print(alarmList);
+    debugPrint(alarmList.toString());
   }
 
   Future<void> _loadAlarms() async {
     final prefs = await SharedPreferences.getInstance();
     final List<String>? alarmList = prefs.getStringList('alarms');
-    print(alarmList);
+    debugPrint(alarmList.toString());
 
     if (alarmList != null) {
       setState(() {
