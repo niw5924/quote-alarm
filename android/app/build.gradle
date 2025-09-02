@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.niw.flutter_alarm_app_2"
     compileSdk = 35
-    ndkVersion = flutter.ndkVersion
+    ndkVersion "28.0.12916984"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
