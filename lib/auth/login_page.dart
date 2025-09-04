@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
+import '../utils/toast_util.dart';
 import 'signup_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -33,26 +33,12 @@ class _LoginPageState extends State<LoginPage> {
           passwordController.text.trim(),
         );
 
-        if (context.mounted) {
-          OverlayLoader.hide();
-          Fluttertoast.showToast(
-            msg: '${emailController.text.trim()}님, 환영합니다!',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: const Color(0xFF6BF3B1),
-            textColor: Colors.black,
-          );
-          Navigator.pop(context);
-        }
+        OverlayLoader.hide();
+        ToastUtil.showSuccess('${emailController.text.trim()}님, 환영합니다!');
+        Navigator.pop(context);
       } catch (e) {
-        if (context.mounted) OverlayLoader.hide();
-        Fluttertoast.showToast(
-          msg: '로그인 실패: $e',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
+        OverlayLoader.hide();
+        ToastUtil.showFailure('로그인 실패: $e');
       }
     }
 
