@@ -2,8 +2,9 @@ import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter_alarm_app_2/home/home_page.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/toast_util.dart';
 
 class AlarmEditPage extends StatefulWidget {
   final bool isDarkTheme;
@@ -68,13 +69,7 @@ class AlarmEditPageState extends State<AlarmEditPage> {
 
   Future<void> _saveAlarm() async {
     if (!_repeatDays.contains(true)) {
-      Fluttertoast.showToast(
-        msg: '요일을 최소 하루 이상 선택해야 합니다.',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black.withValues(alpha: 0.8),
-        textColor: Colors.white,
-      );
+      ToastUtil.showInfo('요일을 최소 하루 이상 선택해야 합니다.');
       return;
     }
 
