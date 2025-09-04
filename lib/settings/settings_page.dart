@@ -334,19 +334,7 @@ class SettingsPage extends StatelessWidget {
                             ? const Color(0xFF101317)
                             : const Color(0xFFFFFBEA),
                       ),
-                      child: const LicensePage(
-                        applicationName: '울림소리',
-                        applicationIcon: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Image(
-                            image:
-                                AssetImage('assets/image/quote_alarm_icon.png'),
-                            width: 100,
-                            height: 100,
-                          ),
-                        ),
-                        applicationLegalese: '2025 남인우 개인 프로젝트',
-                      ),
+                      child: const LicensePage(applicationName: '울림소리'),
                     ),
                   ),
                 );
