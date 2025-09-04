@@ -7,9 +7,9 @@ import 'package:flutter_alarm_app_2/settings/sound_addition_page.dart';
 import 'package:flutter_alarm_app_2/settings/star_grade_explanation_dialog.dart';
 import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
 import 'package:flutter_alarm_app_2/widgets/confirm_dialog.dart';
+import 'package:flutter_alarm_app_2/widgets/gradient_border_button.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gradient_borders/gradient_borders.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../providers/auth_provider.dart';
@@ -302,38 +302,16 @@ class SettingsPage extends StatelessWidget {
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
                           child: Center(
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                border: const GradientBoxBorder(
-                                  gradient: LinearGradient(
-                                      colors: [Colors.red, Colors.blue]),
-                                  width: 3,
-                                ),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12.0),
-                                  backgroundColor: const Color(0xFF6BF3B1),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(7.0),
+                            child: GradientBorderButton(
+                              text: '로그인하고 잔디 채우기',
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginPage(),
                                   ),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginPage()),
-                                  );
-                                },
-                                child: const Text(
-                                  '로그인하고 잔디 채우기',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ),
+                                );
+                              },
                             ),
                           ),
                         ),

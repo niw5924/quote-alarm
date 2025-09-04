@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gradient_borders/gradient_borders.dart';
+import 'package:flutter_alarm_app_2/widgets/gradient_border_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
@@ -41,39 +41,17 @@ class StatisticsPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 16.0),
-                      Container(
-                        width: double.infinity, // 버튼이 부모 너비를 따라감
-                        decoration: BoxDecoration(
-                          border: const GradientBoxBorder(
-                            gradient: LinearGradient(
-                                colors: [Colors.blue, Colors.red]),
-                            width: 3,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 12.0),
-                            // 높이는 패딩으로 설정
-                            backgroundColor: const Color(0xFF6BF3B1),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7.0),
+                      GradientBorderButton(
+                        text: '로그인하고 통계 확인하기',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
                             ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginPage(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            '로그인하고 통계 확인하기',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
+                          );
+                        },
+                      )
                     ],
                   )
                 : StreamBuilder<DocumentSnapshot>(
