@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_app_2/widgets/primary_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MathDifficultyDialog extends StatefulWidget {
@@ -79,25 +80,11 @@ class MathDifficultyDialogState extends State<MathDifficultyDialog> {
               color: Colors.redAccent,
             ),
             const SizedBox(height: 20),
-            TextButton(
+            PrimaryButton(
+              text: '확인',
               onPressed: () {
                 Navigator.pop(context);
               },
-              style: TextButton.styleFrom(
-                backgroundColor: const Color(0xFF6BF3B1),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                '확인',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
             ),
           ],
         ),
