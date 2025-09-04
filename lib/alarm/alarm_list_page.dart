@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_alarm_app_2/home/home_page.dart';
 import 'package:flutter_alarm_app_2/widgets/confirm_dialog.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../utils/toast_util.dart';
 
 class AlarmListPage extends StatelessWidget {
   final bool isDarkTheme;
@@ -287,16 +288,11 @@ class AlarmListPage extends StatelessWidget {
                               final hours = totalMinutes ~/ 60;
                               final minutes = totalMinutes % 60;
 
-                              Fluttertoast.showToast(
-                                msg: hours > 0
-                                    ? '알람이 약 $hours시간 $minutes분 후에 울립니다.'
-                                    : '알람이 약 $minutes분 후에 울립니다.',
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                backgroundColor:
-                                    Colors.black.withValues(alpha: 0.8),
-                                textColor: Colors.white,
-                              );
+                              final message = hours > 0
+                                  ? '알람이 약 $hours시간 $minutes분 후에 울립니다.'
+                                  : '알람이 약 $minutes분 후에 울립니다.';
+
+                              ToastUtil.showInfo(message);
                             }
                           },
                         ),
