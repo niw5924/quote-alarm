@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as path;
 
 import '../utils/toast_util.dart';
+import '../widgets/themed_icon_button.dart';
 
 class SoundAdditionPage extends StatefulWidget {
   const SoundAdditionPage({super.key});
@@ -264,26 +265,10 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
                         );
                       },
                     ),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: ElevatedButton.icon(
-                        onPressed: _addCustomSound,
-                        icon: Icon(Icons.add, color: textColor),
-                        label: Text(
-                          '추가하기',
-                          style: TextStyle(color: textColor),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: isDarkMode
-                              ? Colors.grey[850]
-                              : const Color(0xFFEAD3B2),
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
+                    ThemedIconButton(
+                      icon: Icons.add,
+                      label: '추가하기',
+                      onPressed: _addCustomSound,
                     ),
                   ],
                 ),
