@@ -2,10 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as path;
+
+import '../utils/toast_util.dart';
 
 class SoundAdditionPage extends StatefulWidget {
   const SoundAdditionPage({super.key});
@@ -101,21 +102,11 @@ class SoundAdditionPageState extends State<SoundAdditionPage> {
 
         await _saveCustomSounds(); // 파일 경로를 저장
 
-        Fluttertoast.showToast(
-          msg: "'${path.basenameWithoutExtension(fileName)}'이(가) 추가되었습니다!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: const Color(0xFF6BF3B1),
-          textColor: Colors.black,
+        ToastUtil.showSuccess(
+          "'${path.basenameWithoutExtension(fileName)}'이(가) 추가되었습니다!",
         );
       } else {
-        Fluttertoast.showToast(
-          msg: "이미 추가된 파일입니다.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
+        ToastUtil.showFailure("이미 추가된 파일입니다.");
       }
     }
   }
