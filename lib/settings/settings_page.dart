@@ -9,11 +9,11 @@ import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
 import 'package:flutter_alarm_app_2/widgets/confirm_dialog.dart';
 import 'package:flutter_alarm_app_2/widgets/gradient_border_button.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../providers/auth_provider.dart';
 import '../auth/login_page.dart';
+import '../utils/toast_util.dart';
 import 'math_difficulty_dialog.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -148,17 +148,10 @@ class SettingsPage extends StatelessWidget {
                   );
 
                   if (confirmed == true) {
-                    if (!context.mounted) return;
                     OverlayLoader.show(context);
                     await authProvider.signOut();
                     OverlayLoader.hide();
-                    Fluttertoast.showToast(
-                      msg: '로그아웃 되었습니다.',
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      backgroundColor: const Color(0xFF6BF3B1),
-                      textColor: Colors.black,
-                    );
+                    ToastUtil.showSuccess('로그아웃 되었습니다.');
                   }
                 }
               },
@@ -358,27 +351,14 @@ class SettingsPage extends StatelessWidget {
                   );
 
                   if (confirmed == true) {
-                    if (!context.mounted) return;
                     OverlayLoader.show(context);
                     try {
                       await authProvider.deleteAccount();
                       OverlayLoader.hide();
-                      Fluttertoast.showToast(
-                        msg: "계정이 삭제되었습니다.",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        backgroundColor: const Color(0xFF6BF3B1),
-                        textColor: Colors.black,
-                      );
+                      ToastUtil.showSuccess('계정이 삭제되었습니다.');
                     } catch (e) {
                       OverlayLoader.hide();
-                      Fluttertoast.showToast(
-                        msg: "계정 삭제 실패: $e",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                      );
+                      ToastUtil.showFailure('계정 삭제 실패: $e');
                     }
                   }
                 },
