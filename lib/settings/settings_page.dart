@@ -254,7 +254,6 @@ class SettingsPage extends StatelessWidget {
                       }
 
                       return Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           HeatMapCalendar(
                             datasets: datasets,
@@ -275,16 +274,22 @@ class SettingsPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Row(
-                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               _buildColorIndicator(
-                                  "기록 없음", const Color(0xFFB0BEC5)),
+                                label: "기록 없음",
+                                color: const Color(0xFFB0BEC5),
+                              ),
                               const SizedBox(width: 12),
                               _buildColorIndicator(
-                                  "30초 이상", const Color(0xFF78909C)),
+                                label: "30초 이상",
+                                color: const Color(0xFF78909C),
+                              ),
                               const SizedBox(width: 12),
                               _buildColorIndicator(
-                                  "30초 미만", const Color(0xFF455A64)),
+                                label: "30초 미만",
+                                color: const Color(0xFF455A64),
+                              ),
                             ],
                           ),
                         ],
@@ -419,7 +424,10 @@ class SettingsPage extends StatelessWidget {
   }
 
   // 색상 인디케이터 위젯
-  Widget _buildColorIndicator(String label, Color color) {
+  Widget _buildColorIndicator({
+    required String label,
+    required Color color,
+  }) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
