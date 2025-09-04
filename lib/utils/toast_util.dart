@@ -23,4 +23,15 @@ class ToastUtil {
       textColor: Colors.white,
     );
   }
+
+  /// 안내 토스트
+  static void showInfo(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black.withValues(alpha: 0.8),
+      textColor: Colors.white,
+    );
+  }
 }

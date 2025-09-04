@@ -7,9 +7,10 @@ import 'package:flutter_alarm_app_2/news/news_page.dart';
 import 'package:flutter_alarm_app_2/services/quote_service.dart';
 import 'package:flutter_alarm_app_2/settings/settings_page.dart';
 import 'package:flutter_alarm_app_2/statistics/statistics_page.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+
+import '../utils/toast_util.dart';
 
 enum AlarmCancelMode {
   slider,
@@ -139,7 +140,8 @@ class AlarmHomePageState extends State<AlarmHomePage> {
 
     debugPrint(
         "알람 업데이트 - 기존 날짜: ${alarmItem.settings.dateTime} → 새로운 날짜: $nextAlarmTime");
-    debugPrint("알람 업데이트 - 기존 ID: ${alarmItem.settings.id} → 새로운 ID: $newAlarmId");
+    debugPrint(
+        "알람 업데이트 - 기존 ID: ${alarmItem.settings.id} → 새로운 ID: $newAlarmId");
 
     // 알람 정보 업데이트
     alarmItem.settings = alarmItem.settings.copyWith(
@@ -304,15 +306,11 @@ class AlarmHomePageState extends State<AlarmHomePage> {
     final hours = totalMinutes ~/ 60;
     final minutes = totalMinutes % 60;
 
-    Fluttertoast.showToast(
-      msg: hours > 0
-          ? '알람이 약 $hours시간 $minutes분 후에 울립니다.'
-          : '알람이 약 $minutes분 후에 울립니다.',
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black.withValues(alpha: 0.8),
-      textColor: Colors.white,
-    );
+    final message = hours > 0
+        ? '알람이 약 $hours시간 $minutes분 후에 울립니다.'
+        : '알람이 약 $minutes분 후에 울립니다.';
+
+    ToastUtil.showInfo(message);
   }
 
   @override
