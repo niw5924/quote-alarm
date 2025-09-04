@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
+import '../utils/toast_util.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -29,17 +29,11 @@ class SignupPageState extends State<SignupPage> {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
       if (passwordController.text != confirmPasswordController.text) {
-        Fluttertoast.showToast(
-          msg: '비밀번호가 일치하지 않습니다.',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
+        ToastUtil.showFailure('비밀번호가 일치하지 않습니다.');
         return;
       }
 
-      OverlayLoader.show(context); // 로딩 오버레이 표시
+      OverlayLoader.show(context);
 
       try {
         await authProvider.signUp(
@@ -47,27 +41,13 @@ class SignupPageState extends State<SignupPage> {
           passwordController.text.trim(),
         );
 
-        if (context.mounted) {
-          OverlayLoader.hide(); // 로딩 오버레이 닫기
-          Fluttertoast.showToast(
-            msg: '회원가입 성공! 자동 로그인 되었습니다.',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: const Color(0xFF6BF3B1),
-            textColor: Colors.black,
-          );
-          Navigator.pop(context); // 회원가입 페이지 닫기
-          Navigator.pop(context); // 로그인 페이지 닫기
-        }
+        OverlayLoader.hide();
+        ToastUtil.showSuccess('회원가입 성공! 자동 로그인 되었습니다.');
+        Navigator.pop(context);
+        Navigator.pop(context);
       } catch (e) {
-        if (context.mounted) OverlayLoader.hide(); // 로딩 오버레이 닫기
-        Fluttertoast.showToast(
-          msg: '회원가입 실패: $e',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
+        OverlayLoader.hide();
+        ToastUtil.showFailure('회원가입 실패: $e');
       }
     }
 
