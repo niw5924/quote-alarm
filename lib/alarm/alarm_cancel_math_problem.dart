@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_app_2/widgets/primary_button.dart';
 
 class AlarmCancelMathProblem extends StatelessWidget {
   final int firstNumber;
@@ -51,22 +52,9 @@ class AlarmCancelMathProblem extends StatelessWidget {
           keyboardType: TextInputType.number,
         ),
         const SizedBox(height: 20),
-        ElevatedButton(
+        PrimaryButton(
+          text: '확인',
           onPressed: onValidateAnswer,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF6BF3B1),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          child: const Text(
-            '확인',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black,
-            ),
-          ),
         ),
       ],
     );
