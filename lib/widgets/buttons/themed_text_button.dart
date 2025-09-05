@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class ThemedIconButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
+class ThemedTextButton extends StatelessWidget {
+  final double? width;
+  final String text;
   final VoidCallback onPressed;
 
-  const ThemedIconButton({
+  const ThemedTextButton({
     super.key,
-    required this.icon,
-    required this.label,
+    this.width,
+    required this.text,
     required this.onPressed,
   });
 
@@ -18,15 +18,10 @@ class ThemedIconButton extends StatelessWidget {
     final textColor = isDarkMode ? Colors.white : Colors.black;
 
     return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton.icon(
+      width: width,
+      child: TextButton(
         onPressed: onPressed,
-        icon: Icon(icon, color: textColor),
-        label: Text(
-          label,
-          style: TextStyle(color: textColor),
-        ),
-        style: ElevatedButton.styleFrom(
+        style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -34,8 +29,10 @@ class ThemedIconButton extends StatelessWidget {
             vertical: 12.0,
             horizontal: 24.0,
           ),
-          backgroundColor:
-              isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(color: textColor),
         ),
       ),
     );
