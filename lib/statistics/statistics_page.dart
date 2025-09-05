@@ -42,6 +42,7 @@ class StatisticsPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 16.0),
                       GradientBorderButton(
+                        width: double.infinity,
                         text: '로그인하고 통계 확인하기',
                         onPressed: () {
                           Navigator.push(

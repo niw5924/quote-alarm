@@ -296,6 +296,7 @@ class SettingsPage extends StatelessWidget {
                           filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
                           child: Center(
                             child: GradientBorderButton(
+                              width: double.infinity,
                               text: '로그인하고 잔디 채우기',
                               onPressed: () {
                                 Navigator.push(

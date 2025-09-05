@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 
 class GradientBorderButton extends StatelessWidget {
+  final double? width;
   final String text;
   final VoidCallback onPressed;
 
   const GradientBorderButton({
     super.key,
+    this.width,
     required this.text,
     required this.onPressed,
   });
@@ -14,7 +16,7 @@ class GradientBorderButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      width: width,
       decoration: BoxDecoration(
         border: const GradientBoxBorder(
           gradient: LinearGradient(colors: [Colors.red, Colors.blue]),
