@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_app_2/widgets/buttons/grey_text_button.dart';
+import 'package:flutter_alarm_app_2/widgets/buttons/primary_button.dart';
 
 class ConfirmDialog extends StatelessWidget {
   final IconData icon;
@@ -49,27 +51,13 @@ class ConfirmDialog extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                TextButton(
+                GreyTextButton(
+                  text: cancelText,
                   onPressed: () => Navigator.pop(context, false),
-                  child: Text(
-                    cancelText,
-                    style: const TextStyle(color: Colors.black),
-                  ),
                 ),
-                TextButton(
+                PrimaryButton(
+                  text: confirmText,
                   onPressed: () => Navigator.pop(context, true),
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xFF6BF3B1),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: Text(
-                    confirmText,
-                    style: const TextStyle(color: Colors.black),
-                  ),
                 ),
               ],
             ),

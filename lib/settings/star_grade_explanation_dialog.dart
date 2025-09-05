@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_app_2/widgets/buttons/primary_button.dart';
 
 class StarGradeExplanationDialog extends StatelessWidget {
   final int currentMonthDismissals;
@@ -74,23 +75,10 @@ class StarGradeExplanationDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: const Color(0xFF6BF3B1),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                '확인',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
+            PrimaryButton(
+              text: '확인',
+              onPressed: () => Navigator.pop(context),
+            )
           ],
         ),
       ),
