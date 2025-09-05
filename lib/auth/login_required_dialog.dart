@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/auth/login_page.dart';
+import 'package:flutter_alarm_app_2/widgets/buttons/grey_text_button.dart';
 import 'package:flutter_alarm_app_2/widgets/buttons/primary_button.dart';
 
 class LoginRequiredDialog extends StatelessWidget {
@@ -45,12 +46,9 @@ class LoginRequiredDialog extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                TextButton(
+                GreyTextButton(
+                  text: '취소',
                   onPressed: () => Navigator.pop(context),
-                  child: const Text(
-                    '취소',
-                    style: TextStyle(color: Colors.black),
-                  ),
                 ),
                 PrimaryButton(
                   text: '로그인',

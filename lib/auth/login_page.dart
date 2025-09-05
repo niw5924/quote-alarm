@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
+import 'package:flutter_alarm_app_2/widgets/buttons/grey_text_button.dart';
 import 'package:flutter_alarm_app_2/widgets/buttons/primary_button.dart';
-import 'package:flutter_alarm_app_2/widgets/buttons/themed_text_button.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../utils/toast_util.dart';
@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: signIn,
               ),
               const SizedBox(height: 10),
-              ThemedTextButton(
+              GreyTextButton(
                 text: 'SIGN UP',
                 onPressed: () {
                   Navigator.push(

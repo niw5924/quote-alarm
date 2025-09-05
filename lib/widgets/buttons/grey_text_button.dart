@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ThemedTextButton extends StatelessWidget {
+class GreyTextButton extends StatelessWidget {
   final double? width;
   final String text;
   final VoidCallback onPressed;
 
-  const ThemedTextButton({
+  const GreyTextButton({
     super.key,
     this.width,
     required this.text,
@@ -14,9 +14,6 @@ class ThemedTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDarkMode ? Colors.white : Colors.black;
-
     return SizedBox(
       width: width,
       child: TextButton(
@@ -32,7 +29,7 @@ class ThemedTextButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: TextStyle(color: textColor),
+          style: const TextStyle(color: Colors.grey),
         ),
       ),
     );
