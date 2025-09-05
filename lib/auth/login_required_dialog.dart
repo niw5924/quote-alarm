@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/auth/login_page.dart';
+import 'package:flutter_alarm_app_2/widgets/primary_button.dart';
 
 class LoginRequiredDialog extends StatelessWidget {
   const LoginRequiredDialog({super.key});
@@ -51,7 +52,8 @@ class LoginRequiredDialog extends StatelessWidget {
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
-                TextButton(
+                PrimaryButton(
+                  text: '로그인',
                   onPressed: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -61,19 +63,7 @@ class LoginRequiredDialog extends StatelessWidget {
                       ),
                     );
                   },
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xFF6BF3B1),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    '로그인',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
+                )
               ],
             ),
           ],
