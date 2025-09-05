@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
+import 'package:flutter_alarm_app_2/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../utils/toast_util.dart';
@@ -60,123 +61,105 @@ class SignupPageState extends State<SignupPage> {
           title: const Text('회원가입'),
         ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Image.asset('assets/image/gear.gif'),
-                const Text(
-                  'SIGN UP',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                  textAlign: TextAlign.center,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Image.asset('assets/image/gear.gif'),
+              const Text(
+                'SIGN UP',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
                 ),
-                const SizedBox(height: 30),
-                TextField(
-                  controller: emailController,
-                  style: TextStyle(color: textColor),
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email, color: textColor),
-                    labelText: 'Email ID',
-                    labelStyle: TextStyle(color: textColor),
-                    filled: true,
-                    fillColor:
-                        isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 30),
+              TextField(
+                controller: emailController,
+                style: TextStyle(color: textColor),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.email, color: textColor),
+                  labelText: 'Email ID',
+                  labelStyle: TextStyle(color: textColor),
+                  filled: true,
+                  fillColor:
+                      isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
                   ),
                 ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: passwordController,
-                  obscureText: !_isPasswordVisible,
-                  style: TextStyle(color: textColor),
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock, color: textColor),
-                    labelText: 'Password',
-                    labelStyle: TextStyle(color: textColor),
-                    filled: true,
-                    fillColor:
-                        isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: passwordController,
+                obscureText: !_isPasswordVisible,
+                style: TextStyle(color: textColor),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.lock, color: textColor),
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: textColor),
+                  filled: true,
+                  fillColor:
+                      isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: textColor,
                     ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: textColor,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
-                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
                   ),
                 ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: confirmPasswordController,
-                  obscureText: !_isConfirmPasswordVisible,
-                  style: TextStyle(color: textColor),
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock_outline, color: textColor),
-                    labelText: 'Confirm Password',
-                    labelStyle: TextStyle(color: textColor),
-                    filled: true,
-                    fillColor:
-                        isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: confirmPasswordController,
+                obscureText: !_isConfirmPasswordVisible,
+                style: TextStyle(color: textColor),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.lock_outline, color: textColor),
+                  labelText: 'Confirm Password',
+                  labelStyle: TextStyle(color: textColor),
+                  filled: true,
+                  fillColor:
+                      isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isConfirmPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: textColor,
                     ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isConfirmPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: textColor,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isConfirmPasswordVisible =
-                              !_isConfirmPasswordVisible;
-                        });
-                      },
-                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                      });
+                    },
                   ),
                 ),
-                const SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: signUp,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF6BF3B1),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text(
-                    'SIGN UP',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 30),
+              PrimaryButton(
+                width: double.infinity,
+                text: 'SIGN UP',
+                onPressed: signUp,
+              ),
+            ],
           ),
         ),
       ),
