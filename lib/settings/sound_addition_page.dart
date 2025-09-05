@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as path;
 
 import '../utils/toast_util.dart';
-import '../widgets/themed_icon_button.dart';
+import '../widgets/buttons/themed_icon_button.dart';
 
 class SoundAdditionPage extends StatefulWidget {
   const SoundAdditionPage({super.key});

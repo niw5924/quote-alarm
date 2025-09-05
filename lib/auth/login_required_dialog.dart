@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/auth/login_page.dart';
-import 'package:flutter_alarm_app_2/widgets/primary_button.dart';
+import 'package:flutter_alarm_app_2/widgets/buttons/primary_button.dart';
 
 class LoginRequiredDialog extends StatelessWidget {
   const LoginRequiredDialog({super.key});

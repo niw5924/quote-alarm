@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_app_2/widgets/primary_button.dart';
+import 'package:flutter_alarm_app_2/widgets/buttons/primary_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QuoteLanguageDialog extends StatefulWidget {
