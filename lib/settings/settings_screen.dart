@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/auth/login_required_dialog.dart';
 import 'package:flutter_alarm_app_2/settings/quote_language_dialog.dart';
 import 'package:flutter_alarm_app_2/settings/settings_tile.dart';
-import 'package:flutter_alarm_app_2/settings/sound_addition_page.dart';
+import 'package:flutter_alarm_app_2/settings/sound_addition_screen.dart';
 import 'package:flutter_alarm_app_2/settings/star_grade_explanation_dialog.dart';
 import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
 import 'package:flutter_alarm_app_2/widgets/dialogs/confirm_dialog.dart';
@@ -12,12 +12,12 @@ import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../providers/auth_provider.dart';
-import '../auth/login_page.dart';
+import '../auth/login_screen.dart';
 import '../utils/toast_util.dart';
 import 'math_difficulty_dialog.dart';
 
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +133,7 @@ class SettingsPage extends StatelessWidget {
                 if (!authProvider.isLoggedIn) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
                   );
                 } else {
                   final confirmed = await showDialog<bool>(
@@ -197,7 +197,7 @@ class SettingsPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SoundAdditionPage()),
+                        builder: (context) => const SoundAdditionScreen()),
                   );
                 }
               },
@@ -302,7 +302,7 @@ class SettingsPage extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const LoginPage(),
+                                    builder: (context) => const LoginScreen(),
                                   ),
                                 );
                               },

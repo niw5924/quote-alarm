@@ -1,19 +1,19 @@
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:alarm/alarm.dart';
-import 'package:flutter_alarm_app_2/home/home_page.dart';
+import 'package:flutter_alarm_app_2/home/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/toast_util.dart';
 
-class AlarmEditPage extends StatefulWidget {
+class AlarmEditScreen extends StatefulWidget {
   final bool isDarkTheme;
   final AlarmSettings alarmSettings;
   final List<bool> repeatDays;
   final AlarmCancelMode cancelMode;
   final double quoteVolume;
 
-  const AlarmEditPage({
+  const AlarmEditScreen({
     super.key,
     required this.isDarkTheme,
     required this.alarmSettings,
@@ -23,10 +23,10 @@ class AlarmEditPage extends StatefulWidget {
   });
 
   @override
-  AlarmEditPageState createState() => AlarmEditPageState();
+  AlarmEditScreenState createState() => AlarmEditScreenState();
 }
 
-class AlarmEditPageState extends State<AlarmEditPage> {
+class AlarmEditScreenState extends State<AlarmEditScreen> {
   late bool _isDarkTheme;
   late TimeOfDay _selectedTime;
   late List<bool> _repeatDays; // 요일 선택 상태

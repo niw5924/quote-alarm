@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_app_2/auth/login_page.dart';
+import 'package:flutter_alarm_app_2/auth/login_screen.dart';
 import 'package:flutter_alarm_app_2/widgets/buttons/grey_text_button.dart';
 import 'package:flutter_alarm_app_2/widgets/buttons/primary_button.dart';
 
@@ -57,7 +57,7 @@ class LoginRequiredDialog extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const LoginPage(),
+                        builder: (context) => const LoginScreen(),
                       ),
                     );
                   },

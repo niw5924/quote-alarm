@@ -9,14 +9,14 @@ import 'package:path/path.dart' as path;
 import '../utils/toast_util.dart';
 import '../widgets/buttons/themed_icon_button.dart';
 
-class SoundAdditionPage extends StatefulWidget {
-  const SoundAdditionPage({super.key});
+class SoundAdditionScreen extends StatefulWidget {
+  const SoundAdditionScreen({super.key});
 
   @override
-  SoundAdditionPageState createState() => SoundAdditionPageState();
+  SoundAdditionScreenState createState() => SoundAdditionScreenState();
 }
 
-class SoundAdditionPageState extends State<SoundAdditionPage> {
+class SoundAdditionScreenState extends State<SoundAdditionScreen> {
   late AudioPlayer _player;
   String _currentSound = '';
   String _searchQuery = '';

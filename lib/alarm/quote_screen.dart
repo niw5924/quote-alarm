@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/alarm/alarm_cancel_slider.dart';
 import 'package:flutter_alarm_app_2/alarm/alarm_success_screen.dart';
-import 'package:flutter_alarm_app_2/home/home_page.dart';
+import 'package:flutter_alarm_app_2/home/home_screen.dart';
 import 'package:flutter_alarm_app_2/providers/auth_provider.dart';
 import 'package:flutter_alarm_app_2/services/quote_service.dart';
 import 'package:flutter_tts/flutter_tts.dart';

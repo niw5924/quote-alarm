@@ -1,12 +1,12 @@
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_app_2/alarm/alarm_edit_page.dart';
-import 'package:flutter_alarm_app_2/alarm/alarm_list_page.dart';
+import 'package:flutter_alarm_app_2/alarm/alarm_edit_screen.dart';
+import 'package:flutter_alarm_app_2/alarm/alarm_list_screen.dart';
 import 'package:flutter_alarm_app_2/alarm/quote_screen.dart';
-import 'package:flutter_alarm_app_2/news/news_page.dart';
+import 'package:flutter_alarm_app_2/news/news_screen.dart';
 import 'package:flutter_alarm_app_2/services/quote_service.dart';
-import 'package:flutter_alarm_app_2/settings/settings_page.dart';
-import 'package:flutter_alarm_app_2/statistics/statistics_page.dart';
+import 'package:flutter_alarm_app_2/settings/settings_screen.dart';
+import 'package:flutter_alarm_app_2/statistics/statistics_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -35,21 +35,21 @@ class AlarmItem {
   });
 }
 
-class AlarmHomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   final Function(bool) onThemeToggle;
   final bool isDarkTheme;
 
-  const AlarmHomePage({
+  const HomeScreen({
     super.key,
     required this.onThemeToggle,
     required this.isDarkTheme,
   });
 
   @override
-  AlarmHomePageState createState() => AlarmHomePageState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class AlarmHomePageState extends State<AlarmHomePage> {
+class HomeScreenState extends State<HomeScreen> {
   final Uuid _uuid = const Uuid();
   List<AlarmItem> _alarms = [];
   int _selectedIndex = 0;
@@ -181,7 +181,7 @@ class AlarmHomePageState extends State<AlarmHomePage> {
     final updatedAlarmItem = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AlarmEditPage(
+        builder: (context) => AlarmEditScreen(
           isDarkTheme: widget.isDarkTheme,
           alarmSettings: newAlarmSettings,
           repeatDays: List.filled(7, false),
@@ -318,14 +318,14 @@ class AlarmHomePageState extends State<AlarmHomePage> {
     Widget getBody() {
       switch (_selectedIndex) {
         case 0:
-          return AlarmListPage(
+          return AlarmListScreen(
             isDarkTheme: widget.isDarkTheme,
             alarms: _alarms,
             onTapAlarm: (index) async {
               final updatedAlarmItem = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AlarmEditPage(
+                  builder: (context) => AlarmEditScreen(
                     isDarkTheme: widget.isDarkTheme,
                     alarmSettings: _alarms[index].settings,
                     repeatDays: _alarms[index].repeatDays,
@@ -358,11 +358,11 @@ class AlarmHomePageState extends State<AlarmHomePage> {
             onDeleteAlarm: deleteAlarm,
           );
         case 1:
-          return const StatisticsPage();
+          return const StatisticsScreen();
         case 2:
-          return const NewsPage();
+          return const NewsScreen();
         case 3:
-          return const SettingsPage();
+          return const SettingsScreen();
         default:
           return const Center(child: Text('페이지를 찾을 수 없습니다.'));
       }

@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:alarm/alarm.dart';
-import 'package:flutter_alarm_app_2/home/home_page.dart';
+import 'package:flutter_alarm_app_2/home/home_screen.dart';
 import 'package:flutter_alarm_app_2/providers/auth_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -90,7 +90,7 @@ class QuoteAlarmAppState extends State<QuoteAlarmApp> {
               ),
             ),
       home:
-          AlarmHomePage(onThemeToggle: _toggleTheme, isDarkTheme: _isDarkTheme),
+          HomeScreen(onThemeToggle: _toggleTheme, isDarkTheme: _isDarkTheme),
     );
   }
 }
