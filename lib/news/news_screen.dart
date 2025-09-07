@@ -87,36 +87,22 @@ class NewsScreenState extends State<NewsScreen> {
             _unescape.convert(news.description); // HTML 디코딩
 
         return Card(
-          elevation: 2.0,
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
           ),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(12.0),
-            onTap: () => _openNewsLink(news.link),
-            child: ListTile(
-              title: Text(
-                decodedTitle,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(decodedDescription),
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          elevation: 2.0,
+          clipBehavior: Clip.antiAlias,
+          child: ListTile(
+            title: Text(
+              decodedTitle,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
+            subtitle: Text(decodedDescription),
+            onTap: () => launchUrl(Uri.parse(news.link)),
           ),
         );
       },
     );
-  }
-
-  void _openNewsLink(String url) async {
-    final uri = Uri.parse(url); // String을 Uri로 변환
-
-    await launchUrl(uri);
-
-    // if (await canLaunchUrl(uri)) { // canLaunchUrl이 무조건 false를 반환함. 이상함. 오늘은 true를 반환함.
-    //   await launchUrl(uri);
-    // } else {
-    //   throw 'Could not launch $url';
-    // }
   }
 }
