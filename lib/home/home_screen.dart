@@ -12,6 +12,7 @@ import 'package:uuid/uuid.dart';
 
 import '../constants/alarm_cancel_mode.dart';
 import '../models/alarm_item.dart';
+import '../utils/time_util.dart';
 import '../utils/toast_util.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -178,7 +179,9 @@ class HomeScreenState extends State<HomeScreen> {
       await Alarm.set(alarmSettings: updatedAlarmItem.settings);
       _saveAlarms();
 
-      _showRemainingTimeToast(updatedAlarmItem.settings.dateTime);
+      ToastUtil.showInfo(
+        TimeUtil.remainingTimeText(updatedAlarmItem.settings.dateTime),
+      );
     }
   }
 
@@ -278,20 +281,6 @@ class HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _showRemainingTimeToast(DateTime updatedAlarmTime) {
-    final DateTime now = DateTime.now();
-    final difference = updatedAlarmTime.difference(now);
-    final totalMinutes = (difference.inSeconds / 60).ceil();
-    final hours = totalMinutes ~/ 60;
-    final minutes = totalMinutes % 60;
-
-    final message = hours > 0
-        ? '알람이 약 $hours시간 $minutes분 후에 울립니다.'
-        : '알람이 약 $minutes분 후에 울립니다.';
-
-    ToastUtil.showInfo(message);
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget getBody() {
@@ -327,7 +316,11 @@ class HomeScreenState extends State<HomeScreen> {
 
                 if (_alarms[index].isEnabled) {
                   await Alarm.set(alarmSettings: updatedAlarmItem.settings);
-                  _showRemainingTimeToast(updatedAlarmItem.settings.dateTime);
+                  ToastUtil.showInfo(
+                    TimeUtil.remainingTimeText(
+                      updatedAlarmItem.settings.dateTime,
+                    ),
+                  );
                 }
 
                 _saveAlarms();

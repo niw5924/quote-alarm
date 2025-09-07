@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../models/alarm_item.dart';
+import '../utils/time_util.dart';
 import '../utils/toast_util.dart';
 
 class AlarmListScreen extends StatelessWidget {
@@ -38,22 +39,7 @@ class AlarmListScreen extends StatelessWidget {
   Future<String> getTimeUntilNextAlarm() async {
     final nearestAlarm = await getNearestAlarm();
     if (nearestAlarm == null) return "예정된 알람 없음";
-
-    final now = DateTime.now();
-    final difference = nearestAlarm.dateTime.difference(now);
-
-    final totalMinutes = (difference.inSeconds / 60).ceil();
-    final days = totalMinutes ~/ (24 * 60);
-    final hours = (totalMinutes % (24 * 60)) ~/ 60;
-    final minutes = totalMinutes % 60;
-
-    if (days > 0) {
-      return "$days일 $hours시간 $minutes분 후에 울려요";
-    } else if (hours > 0) {
-      return "$hours시간 $minutes분 후에 울려요";
-    } else {
-      return "$minutes분 후에 울려요";
-    }
+    return TimeUtil.remainingTimeText(nearestAlarm.dateTime);
   }
 
   @override
@@ -263,19 +249,11 @@ class AlarmListScreen extends StatelessWidget {
                             onToggleAlarm(alarmItem);
 
                             if (value) {
-                              final now = DateTime.now();
-                              final alarmTime = alarmItem.settings.dateTime;
-                              final difference = alarmTime.difference(now);
-                              final totalMinutes =
-                                  (difference.inSeconds / 60).ceil();
-                              final hours = totalMinutes ~/ 60;
-                              final minutes = totalMinutes % 60;
-
-                              final message = hours > 0
-                                  ? '알람이 약 $hours시간 $minutes분 후에 울립니다.'
-                                  : '알람이 약 $minutes분 후에 울립니다.';
-
-                              ToastUtil.showInfo(message);
+                              ToastUtil.showInfo(
+                                TimeUtil.remainingTimeText(
+                                  alarmItem.settings.dateTime,
+                                ),
+                              );
                             }
                           },
                         ),
