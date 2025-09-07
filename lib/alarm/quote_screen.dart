@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/alarm/alarm_cancel_slider.dart';
 import 'package:flutter_alarm_app_2/alarm/alarm_success_screen.dart';
-import 'package:flutter_alarm_app_2/home/home_screen.dart';
 import 'package:flutter_alarm_app_2/providers/auth_provider.dart';
 import 'package:flutter_alarm_app_2/services/quote_service.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -14,6 +13,7 @@ import 'dart:math';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
+import '../constants/alarm_cancel_mode.dart';
 import 'alarm_cancel_math_problem.dart';
 import 'alarm_cancel_voice_recognition.dart';
 

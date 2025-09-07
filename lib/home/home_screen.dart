@@ -10,13 +10,8 @@ import 'package:flutter_alarm_app_2/statistics/statistics_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
+import '../constants/alarm_cancel_mode.dart';
 import '../utils/toast_util.dart';
-
-enum AlarmCancelMode {
-  slider,
-  mathProblem,
-  voiceRecognition,
-}
 
 class AlarmItem {
   AlarmSettings settings;
