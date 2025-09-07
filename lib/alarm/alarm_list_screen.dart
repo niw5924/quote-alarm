@@ -1,11 +1,11 @@
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_alarm_app_2/home/home_screen.dart';
 import 'package:flutter_alarm_app_2/widgets/dialogs/confirm_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../models/alarm_item.dart';
 import '../utils/toast_util.dart';
 
 class AlarmListScreen extends StatelessWidget {

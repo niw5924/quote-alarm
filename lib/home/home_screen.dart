@@ -11,23 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import '../constants/alarm_cancel_mode.dart';
+import '../models/alarm_item.dart';
 import '../utils/toast_util.dart';
-
-class AlarmItem {
-  AlarmSettings settings;
-  List<bool> repeatDays;
-  AlarmCancelMode cancelMode;
-  double quoteVolume;
-  bool isEnabled;
-
-  AlarmItem(
-    this.settings, {
-    this.repeatDays = const [false, false, false, false, false, false, false],
-    this.cancelMode = AlarmCancelMode.slider,
-    this.quoteVolume = 1.0,
-    this.isEnabled = true,
-  });
-}
 
 class HomeScreen extends StatefulWidget {
   final Function(bool) onThemeToggle;
