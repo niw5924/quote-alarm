@@ -6,7 +6,6 @@ import 'package:flutter_alarm_app_2/widgets/dialogs/confirm_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../constants/alarm_cancel_mode.dart';
 import '../utils/toast_util.dart';
 
 class AlarmListScreen extends StatelessWidget {
@@ -24,18 +23,6 @@ class AlarmListScreen extends StatelessWidget {
     required this.onToggleAlarm,
     required this.onDeleteAlarm,
   });
-
-  // 알람 해제 유형을 텍스트로 변환
-  String _getCancelModeText(AlarmCancelMode cancelMode) {
-    switch (cancelMode) {
-      case AlarmCancelMode.slider:
-        return '슬라이더';
-      case AlarmCancelMode.mathProblem:
-        return '수학 문제';
-      case AlarmCancelMode.voiceRecognition:
-        return '음성 인식';
-    }
-  }
 
   // 가장 가까운 알람 가져오기
   Future<AlarmSettings?> getNearestAlarm() async {
@@ -137,9 +124,6 @@ class AlarmListScreen extends StatelessWidget {
                   .format(dateTime)
                   .replaceAll('AM', '오전')
                   .replaceAll('PM', '오후');
-
-              // 알람 해제 유형 텍스트 변환
-              final cancelModeText = _getCancelModeText(alarmItem.cancelMode);
 
               return Dismissible(
                 key: UniqueKey(),
@@ -246,7 +230,7 @@ class AlarmListScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              cancelModeText,
+                              alarmItem.cancelMode.label,
                               style: TextStyle(
                                 color: textColor,
                                 fontSize: 16,

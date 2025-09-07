@@ -313,7 +313,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
                           },
                           child: Center(
                             child: Text(
-                              '슬라이더',
+                              AlarmCancelMode.slider.label,
                               style: TextStyle(
                                 color: _cancelMode == AlarmCancelMode.slider
                                     ? Colors.black
@@ -333,7 +333,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
                           },
                           child: Center(
                             child: Text(
-                              '수학 문제',
+                              AlarmCancelMode.mathProblem.label,
                               style: TextStyle(
                                 color:
                                     _cancelMode == AlarmCancelMode.mathProblem
@@ -354,7 +354,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
                           },
                           child: Center(
                             child: Text(
-                              '음성 인식',
+                              AlarmCancelMode.voiceRecognition.label,
                               style: TextStyle(
                                 color: _cancelMode ==
                                         AlarmCancelMode.voiceRecognition
