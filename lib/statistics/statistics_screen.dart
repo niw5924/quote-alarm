@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_alarm_app_2/widgets/buttons/gradient_border_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import '../constants/alarm_cancel_mode.dart';
 import '../providers/auth_provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../auth/login_screen.dart';
@@ -89,23 +90,21 @@ class StatisticsScreen extends StatelessWidget {
                         alarms.forEach((alarmId, alarmData) {
                           final duration =
                               (alarmData['duration'] as num).toInt();
-                          final cancelMode = alarmData['cancelMode'];
+                          final cancelMode =
+                              AlarmCancelMode.fromKey(alarmData['cancelMode']);
 
                           switch (cancelMode) {
-                            case 'slider':
+                            case AlarmCancelMode.slider:
                               sliderTotalDuration += duration;
                               sliderCount++;
                               break;
-                            case 'mathProblem':
+                            case AlarmCancelMode.mathProblem:
                               mathTotalDuration += duration;
                               mathCount++;
                               break;
-                            case 'voiceRecognition':
+                            case AlarmCancelMode.voiceRecognition:
                               voiceTotalDuration += duration;
                               voiceCount++;
-                              break;
-                            default:
-                              debugPrint('Unknown cancel mode: $cancelMode');
                               break;
                           }
                         });
@@ -127,9 +126,9 @@ class StatisticsScreen extends StatelessWidget {
 
                       // Sorting for medals
                       final averages = {
-                        'slider': sliderAverage,
-                        'mathProblem': mathAverage,
-                        'voiceRecognition': voiceAverage,
+                        AlarmCancelMode.slider.key: sliderAverage,
+                        AlarmCancelMode.mathProblem.key: mathAverage,
+                        AlarmCancelMode.voiceRecognition.key: voiceAverage,
                       };
 
                       // 0초를 제외한 값만 정렬
@@ -195,19 +194,15 @@ class StatisticsScreen extends StatelessWidget {
                                       showTitles: true,
                                       getTitlesWidget:
                                           (double value, TitleMeta meta) {
-                                        TextStyle style = const TextStyle(
-                                          fontWeight: FontWeight.w600,
+                                        final mode = AlarmCancelMode
+                                            .values[value.toInt()];
+
+                                        return Text(
+                                          mode.label,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         );
-                                        switch (value.toInt()) {
-                                          case 0:
-                                            return Text('슬라이더', style: style);
-                                          case 1:
-                                            return Text('수학 문제', style: style);
-                                          case 2:
-                                            return Text('음성 인식', style: style);
-                                          default:
-                                            return const Text('');
-                                        }
                                       },
                                     ),
                                   ),
@@ -245,7 +240,7 @@ class StatisticsScreen extends StatelessWidget {
       children: [
         ...List.generate(sortedAverages.length, (index) {
           final entry = sortedAverages[index];
-          final modeLabel = _getModeLabel(entry.key);
+          final modeLabel = AlarmCancelMode.fromKey(entry.key).label;
           final averageTime = entry.value;
 
           return Padding(
@@ -272,7 +267,8 @@ class StatisticsScreen extends StatelessWidget {
         // 0초 항목 표시
         if (zeroAverages.isNotEmpty)
           ...zeroAverages.map((entry) {
-            final modeLabel = _getModeLabel(entry.key);
+            final modeLabel = AlarmCancelMode.fromKey(entry.key).label;
+
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Row(
@@ -296,18 +292,5 @@ class StatisticsScreen extends StatelessWidget {
           }),
       ],
     );
-  }
-
-  String _getModeLabel(String mode) {
-    switch (mode) {
-      case 'slider':
-        return '슬라이더';
-      case 'mathProblem':
-        return '수학문제';
-      case 'voiceRecognition':
-        return '음성인식';
-      default:
-        return '';
-    }
   }
 }
