@@ -6,7 +6,6 @@ import 'package:flutter_alarm_app_2/alarm/alarm_success_screen.dart';
 import 'package:flutter_alarm_app_2/providers/auth_provider.dart';
 import 'package:flutter_alarm_app_2/services/quote_service.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
@@ -14,6 +13,7 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import '../constants/alarm_cancel_mode.dart';
+import '../utils/time_util.dart';
 import 'alarm_cancel_math_problem.dart';
 import 'alarm_cancel_voice_recognition.dart';
 
@@ -210,11 +210,9 @@ class QuoteScreenState extends State<QuoteScreen> {
     if (uid == null) return; // 로그인되지 않은 경우 저장하지 않음
 
     // 날짜 및 시간 포맷
-    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    String alarmStartTimeFormatted =
-        DateFormat('HH:mm:ss').format(widget.alarmStartTime);
-    String alarmEndTimeFormatted =
-        DateFormat('HH:mm:ss').format(DateTime.now());
+    String formattedDate = TimeUtil.formatDate(DateTime.now());
+    String alarmStartTimeFormatted = TimeUtil.formatTime(widget.alarmStartTime);
+    String alarmEndTimeFormatted = TimeUtil.formatTime(DateTime.now());
     int duration = DateTime.now().difference(widget.alarmStartTime).inSeconds;
 
     // 저장할 데이터

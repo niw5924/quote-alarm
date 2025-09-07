@@ -1,4 +1,14 @@
+import 'package:intl/intl.dart';
+
 class TimeUtil {
+  static String formatDate(DateTime date) {
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+  static String formatTime(DateTime time) {
+    return DateFormat('HH:mm:ss').format(time);
+  }
+
   static String remainingTimeText(DateTime alarmTime) {
     final now = DateTime.now();
     final diff = alarmTime.difference(now);
