@@ -144,7 +144,10 @@ class StatisticsScreen extends StatelessWidget {
 
                       return Column(
                         children: [
-                          _buildMedalRanking(sortedAverages, zeroAverages),
+                          _buildMedalRanking(
+                            sortedAverages: sortedAverages,
+                            zeroAverages: zeroAverages,
+                          ),
                           const SizedBox(height: 20),
                           Expanded(
                             child: BarChart(
@@ -229,10 +232,10 @@ class StatisticsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMedalRanking(
-    List<MapEntry<String, double>> sortedAverages,
-    List<MapEntry<String, double>> zeroAverages,
-  ) {
+  Widget _buildMedalRanking({
+    required List<MapEntry<String, double>> sortedAverages,
+    required List<MapEntry<String, double>> zeroAverages,
+  }) {
     final medalColors = [Colors.amber, Colors.grey, Colors.brown];
 
     return Column(
