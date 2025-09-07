@@ -15,7 +15,6 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import 'alarm_cancel_math_problem.dart';
-import 'alarm_cancel_puzzle.dart';
 import 'alarm_cancel_voice_recognition.dart';
 
 class QuoteScreen extends StatefulWidget {
@@ -297,8 +296,6 @@ class QuoteScreenState extends State<QuoteScreen> {
                 onValidateAnswer: _validateAnswer,
               )
             : const CircularProgressIndicator();
-      case AlarmCancelMode.puzzle:
-        return AlarmCancelPuzzle(onPuzzleSuccess: cancelAlarm);
       case AlarmCancelMode.voiceRecognition:
         return AlarmCancelVoiceRecognition(
           randomWord: _randomWord,

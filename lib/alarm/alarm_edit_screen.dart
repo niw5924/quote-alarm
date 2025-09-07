@@ -293,7 +293,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
                     duration: const Duration(milliseconds: 300),
                     alignment: _getAlignmentForCancelMode(),
                     child: Container(
-                      width: (MediaQuery.of(context).size.width - 48) / 4,
+                      width: (MediaQuery.of(context).size.width - 48) / 3,
                       decoration: BoxDecoration(
                         color: const Color(0xFF6BF3B1),
                         borderRadius: BorderRadius.circular(25),
@@ -338,26 +338,6 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
                                     _cancelMode == AlarmCancelMode.mathProblem
                                         ? Colors.black
                                         : textColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _cancelMode = AlarmCancelMode.puzzle;
-                            });
-                          },
-                          child: Center(
-                            child: Text(
-                              '퍼즐',
-                              style: TextStyle(
-                                color: _cancelMode == AlarmCancelMode.puzzle
-                                    ? Colors.black
-                                    : textColor,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -523,13 +503,11 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
   Alignment _getAlignmentForCancelMode() {
     switch (_cancelMode) {
       case AlarmCancelMode.slider:
-        return const Alignment(-1.0, 0.0); // 첫 번째 위치
+        return const Alignment(-1.0, 0.0);
       case AlarmCancelMode.mathProblem:
-        return const Alignment(-1 / 3, 0.0); // -1/3 위치
-      case AlarmCancelMode.puzzle:
-        return const Alignment(1 / 3, 0.0); // +1/3 위치
+        return const Alignment(0.0, 0.0);
       case AlarmCancelMode.voiceRecognition:
-        return const Alignment(1.0, 0.0); // 마지막 위치
+        return const Alignment(1.0, 0.0);
     }
   }
 

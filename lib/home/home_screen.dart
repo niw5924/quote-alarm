@@ -15,7 +15,6 @@ import '../utils/toast_util.dart';
 enum AlarmCancelMode {
   slider,
   mathProblem,
-  puzzle,
   voiceRecognition,
 }
 

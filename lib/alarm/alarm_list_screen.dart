@@ -31,8 +31,6 @@ class AlarmListScreen extends StatelessWidget {
         return '슬라이더';
       case AlarmCancelMode.mathProblem:
         return '수학 문제';
-      case AlarmCancelMode.puzzle:
-        return '퍼즐';
       case AlarmCancelMode.voiceRecognition:
         return '음성 인식';
     }
