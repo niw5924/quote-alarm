@@ -2,7 +2,6 @@ import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_alarm_app_2/widgets/dialogs/confirm_dialog.dart';
-import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../models/alarm_item.dart';
@@ -102,13 +101,10 @@ class AlarmListScreen extends StatelessWidget {
             itemCount: alarms.length,
             itemBuilder: (context, index) {
               final alarmItem = alarms[index];
-              final dateTime = alarmItem.settings.dateTime;
 
               // 시간 표시 포맷팅
-              final formattedTime = DateFormat('a h:mm')
-                  .format(dateTime)
-                  .replaceAll('AM', '오전')
-                  .replaceAll('PM', '오후');
+              final formattedTime =
+                  TimeUtil.formatTimeWithAmPm(alarmItem.settings.dateTime);
 
               return Dismissible(
                 key: UniqueKey(),

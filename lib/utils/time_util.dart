@@ -9,6 +9,11 @@ class TimeUtil {
     return DateFormat('HH:mm:ss').format(time);
   }
 
+  static String formatTimeWithAmPm(DateTime dateTime) {
+    final formatted = DateFormat('a h:mm').format(dateTime);
+    return formatted.replaceAll('AM', '오전').replaceAll('PM', '오후');
+  }
+
   static String remainingTimeText(DateTime alarmTime) {
     final now = DateTime.now();
     final diff = alarmTime.difference(now);
