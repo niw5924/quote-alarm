@@ -219,7 +219,7 @@ class QuoteScreenState extends State<QuoteScreen> {
 
     // 저장할 데이터
     Map<String, dynamic> alarmData = {
-      'cancelMode': widget.cancelMode.toString().split('.').last,
+      'cancelMode': widget.cancelMode.key,
       'alarmStartTime': alarmStartTimeFormatted,
       'alarmEndTime': alarmEndTimeFormatted,
       'duration': duration,
