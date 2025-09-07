@@ -8,7 +8,6 @@ import '../models/alarm_item.dart';
 import '../utils/toast_util.dart';
 
 class AlarmEditScreen extends StatefulWidget {
-  final bool isDarkTheme;
   final AlarmSettings alarmSettings;
   final List<bool> repeatDays;
   final AlarmCancelMode cancelMode;
@@ -16,7 +15,6 @@ class AlarmEditScreen extends StatefulWidget {
 
   const AlarmEditScreen({
     super.key,
-    required this.isDarkTheme,
     required this.alarmSettings,
     required this.repeatDays,
     required this.cancelMode,
@@ -28,7 +26,6 @@ class AlarmEditScreen extends StatefulWidget {
 }
 
 class AlarmEditScreenState extends State<AlarmEditScreen> {
-  late bool _isDarkTheme;
   late TimeOfDay _selectedTime;
   late List<bool> _repeatDays; // 요일 선택 상태
   late AlarmCancelMode _cancelMode;
@@ -48,7 +45,6 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
   @override
   void initState() {
     super.initState();
-    _isDarkTheme = widget.isDarkTheme;
     _selectedTime = TimeOfDay.fromDateTime(widget.alarmSettings.dateTime);
     _repeatDays = List.from(widget.repeatDays);
     _cancelMode = widget.cancelMode;
@@ -134,7 +130,8 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = _isDarkTheme ? Colors.white : Colors.black;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDarkMode ? Colors.white : Colors.black;
     final List<String> days = ['일', '월', '화', '수', '목', '금', '토'];
     final allSoundFiles = [
       ..._defaultSoundFiles,
@@ -158,8 +155,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
           children: [
             Container(
               decoration: BoxDecoration(
-                color:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                color: isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -207,8 +203,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                color: isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
@@ -284,8 +279,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
               height: 60,
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                color: isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(25),
               ),
               child: Stack(
@@ -379,12 +373,12 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
               icon: Icon(Icons.arrow_drop_down, color: textColor),
               isExpanded: true,
               dropdownColor:
-                  _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                  isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
               borderRadius: BorderRadius.circular(10),
               decoration: InputDecoration(
                 filled: true,
                 fillColor:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                    isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
@@ -416,8 +410,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               decoration: BoxDecoration(
-                color:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                color: isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -447,8 +440,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               decoration: BoxDecoration(
-                color:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                color: isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -481,7 +473,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
               decoration: InputDecoration(
                 filled: true,
                 fillColor:
-                    _isDarkTheme ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                    isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
@@ -513,7 +505,9 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
   }
 
   Widget _buildQuickRepeatButton(String label, List<bool> days) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final isSame = _listsAreEqual(_repeatDays, days);
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -525,7 +519,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
         decoration: BoxDecoration(
           color: isSame
               ? const Color(0xFF6BF3B1)
-              : (_isDarkTheme
+              : (isDarkMode
                   ? const Color(0xFF151922)
                   : const Color(0xFFF8EDD8)),
           borderRadius: BorderRadius.circular(20),
@@ -535,7 +529,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
           style: TextStyle(
             color: isSame
                 ? Colors.black
-                : (_isDarkTheme ? Colors.white : Colors.black),
+                : (isDarkMode ? Colors.white : Colors.black),
             fontWeight: FontWeight.w600,
           ),
         ),

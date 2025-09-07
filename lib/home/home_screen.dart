@@ -162,7 +162,6 @@ class HomeScreenState extends State<HomeScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => AlarmEditScreen(
-          isDarkTheme: widget.isDarkTheme,
           alarmSettings: newAlarmSettings,
           repeatDays: List.filled(7, false),
           cancelMode: AlarmCancelMode.slider,
@@ -294,7 +293,6 @@ class HomeScreenState extends State<HomeScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AlarmEditScreen(
-                    isDarkTheme: widget.isDarkTheme,
                     alarmSettings: _alarms[index].settings,
                     repeatDays: _alarms[index].repeatDays,
                     cancelMode: _alarms[index].cancelMode,
