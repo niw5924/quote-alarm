@@ -10,7 +10,6 @@ import '../utils/time_util.dart';
 import '../utils/toast_util.dart';
 
 class AlarmListScreen extends StatelessWidget {
-  final bool isDarkTheme;
   final List<AlarmItem> alarms;
   final Function(int) onTapAlarm;
   final Function(AlarmItem) onToggleAlarm;
@@ -18,7 +17,6 @@ class AlarmListScreen extends StatelessWidget {
 
   const AlarmListScreen({
     super.key,
-    required this.isDarkTheme,
     required this.alarms,
     required this.onTapAlarm,
     required this.onToggleAlarm,
@@ -44,7 +42,8 @@ class AlarmListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = isDarkTheme ? Colors.white : Colors.black;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDarkMode ? Colors.white : Colors.black;
     final List<String> days = ['일', '월', '화', '수', '목', '금', '토'];
 
     return Column(
@@ -70,7 +69,7 @@ class AlarmListScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
-              color: isDarkTheme
+              color: isDarkMode
                   ? const Color(0xFF2A2F35)
                   : const Color(0xFFF1F4F8),
               child: ListTile(
@@ -153,9 +152,8 @@ class AlarmListScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    color: isDarkTheme
-                        ? Colors.grey[850]
-                        : const Color(0xFFFCFCFC),
+                    color:
+                        isDarkMode ? Colors.grey[850] : const Color(0xFFFCFCFC),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(15),
                       onTap: () {
@@ -238,12 +236,12 @@ class AlarmListScreen extends StatelessWidget {
                         trailing: Switch(
                           value: alarmItem.isEnabled,
                           activeColor: Colors.white,
-                          activeTrackColor: isDarkTheme
+                          activeTrackColor: isDarkMode
                               ? Colors.lightBlueAccent
                               : Colors.lightBlue,
                           inactiveThumbColor: Colors.grey,
                           inactiveTrackColor:
-                              isDarkTheme ? Colors.grey[700] : Colors.grey[300],
+                              isDarkMode ? Colors.grey[700] : Colors.grey[300],
                           onChanged: (value) {
                             HapticFeedback.mediumImpact();
                             onToggleAlarm(alarmItem);

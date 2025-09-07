@@ -286,7 +286,6 @@ class HomeScreenState extends State<HomeScreen> {
       switch (_selectedIndex) {
         case 0:
           return AlarmListScreen(
-            isDarkTheme: widget.isDarkTheme,
             alarms: _alarms,
             onTapAlarm: (index) async {
               final updatedAlarmItem = await Navigator.push(
