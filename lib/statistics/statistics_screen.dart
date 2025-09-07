@@ -79,11 +79,9 @@ class StatisticsScreen extends StatelessWidget {
 
                       double sliderAverage = 0,
                           mathAverage = 0,
-                          puzzleAverage = 0,
                           voiceAverage = 0;
                       int sliderTotalDuration = 0, sliderCount = 0;
                       int mathTotalDuration = 0, mathCount = 0;
-                      int puzzleTotalDuration = 0, puzzleCount = 0;
                       int voiceTotalDuration = 0, voiceCount = 0;
 
                       // Calculate averages
@@ -101,10 +99,6 @@ class StatisticsScreen extends StatelessWidget {
                             case 'mathProblem':
                               mathTotalDuration += duration;
                               mathCount++;
-                              break;
-                            case 'puzzle':
-                              puzzleTotalDuration += duration;
-                              puzzleCount++;
                               break;
                             case 'voiceRecognition':
                               voiceTotalDuration += duration;
@@ -126,10 +120,6 @@ class StatisticsScreen extends StatelessWidget {
                           ? double.parse((mathTotalDuration / mathCount)
                               .toStringAsFixed(1))
                           : 0;
-                      puzzleAverage = puzzleCount > 0
-                          ? double.parse((puzzleTotalDuration / puzzleCount)
-                              .toStringAsFixed(1))
-                          : 0;
                       voiceAverage = voiceCount > 0
                           ? double.parse((voiceTotalDuration / voiceCount)
                               .toStringAsFixed(1))
@@ -139,7 +129,6 @@ class StatisticsScreen extends StatelessWidget {
                       final averages = {
                         'slider': sliderAverage,
                         'mathProblem': mathAverage,
-                        'puzzle': puzzleAverage,
                         'voiceRecognition': voiceAverage,
                       };
 
@@ -190,17 +179,6 @@ class StatisticsScreen extends StatelessWidget {
                                   ]),
                                   BarChartGroupData(x: 2, barRods: [
                                     BarChartRodData(
-                                      toY: puzzleAverage,
-                                      width: 40,
-                                      color: Colors.orange,
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(8),
-                                        topRight: Radius.circular(8),
-                                      ),
-                                    )
-                                  ]),
-                                  BarChartGroupData(x: 3, barRods: [
-                                    BarChartRodData(
                                       toY: voiceAverage,
                                       width: 40,
                                       color: Colors.green,
@@ -218,15 +196,14 @@ class StatisticsScreen extends StatelessWidget {
                                       getTitlesWidget:
                                           (double value, TitleMeta meta) {
                                         TextStyle style = const TextStyle(
-                                            fontWeight: FontWeight.w600);
+                                          fontWeight: FontWeight.w600,
+                                        );
                                         switch (value.toInt()) {
                                           case 0:
                                             return Text('슬라이더', style: style);
                                           case 1:
                                             return Text('수학 문제', style: style);
                                           case 2:
-                                            return Text('퍼즐', style: style);
-                                          case 3:
                                             return Text('음성 인식', style: style);
                                           default:
                                             return const Text('');
@@ -284,7 +261,9 @@ class StatisticsScreen extends StatelessWidget {
                 Text(
                   '$modeLabel ${averageTime.toStringAsFixed(1)}초',
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w600),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
@@ -299,7 +278,7 @@ class StatisticsScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const Icon(
-                    Icons.block, // 기록 없음 아이콘
+                    Icons.block,
                     color: Colors.red,
                     size: 28,
                   ),
@@ -307,7 +286,9 @@ class StatisticsScreen extends StatelessWidget {
                   Text(
                     '$modeLabel 기록 없음',
                     style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w600),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
@@ -323,8 +304,6 @@ class StatisticsScreen extends StatelessWidget {
         return '슬라이더';
       case 'mathProblem':
         return '수학문제';
-      case 'puzzle':
-        return '퍼즐';
       case 'voiceRecognition':
         return '음성인식';
       default:
