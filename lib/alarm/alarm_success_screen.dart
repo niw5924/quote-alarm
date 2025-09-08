@@ -59,28 +59,24 @@ class AlarmSuccessScreenState extends State<AlarmSuccessScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 250,
-              height: 250,
-              child: Lottie.asset(
-                'assets/animation/lottie_check.json',
-                repeat: false,
-                onLoaded: (composition) {
-                  final halfDuration = composition.duration.inMilliseconds ~/ 2;
+            Lottie.asset(
+              'assets/animation/lottie_check.json',
+              width: MediaQuery.of(context).size.width * 0.6,
+              height: MediaQuery.of(context).size.height * 0.6,
+              repeat: false,
+              onLoaded: (composition) {
+                final halfDuration = composition.duration.inMilliseconds ~/ 2;
 
-                  Future.delayed(Duration(milliseconds: halfDuration), () {
-                    if (mounted) {
-                      setState(() {
-                        displayText = getEncouragingMessage(); // 두 번째 메시지 설정
-                      });
-                    }
+                Future.delayed(Duration(milliseconds: halfDuration), () {
+                  setState(() {
+                    displayText = getEncouragingMessage(); // 두 번째 메시지 설정
                   });
+                });
 
-                  Future.delayed(composition.duration, () {
-                    if (context.mounted) Navigator.pop(context);
-                  });
-                },
-              ),
+                Future.delayed(composition.duration, () {
+                  Navigator.pop(context);
+                });
+              },
             ),
             const SizedBox(height: 16),
             Text(
