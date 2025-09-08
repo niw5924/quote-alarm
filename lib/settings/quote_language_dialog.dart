@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_alarm_app_2/widgets/buttons/primary_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -94,6 +95,7 @@ class QuoteLanguageDialogState extends State<QuoteLanguageDialog> {
   }) {
     return GestureDetector(
       onTap: () {
+        HapticFeedback.lightImpact();
         _saveLanguage(value);
       },
       child: Card(
@@ -108,16 +110,15 @@ class QuoteLanguageDialogState extends State<QuoteLanguageDialog> {
           padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
-              Icon(icon, color: Colors.black87, size: 30),
-              const SizedBox(width: 10),
+              Icon(icon, size: 30, color: Colors.black),
+              const SizedBox(width: 8),
               Text(
                 title,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: _selectedLanguage == value
-                      ? Colors.white
-                      : Colors.black87,
+                  color:
+                      _selectedLanguage == value ? Colors.white : Colors.black,
                 ),
               ),
             ],
