@@ -55,7 +55,7 @@ class NewsScreenState extends State<NewsScreen> {
               height: 140,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(16.0),
               ),
             ),
           );

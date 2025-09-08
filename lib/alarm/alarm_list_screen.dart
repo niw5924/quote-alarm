@@ -150,107 +150,101 @@ class AlarmListScreen extends StatelessWidget {
                     ),
                     color:
                         isDarkMode ? Colors.grey[850] : const Color(0xFFFCFCFC),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(15),
-                      onTap: () {
-                        onTapAlarm(index);
-                      },
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 8.0,
-                        ),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // 요일 표시
-                            Text.rich(
-                              TextSpan(
-                                children: List.generate(7, (dayIndex) {
-                                  return TextSpan(
-                                    text: '${days[dayIndex]} ',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: textColor.withValues(
-                                          alpha: alarmItem.repeatDays[dayIndex]
-                                              ? 1.0
-                                              : 0.5),
-                                    ),
-                                  );
-                                }),
-                              ),
-                            ),
-                            // 기존 시간 표시
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: '${formattedTime.split(' ')[0]} ',
-                                    style: TextStyle(
-                                      color: textColor,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: ListTile(
+                      onTap: () => onTapAlarm(index),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 요일 표시
+                          Text.rich(
+                            TextSpan(
+                              children: List.generate(7, (dayIndex) {
+                                return TextSpan(
+                                  text: '${days[dayIndex]} ',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: textColor.withValues(
+                                        alpha: alarmItem.repeatDays[dayIndex]
+                                            ? 1.0
+                                            : 0.5),
                                   ),
-                                  TextSpan(
-                                    text: formattedTime.split(' ')[1],
-                                    style: TextStyle(
-                                      color: textColor,
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                );
+                              }),
+                            ),
+                          ),
+                          // 기존 시간 표시
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '${formattedTime.split(' ')[0]} ',
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              alarmItem.cancelMode.label,
-                              style: TextStyle(
-                                color: textColor,
-                                fontSize: 16,
-                              ),
-                            ),
-                            Text(
-                              alarmItem.settings.notificationSettings.body
-                                      .isEmpty
-                                  ? '메모 없음'
-                                  : alarmItem
-                                      .settings.notificationSettings.body,
-                              style: TextStyle(
-                                color: textColor,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: Switch(
-                          value: alarmItem.isEnabled,
-                          activeColor: Colors.white,
-                          activeTrackColor: isDarkMode
-                              ? Colors.lightBlueAccent
-                              : Colors.lightBlue,
-                          inactiveThumbColor: Colors.grey,
-                          inactiveTrackColor:
-                              isDarkMode ? Colors.grey[700] : Colors.grey[300],
-                          onChanged: (value) {
-                            HapticFeedback.mediumImpact();
-                            onToggleAlarm(alarmItem);
-
-                            if (value) {
-                              ToastUtil.showInfo(
-                                TimeUtil.remainingTimeText(
-                                  alarmItem.settings.dateTime,
                                 ),
-                              );
-                            }
-                          },
-                        ),
+                                TextSpan(
+                                  text: formattedTime.split(' ')[1],
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            alarmItem.cancelMode.label,
+                            style: TextStyle(
+                              color: textColor,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            alarmItem.settings.notificationSettings.body.isEmpty
+                                ? '메모 없음'
+                                : alarmItem.settings.notificationSettings.body,
+                            style: TextStyle(
+                              color: textColor,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                      trailing: Switch(
+                        value: alarmItem.isEnabled,
+                        activeColor: Colors.white,
+                        activeTrackColor: isDarkMode
+                            ? Colors.lightBlueAccent
+                            : Colors.lightBlue,
+                        inactiveThumbColor: Colors.grey,
+                        inactiveTrackColor:
+                            isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                        onChanged: (value) {
+                          HapticFeedback.mediumImpact();
+                          onToggleAlarm(alarmItem);
+
+                          if (value) {
+                            ToastUtil.showInfo(
+                              TimeUtil.remainingTimeText(
+                                alarmItem.settings.dateTime,
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),
