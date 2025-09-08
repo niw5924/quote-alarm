@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_alarm_app_2/widgets/buttons/primary_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -100,6 +101,7 @@ class MathDifficultyDialogState extends State<MathDifficultyDialog> {
   }) {
     return GestureDetector(
       onTap: () {
+        HapticFeedback.lightImpact();
         _saveDifficulty(value);
       },
       child: Card(
@@ -114,8 +116,8 @@ class MathDifficultyDialogState extends State<MathDifficultyDialog> {
           padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
-              Icon(icon, color: Colors.black87, size: 30),
-              const SizedBox(width: 10),
+              Icon(icon, size: 30, color: Colors.black),
+              const SizedBox(width: 8),
               Text(
                 title,
                 style: TextStyle(
@@ -123,7 +125,7 @@ class MathDifficultyDialogState extends State<MathDifficultyDialog> {
                   fontWeight: FontWeight.bold,
                   color: _selectedDifficulty == value
                       ? Colors.white
-                      : Colors.black87,
+                      : Colors.black,
                 ),
               ),
             ],
