@@ -74,7 +74,7 @@ class AlarmListScreen extends StatelessWidget {
               child: ListTile(
                 leading: Icon(
                   Icons.alarm,
-                  size: 28,
+                  size: 30,
                   color: textColor,
                 ),
                 title: Text(
@@ -111,7 +111,7 @@ class AlarmListScreen extends StatelessWidget {
                 background: Container(
                   decoration: BoxDecoration(
                     color: Colors.red,
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(16.0),
                   ),
                   alignment: Alignment.centerRight,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
