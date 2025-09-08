@@ -37,9 +37,6 @@ class MathDifficultyDialogState extends State<MathDifficultyDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
       backgroundColor: const Color(0xFFFFFBEA),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
