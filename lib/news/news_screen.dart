@@ -88,7 +88,7 @@ class NewsScreenState extends State<NewsScreen> {
 
         return Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(16.0),
           ),
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           elevation: 2.0,

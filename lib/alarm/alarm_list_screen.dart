@@ -66,7 +66,7 @@ class AlarmListScreen extends StatelessWidget {
             return Card(
               margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(32.0),
               ),
               color: isDarkMode
                   ? const Color(0xFF2A2F35)
@@ -146,7 +146,7 @@ class AlarmListScreen extends StatelessWidget {
                     margin:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(16.0),
                     ),
                     color:
                         isDarkMode ? Colors.grey[850] : const Color(0xFFFCFCFC),

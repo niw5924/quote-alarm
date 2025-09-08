@@ -107,7 +107,7 @@ class MathDifficultyDialogState extends State<MathDifficultyDialog> {
             ? color.withValues(alpha: 0.9)
             : Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(16.0),
         ),
         elevation: 2,
         child: Padding(
