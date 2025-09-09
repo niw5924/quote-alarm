@@ -104,7 +104,7 @@ class AlarmListScreen extends StatelessWidget {
 
               // 시간 표시 포맷팅
               final formattedTime =
-                  TimeUtil.formatTimeWithAmPm(alarmItem.settings.dateTime);
+                  TimeUtil.formatTimeWithAmPm(alarmItem.alarmSettings.dateTime);
 
               return Dismissible(
                 key: UniqueKey(),
@@ -214,9 +214,9 @@ class AlarmListScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            alarmItem.settings.notificationSettings.body.isEmpty
+                            alarmItem.alarmSettings.notificationSettings.body.isEmpty
                                 ? '메모 없음'
-                                : alarmItem.settings.notificationSettings.body,
+                                : alarmItem.alarmSettings.notificationSettings.body,
                             style: TextStyle(
                               color: textColor,
                               fontSize: 18,
@@ -240,7 +240,7 @@ class AlarmListScreen extends StatelessWidget {
                           if (value) {
                             ToastUtil.showInfo(
                               TimeUtil.remainingTimeText(
-                                alarmItem.settings.dateTime,
+                                alarmItem.alarmSettings.dateTime,
                               ),
                             );
                           }

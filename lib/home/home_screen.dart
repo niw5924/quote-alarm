@@ -43,8 +43,8 @@ class HomeScreenState extends State<HomeScreen> {
     Alarm.ringStream.stream.listen((alarmSettings) async {
       debugPrint("RingRingRingRingRingRing");
 
-      final matchingAlarm =
-          _alarms.firstWhere((alarm) => alarm.settings.id == alarmSettings.id);
+      final matchingAlarm = _alarms
+          .firstWhere((alarm) => alarm.alarmSettings.id == alarmSettings.id);
 
       final DateTime alarmStartTime = DateTime.now();
       final quoteService = QuoteService();
@@ -57,7 +57,7 @@ class HomeScreenState extends State<HomeScreen> {
         MaterialPageRoute(
           builder: (context) => QuoteScreen(
             quote: quote,
-            alarmId: matchingAlarm.settings.id,
+            alarmId: matchingAlarm.alarmSettings.id,
             cancelMode: matchingAlarm.cancelMode,
             quoteVolume: matchingAlarm.quoteVolume,
             alarmStartTime: alarmStartTime,
@@ -74,7 +74,7 @@ class HomeScreenState extends State<HomeScreen> {
   Future<void> _scheduleNextAlarm(AlarmItem alarmItem) async {
     final DateTime now = DateTime.now();
     final TimeOfDay alarmTimeOfDay =
-        TimeOfDay.fromDateTime(alarmItem.settings.dateTime);
+        TimeOfDay.fromDateTime(alarmItem.alarmSettings.dateTime);
 
     DateTime? nextAlarmTime;
     int currentWeekday = now.weekday % 7; // 0: 일요일, 6: 토요일
@@ -116,26 +116,26 @@ class HomeScreenState extends State<HomeScreen> {
     }
 
     // 기존 알람 ID + 1
-    int newAlarmId = alarmItem.settings.id + 1;
+    int newAlarmId = alarmItem.alarmSettings.id + 1;
 
     debugPrint(
-        "알람 업데이트 - 기존 날짜: ${alarmItem.settings.dateTime} → 새로운 날짜: $nextAlarmTime");
+        "알람 업데이트 - 기존 날짜: ${alarmItem.alarmSettings.dateTime} → 새로운 날짜: $nextAlarmTime");
     debugPrint(
-        "알람 업데이트 - 기존 ID: ${alarmItem.settings.id} → 새로운 ID: $newAlarmId");
+        "알람 업데이트 - 기존 ID: ${alarmItem.alarmSettings.id} → 새로운 ID: $newAlarmId");
 
     // 알람 정보 업데이트
-    alarmItem.settings = alarmItem.settings.copyWith(
+    alarmItem.alarmSettings = alarmItem.alarmSettings.copyWith(
       id: newAlarmId,
       dateTime: nextAlarmTime,
     );
 
     setState(() {
       _alarms = _alarms.map((a) {
-        return (a.settings.id == newAlarmId - 1) ? alarmItem : a;
+        return (a.alarmSettings.id == newAlarmId - 1) ? alarmItem : a;
       }).toList();
     });
 
-    await Alarm.set(alarmSettings: alarmItem.settings);
+    await Alarm.set(alarmSettings: alarmItem.alarmSettings);
     debugPrint("알람 등록 완료 - ID: $newAlarmId, 시간: $nextAlarmTime");
 
     _saveAlarms();
@@ -175,11 +175,11 @@ class HomeScreenState extends State<HomeScreen> {
         _alarms.add(updatedAlarmItem);
       });
 
-      await Alarm.set(alarmSettings: updatedAlarmItem.settings);
+      await Alarm.set(alarmSettings: updatedAlarmItem.alarmSettings);
       _saveAlarms();
 
       ToastUtil.showInfo(
-        TimeUtil.remainingTimeText(updatedAlarmItem.settings.dateTime),
+        TimeUtil.remainingTimeText(updatedAlarmItem.alarmSettings.dateTime),
       );
     }
   }
@@ -189,14 +189,14 @@ class HomeScreenState extends State<HomeScreen> {
 
     final List<String> alarmList = _alarms.map((alarm) {
       return [
-        alarm.settings.id,
-        alarm.settings.dateTime.toIso8601String(),
+        alarm.alarmSettings.id,
+        alarm.alarmSettings.dateTime.toIso8601String(),
         alarm.repeatDays.join(","),
         alarm.cancelMode.index,
-        alarm.settings.assetAudioPath,
-        alarm.settings.volume,
+        alarm.alarmSettings.assetAudioPath,
+        alarm.alarmSettings.volume,
         alarm.quoteVolume,
-        alarm.settings.notificationSettings.body,
+        alarm.alarmSettings.notificationSettings.body,
         alarm.isEnabled,
       ].join("|");
     }).toList();
@@ -234,7 +234,7 @@ class HomeScreenState extends State<HomeScreen> {
           final isEnabled = parts[8] == 'true';
 
           return AlarmItem(
-            alarmSettings,
+            alarmSettings: alarmSettings,
             repeatDays: repeatDays,
             cancelMode: cancelMode,
             quoteVolume: quoteVolume,
@@ -254,20 +254,20 @@ class HomeScreenState extends State<HomeScreen> {
       DateTime now = DateTime.now();
 
       // 현재 시간이 알람 시간보다 이전이면 바로 등록
-      if (alarmItem.settings.dateTime.isBefore(now)) {
+      if (alarmItem.alarmSettings.dateTime.isBefore(now)) {
         await _scheduleNextAlarm(alarmItem);
       } else {
-        await Alarm.set(alarmSettings: alarmItem.settings);
+        await Alarm.set(alarmSettings: alarmItem.alarmSettings);
       }
     } else {
-      await Alarm.stop(alarmItem.settings.id);
+      await Alarm.stop(alarmItem.alarmSettings.id);
     }
 
     _saveAlarms();
   }
 
   void deleteAlarm(int index, AlarmItem alarmItem) async {
-    await Alarm.stop(alarmItem.settings.id);
+    await Alarm.stop(alarmItem.alarmSettings.id);
     setState(() {
       _alarms.removeAt(index);
     });
@@ -286,7 +286,7 @@ class HomeScreenState extends State<HomeScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AlarmEditScreen(
-                    alarmSettings: _alarms[index].settings,
+                    alarmSettings: _alarms[index].alarmSettings,
                     repeatDays: _alarms[index].repeatDays,
                     cancelMode: _alarms[index].cancelMode,
                     quoteVolume: _alarms[index].quoteVolume,
@@ -297,7 +297,7 @@ class HomeScreenState extends State<HomeScreen> {
               if (updatedAlarmItem != null) {
                 setState(() {
                   _alarms[index] = AlarmItem(
-                    updatedAlarmItem.settings,
+                    alarmSettings: updatedAlarmItem.alarmSettings,
                     repeatDays: updatedAlarmItem.repeatDays,
                     cancelMode: updatedAlarmItem.cancelMode,
                     quoteVolume: updatedAlarmItem.quoteVolume,
@@ -306,10 +306,11 @@ class HomeScreenState extends State<HomeScreen> {
                 });
 
                 if (_alarms[index].isEnabled) {
-                  await Alarm.set(alarmSettings: updatedAlarmItem.settings);
+                  await Alarm.set(
+                      alarmSettings: updatedAlarmItem.alarmSettings);
                   ToastUtil.showInfo(
                     TimeUtil.remainingTimeText(
-                      updatedAlarmItem.settings.dateTime,
+                      updatedAlarmItem.alarmSettings.dateTime,
                     ),
                   );
                 }

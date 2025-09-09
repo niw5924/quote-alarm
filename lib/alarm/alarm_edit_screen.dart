@@ -117,7 +117,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
     );
 
     final updatedAlarmItem = AlarmItem(
-      updatedAlarmSettings,
+      alarmSettings: updatedAlarmSettings,
       repeatDays: _repeatDays,
       cancelMode: _cancelMode,
       quoteVolume: _quoteVolume,
