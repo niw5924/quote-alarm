@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class AlarmCancelSlider extends StatelessWidget {
-  final double sliderValue;
-  final ValueChanged<double> onSliderChanged;
-  final VoidCallback onSliderComplete;
+class AlarmCancelSlide extends StatelessWidget {
+  final double slideValue;
+  final ValueChanged<double> onSlideChanged;
+  final VoidCallback onSlideComplete;
 
-  const AlarmCancelSlider({
+  const AlarmCancelSlide({
     super.key,
-    required this.sliderValue,
-    required this.onSliderChanged,
-    required this.onSliderComplete,
+    required this.slideValue,
+    required this.onSlideChanged,
+    required this.onSlideComplete,
   });
 
   @override
@@ -37,13 +37,13 @@ class AlarmCancelSlider extends StatelessWidget {
               inactiveTrackColor: Colors.grey,
             ),
             child: Slider(
-              value: sliderValue,
+              value: slideValue,
               min: 0,
               max: 1,
               onChanged: (value) {
-                onSliderChanged(value);
+                onSlideChanged(value);
                 if (value == 1) {
-                  onSliderComplete();
+                  onSlideComplete();
                 }
               },
             ),

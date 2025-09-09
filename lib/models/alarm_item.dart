@@ -11,7 +11,7 @@ class AlarmItem {
   AlarmItem({
     required this.alarmSettings,
     this.repeatDays = const [false, false, false, false, false, false, false],
-    this.cancelMode = AlarmCancelMode.slider,
+    this.cancelMode = AlarmCancelMode.slide,
     this.quoteVolume = 1.0,
     this.isEnabled = true,
   });

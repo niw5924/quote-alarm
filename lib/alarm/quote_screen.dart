@@ -1,7 +1,7 @@
 import 'package:alarm/alarm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_app_2/alarm/alarm_cancel_slider.dart';
+import 'package:flutter_alarm_app_2/alarm/alarm_cancel_slide.dart';
 import 'package:flutter_alarm_app_2/alarm/alarm_success_screen.dart';
 import 'package:flutter_alarm_app_2/providers/auth_provider.dart';
 import 'package:flutter_alarm_app_2/services/quote_service.dart';
@@ -38,8 +38,8 @@ class QuoteScreen extends StatefulWidget {
 }
 
 class QuoteScreenState extends State<QuoteScreen> {
-  // 슬라이더 관련 상태
-  double _sliderValue = 0;
+  // 슬라이드 관련 상태
+  double _slideValue = 0;
 
   // 수학 문제 관련 상태
   late int _firstNumber;
@@ -278,11 +278,11 @@ class QuoteScreenState extends State<QuoteScreen> {
 
   Widget _buildCancelModeUI() {
     switch (widget.cancelMode) {
-      case AlarmCancelMode.slider:
-        return AlarmCancelSlider(
-          sliderValue: _sliderValue,
-          onSliderChanged: (value) => setState(() => _sliderValue = value),
-          onSliderComplete: cancelAlarm,
+      case AlarmCancelMode.slide:
+        return AlarmCancelSlide(
+          slideValue: _slideValue,
+          onSlideChanged: (value) => setState(() => _slideValue = value),
+          onSlideComplete: cancelAlarm,
         );
       case AlarmCancelMode.mathProblem:
         return _isMathProblemGenerated

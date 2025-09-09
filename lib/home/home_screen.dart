@@ -164,7 +164,7 @@ class HomeScreenState extends State<HomeScreen> {
         builder: (context) => AlarmEditScreen(
           alarmSettings: newAlarmSettings,
           repeatDays: List.filled(7, false),
-          cancelMode: AlarmCancelMode.slider,
+          cancelMode: AlarmCancelMode.slide,
           quoteVolume: 1.0,
         ),
       ),

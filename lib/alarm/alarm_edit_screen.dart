@@ -302,14 +302,14 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
                         child: GestureDetector(
                           onTap: () {
                             setState(() {
-                              _cancelMode = AlarmCancelMode.slider;
+                              _cancelMode = AlarmCancelMode.slide;
                             });
                           },
                           child: Center(
                             child: Text(
-                              AlarmCancelMode.slider.label,
+                              AlarmCancelMode.slide.label,
                               style: TextStyle(
-                                color: _cancelMode == AlarmCancelMode.slider
+                                color: _cancelMode == AlarmCancelMode.slide
                                     ? Colors.black
                                     : textColor,
                                 fontWeight: FontWeight.w600,
@@ -495,7 +495,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
 
   Alignment _getAlignmentForCancelMode() {
     switch (_cancelMode) {
-      case AlarmCancelMode.slider:
+      case AlarmCancelMode.slide:
         return const Alignment(-1.0, 0.0);
       case AlarmCancelMode.mathProblem:
         return const Alignment(0.0, 0.0);

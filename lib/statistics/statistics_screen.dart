@@ -78,10 +78,10 @@ class StatisticsScreen extends StatelessWidget {
                           snapshot.data?.data() as Map<String, dynamic>?;
                       final alarmDismissals = data?['alarmDismissals'] ?? {};
 
-                      double sliderAverage = 0,
+                      double slideAverage = 0,
                           mathAverage = 0,
                           voiceAverage = 0;
-                      int sliderTotalDuration = 0, sliderCount = 0;
+                      int slideTotalDuration = 0, slideCount = 0;
                       int mathTotalDuration = 0, mathCount = 0;
                       int voiceTotalDuration = 0, voiceCount = 0;
 
@@ -94,9 +94,9 @@ class StatisticsScreen extends StatelessWidget {
                               AlarmCancelMode.fromKey(alarmData['cancelMode']);
 
                           switch (cancelMode) {
-                            case AlarmCancelMode.slider:
-                              sliderTotalDuration += duration;
-                              sliderCount++;
+                            case AlarmCancelMode.slide:
+                              slideTotalDuration += duration;
+                              slideCount++;
                               break;
                             case AlarmCancelMode.mathProblem:
                               mathTotalDuration += duration;
@@ -111,8 +111,8 @@ class StatisticsScreen extends StatelessWidget {
                       });
 
                       // Set formatted averages to one decimal place
-                      sliderAverage = sliderCount > 0
-                          ? double.parse((sliderTotalDuration / sliderCount)
+                      slideAverage = slideCount > 0
+                          ? double.parse((slideTotalDuration / slideCount)
                               .toStringAsFixed(1))
                           : 0;
                       mathAverage = mathCount > 0
@@ -126,7 +126,7 @@ class StatisticsScreen extends StatelessWidget {
 
                       // Sorting for medals
                       final averages = {
-                        AlarmCancelMode.slider.key: sliderAverage,
+                        AlarmCancelMode.slide.key: slideAverage,
                         AlarmCancelMode.mathProblem.key: mathAverage,
                         AlarmCancelMode.voiceRecognition.key: voiceAverage,
                       };
@@ -159,7 +159,7 @@ class StatisticsScreen extends StatelessWidget {
                                 barGroups: [
                                   BarChartGroupData(x: 0, barRods: [
                                     BarChartRodData(
-                                      toY: sliderAverage,
+                                      toY: slideAverage,
                                       width: 40,
                                       color: Colors.blue,
                                       borderRadius: const BorderRadius.only(

@@ -1,5 +1,5 @@
 enum AlarmCancelMode {
-  slider('slider', '슬라이더'),
+  slide('slide', '슬라이드'),
   mathProblem('math_problem', '수학 문제'),
   voiceRecognition('voice_recognition', '음성 인식');
 
