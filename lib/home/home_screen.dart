@@ -274,12 +274,6 @@ class HomeScreenState extends State<HomeScreen> {
     _saveAlarms();
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget getBody() {
@@ -356,6 +350,12 @@ class HomeScreenState extends State<HomeScreen> {
       body: getBody(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.alarm),
@@ -374,8 +374,6 @@ class HomeScreenState extends State<HomeScreen> {
             label: '설정',
           ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
       ),
     );
   }
