@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/alarm/alarm_edit_screen.dart';
@@ -41,7 +43,7 @@ class HomeScreenState extends State<HomeScreen> {
 
     // 알람이 울릴 때 처리
     Alarm.ringStream.stream.listen((alarmSettings) async {
-      debugPrint("RingRingRingRingRingRing");
+      debugPrint('RingRingRingRingRingRing');
 
       final matchingAlarm = _alarms
           .firstWhere((alarm) => alarm.alarmSettings.id == alarmSettings.id);
@@ -79,8 +81,8 @@ class HomeScreenState extends State<HomeScreen> {
     DateTime? nextAlarmTime;
     int currentWeekday = now.weekday % 7; // 0: 일요일, 6: 토요일
 
-    debugPrint("현재 시간: $now");
-    debugPrint("반복 요일 설정: ${alarmItem.repeatDays}");
+    debugPrint('현재 시간: $now');
+    debugPrint('반복 요일 설정: ${alarmItem.repeatDays}');
 
     for (int i = 0; i < 7; i++) {
       int nextDay = (currentWeekday + i) % 7;
@@ -93,11 +95,11 @@ class HomeScreenState extends State<HomeScreen> {
           alarmTimeOfDay.minute,
         );
 
-        debugPrint("후보 날짜 확인: $candidate");
+        debugPrint('후보 날짜 확인: $candidate');
 
         if (candidate.isAfter(now)) {
           nextAlarmTime = candidate;
-          debugPrint("선택된 다음 알람 날짜: $nextAlarmTime");
+          debugPrint('선택된 다음 알람 날짜: $nextAlarmTime');
           break;
         }
       }
@@ -112,16 +114,16 @@ class HomeScreenState extends State<HomeScreen> {
         alarmTimeOfDay.hour,
         alarmTimeOfDay.minute,
       );
-      debugPrint("이번 주에 울릴 요일 없음 → 다음 주 예약: $nextAlarmTime");
+      debugPrint('이번 주에 울릴 요일 없음 → 다음 주 예약: $nextAlarmTime');
     }
 
     // 기존 알람 ID + 1
     int newAlarmId = alarmItem.alarmSettings.id + 1;
 
     debugPrint(
-        "알람 업데이트 - 기존 날짜: ${alarmItem.alarmSettings.dateTime} → 새로운 날짜: $nextAlarmTime");
+        '알람 업데이트 - 기존 날짜: ${alarmItem.alarmSettings.dateTime} → 새로운 날짜: $nextAlarmTime');
     debugPrint(
-        "알람 업데이트 - 기존 ID: ${alarmItem.alarmSettings.id} → 새로운 ID: $newAlarmId");
+        '알람 업데이트 - 기존 ID: ${alarmItem.alarmSettings.id} → 새로운 ID: $newAlarmId');
 
     // 알람 정보 업데이트
     alarmItem.alarmSettings = alarmItem.alarmSettings.copyWith(
@@ -136,7 +138,7 @@ class HomeScreenState extends State<HomeScreen> {
     });
 
     await Alarm.set(alarmSettings: alarmItem.alarmSettings);
-    debugPrint("알람 등록 완료 - ID: $newAlarmId, 시간: $nextAlarmTime");
+    debugPrint('알람 등록 완료 - ID: $newAlarmId, 시간: $nextAlarmTime');
 
     _saveAlarms();
   }
@@ -186,21 +188,19 @@ class HomeScreenState extends State<HomeScreen> {
 
   Future<void> _saveAlarms() async {
     final prefs = await SharedPreferences.getInstance();
-
-    final List<String> alarmList = _alarms.map((alarm) {
-      return [
-        alarm.alarmSettings.id,
-        alarm.alarmSettings.dateTime.toIso8601String(),
-        alarm.repeatDays.join(","),
-        alarm.cancelMode.index,
-        alarm.alarmSettings.assetAudioPath,
-        alarm.alarmSettings.volume,
-        alarm.quoteVolume,
-        alarm.alarmSettings.notificationSettings.body,
-        alarm.isEnabled,
-      ].join("|");
-    }).toList();
-
+    final alarmList = _alarms
+        .map((alarm) => jsonEncode({
+              'id': alarm.alarmSettings.id,
+              'dateTime': alarm.alarmSettings.dateTime.toString(),
+              'repeatDays': alarm.repeatDays,
+              'cancelMode': alarm.cancelMode.key,
+              'assetAudioPath': alarm.alarmSettings.assetAudioPath,
+              'volume': alarm.alarmSettings.volume,
+              'quoteVolume': alarm.quoteVolume,
+              'notificationBody': alarm.alarmSettings.notificationSettings.body,
+              'isEnabled': alarm.isEnabled,
+            }))
+        .toList();
     await prefs.setStringList('alarms', alarmList);
     debugPrint(alarmList.toString());
   }
@@ -209,36 +209,35 @@ class HomeScreenState extends State<HomeScreen> {
     final prefs = await SharedPreferences.getInstance();
     final List<String>? alarmList = prefs.getStringList('alarms');
     debugPrint(alarmList.toString());
-
-    if (alarmList != null) {
+    if (alarmList != null && alarmList.isNotEmpty) {
       setState(() {
         _alarms = alarmList.map((alarmString) {
-          final parts = alarmString.split('|');
+          final parts = jsonDecode(alarmString);
+
           final alarmSettings = AlarmSettings(
-            id: int.parse(parts[0]),
-            dateTime: DateTime.parse(parts[1]),
-            assetAudioPath: parts[4],
+            id: parts['id'],
+            dateTime: DateTime.parse(parts['dateTime']),
+
+            /// 문자열을 DateTime 객체로 변환
+            assetAudioPath: parts['assetAudioPath'],
             notificationSettings: NotificationSettings(
               title: '울림소리',
-              body: parts[7],
+              body: parts['notificationBody'],
             ),
             loopAudio: true,
             vibrate: true,
-            volume: double.parse(parts[5]),
+            volume: parts['volume'],
             warningNotificationOnKill: true,
           );
-          final repeatDays =
-              parts[2].split(',').map((e) => e == 'true').toList();
-          final cancelMode = AlarmCancelMode.values[int.parse(parts[3])];
-          final quoteVolume = double.parse(parts[6]);
-          final isEnabled = parts[8] == 'true';
 
           return AlarmItem(
             alarmSettings: alarmSettings,
-            repeatDays: repeatDays,
-            cancelMode: cancelMode,
-            quoteVolume: quoteVolume,
-            isEnabled: isEnabled,
+            repeatDays: List<bool>.from(parts['repeatDays']),
+
+            /// JSON 배열(List<dynamic>)을 List<bool>로 변환
+            cancelMode: AlarmCancelMode.fromKey(parts['cancelMode']),
+            quoteVolume: parts['quoteVolume'],
+            isEnabled: parts['isEnabled'],
           );
         }).toList();
       });
