@@ -17,31 +17,28 @@ class StatisticsScreen extends StatelessWidget {
     final uid = authProvider.user?.uid;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(16),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Center(
-            child: Text(
-              '알람 해제 유형별 평균 해제 시간',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          const Text(
+            '알람 해제 유형별 평균 해제 시간',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           Expanded(
             child: uid == null
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
+                      Lottie.asset(
+                        'assets/animation/lottie_statistics.json',
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Lottie.asset(
-                          'assets/animation/lottie_statistics.json',
-                          fit: BoxFit.cover,
-                        ),
+                        fit: BoxFit.cover,
                       ),
-                      const SizedBox(height: 16.0),
+                      const SizedBox(height: 16),
                       GradientBorderButton(
                         width: double.infinity,
                         text: '로그인하고 통계 확인하기',
@@ -71,6 +68,7 @@ class StatisticsScreen extends StatelessWidget {
                       }
 
                       if (!snapshot.hasData) {
+                        debugPrint("Firestore 데이터 로딩 중...");
                         return const Center(child: CircularProgressIndicator());
                       }
 
@@ -144,11 +142,11 @@ class StatisticsScreen extends StatelessWidget {
 
                       return Column(
                         children: [
-                          _buildMedalRanking(
+                          _MedalRanking(
                             sortedAverages: sortedAverages,
                             zeroAverages: zeroAverages,
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 16),
                           Expanded(
                             child: BarChart(
                               BarChartData(
@@ -231,69 +229,68 @@ class StatisticsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildMedalRanking({
-    required List<MapEntry<String, double>> sortedAverages,
-    required List<MapEntry<String, double>> zeroAverages,
-  }) {
-    final medalColors = [Colors.amber, Colors.grey, Colors.brown];
+class _MedalRanking extends StatelessWidget {
+  final List<MapEntry<String, double>> sortedAverages;
+  final List<MapEntry<String, double>> zeroAverages;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ...List.generate(sortedAverages.length, (index) {
-          final entry = sortedAverages[index];
-          final modeLabel = AlarmCancelMode.fromKey(entry.key).label;
-          final averageTime = entry.value;
+  const _MedalRanking({
+    required this.sortedAverages,
+    required this.zeroAverages,
+  });
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Row(
-              children: [
-                Icon(
-                  index < 3 ? Icons.emoji_events : Icons.sentiment_dissatisfied,
-                  color: index < 3 ? medalColors[index] : Colors.grey,
-                  size: 28,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  '$modeLabel ${averageTime.toStringAsFixed(1)}초',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
+  @override
+  Widget build(BuildContext context) {
+    const medalColors = [Colors.amber, Colors.grey, Colors.brown];
+
+    final items = [
+      ...sortedAverages.map((entry) {
+        return Row(
+          children: [
+            Icon(
+              sortedAverages.indexOf(entry) < 3
+                  ? Icons.emoji_events
+                  : Icons.sentiment_dissatisfied,
+              color: sortedAverages.indexOf(entry) < 3
+                  ? medalColors[sortedAverages.indexOf(entry)]
+                  : Colors.grey,
+              size: 28,
             ),
-          );
-        }),
-        // 0초 항목 표시
-        if (zeroAverages.isNotEmpty)
-          ...zeroAverages.map((entry) {
-            final modeLabel = AlarmCancelMode.fromKey(entry.key).label;
-
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.block,
-                    color: Colors.red,
-                    size: 28,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '$modeLabel 기록 없음',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
+            const SizedBox(width: 8),
+            Text(
+              '${AlarmCancelMode.fromKey(entry.key).label} ${entry.value.toStringAsFixed(1)}초',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
               ),
-            );
-          }),
-      ],
+            ),
+          ],
+        );
+      }),
+      ...zeroAverages.map((entry) {
+        return Row(
+          children: [
+            const Icon(Icons.block, color: Colors.red, size: 28),
+            const SizedBox(width: 8),
+            Text(
+              '${AlarmCancelMode.fromKey(entry.key).label} 기록 없음',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        );
+      }),
+    ];
+
+    return ListView.separated(
+      separatorBuilder: (context, index) => const SizedBox(height: 4),
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: items.length,
+      itemBuilder: (context, index) => items[index],
     );
   }
 }
