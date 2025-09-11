@@ -61,7 +61,7 @@ class SignupScreenState extends State<SignupScreen> {
           title: const Text('회원가입'),
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               Image.asset('assets/image/gear.gif'),
@@ -74,7 +74,7 @@ class SignupScreenState extends State<SignupScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 16),
               TextField(
                 controller: emailController,
                 style: TextStyle(color: textColor),
@@ -91,7 +91,7 @@ class SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               TextField(
                 controller: passwordController,
                 obscureText: !_isPasswordVisible,
@@ -122,7 +122,7 @@ class SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               TextField(
                 controller: confirmPasswordController,
                 obscureText: !_isConfirmPasswordVisible,
@@ -153,7 +153,7 @@ class SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 16),
               PrimaryButton(
                 width: double.infinity,
                 text: 'SIGN UP',

@@ -53,12 +53,10 @@ class _LoginScreenState extends State<LoginScreen> {
           title: const Text('로그인'),
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              Image.asset(
-                'assets/image/gear.gif',
-              ),
+              Image.asset('assets/image/gear.gif'),
               const Text(
                 'LOGIN',
                 style: TextStyle(
@@ -68,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 16),
               TextField(
                 controller: emailController,
                 style: TextStyle(color: textColor),
@@ -85,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               TextField(
                 controller: passwordController,
                 obscureText: obscureText,
@@ -114,13 +112,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 16),
               PrimaryButton(
                 width: double.infinity,
                 text: 'LOGIN',
                 onPressed: signIn,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 16),
               GreyTextButton(
                 text: 'SIGN UP',
                 onPressed: () {
