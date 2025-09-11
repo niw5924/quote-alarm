@@ -45,59 +45,64 @@ class AlarmListScreen extends StatelessWidget {
     final textColor = isDarkMode ? Colors.white : Colors.black;
     final List<String> days = ['일', '월', '화', '수', '목', '금', '토'];
 
-    return Column(
-      children: [
-        StreamBuilder<String>(
-          stream: Stream.value(DateTime.now().minute).concatWith([
-            Stream.periodic(
-                    const Duration(seconds: 1), (_) => DateTime.now().minute)
-                .distinct(),
-          ]).asyncMap((_) => getTimeUntilNextAlarm()),
-          builder: (context, snapshot) {
-            final isLoading =
-                snapshot.connectionState == ConnectionState.waiting;
-            final hasError = snapshot.hasError;
-            final text = isLoading
-                ? "알람 정보를 불러오는 중..."
-                : hasError
-                    ? "알람 정보를 가져오는 데 실패했어요"
-                    : snapshot.data ?? "예정된 알람 없음";
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          StreamBuilder<String>(
+            stream: Stream.value(DateTime.now().minute).concatWith([
+              Stream.periodic(
+                      const Duration(seconds: 1), (_) => DateTime.now().minute)
+                  .distinct(),
+            ]).asyncMap((_) => getTimeUntilNextAlarm()),
+            builder: (context, snapshot) {
+              final isLoading =
+                  snapshot.connectionState == ConnectionState.waiting;
+              final hasError = snapshot.hasError;
+              final text = isLoading
+                  ? "알람 정보를 불러오는 중..."
+                  : hasError
+                      ? "알람 정보를 가져오는 데 실패했어요"
+                      : snapshot.data ?? "예정된 알람 없음";
 
-            return Card(
-              margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32.0),
-              ),
-              color: isDarkMode
-                  ? const Color(0xFF2A2F35)
-                  : const Color(0xFFF1F4F8),
-              child: ListTile(
-                leading: Icon(
-                  Icons.alarm,
-                  size: 30,
-                  color: textColor,
+              return Card(
+                margin: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0),
                 ),
-                title: Text(
-                  '다음 알람',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                color: isDarkMode
+                    ? const Color(0xFF2A2F35)
+                    : const Color(0xFFF1F4F8),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.alarm,
+                    size: 30,
                     color: textColor,
                   ),
-                ),
-                subtitle: Text(
-                  text,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: textColor,
+                  title: Text(
+                    '다음 알람',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                  subtitle: Text(
+                    text,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: textColor,
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-        ),
-        Expanded(
-          child: ListView.builder(
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+          ListView.separated(
+            separatorBuilder: (context, index) => const SizedBox(height: 16),
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
             itemCount: alarms.length,
             itemBuilder: (context, index) {
               final alarmItem = alarms[index];
@@ -108,22 +113,20 @@ class AlarmListScreen extends StatelessWidget {
 
               return Dismissible(
                 key: UniqueKey(),
+                direction: DismissDirection.endToStart,
                 background: Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Colors.red,
                     borderRadius: BorderRadius.circular(16.0),
                   ),
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: const Icon(
                     Icons.delete,
                     size: 30,
                     color: Colors.white,
                   ),
                 ),
-                direction: DismissDirection.endToStart,
                 confirmDismiss: (direction) async {
                   final confirmed = await showDialog<bool>(
                     context: context,
@@ -143,8 +146,7 @@ class AlarmListScreen extends StatelessWidget {
                 child: Opacity(
                   opacity: alarmItem.isEnabled ? 1.0 : 0.5,
                   child: Card(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    margin: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0),
                     ),
@@ -160,43 +162,43 @@ class AlarmListScreen extends StatelessWidget {
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // 요일 표시
-                          Text.rich(
-                            TextSpan(
-                              children: List.generate(7, (dayIndex) {
-                                return TextSpan(
-                                  text: '${days[dayIndex]} ',
+                          /// 요일 표시
+                          Wrap(
+                            spacing: 4, // 가로 간격
+                            children: List.generate(
+                              7,
+                              (dayIndex) {
+                                return Text(
+                                  days[dayIndex],
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: textColor.withValues(
-                                        alpha: alarmItem.repeatDays[dayIndex]
-                                            ? 1.0
-                                            : 0.5),
+                                      alpha: alarmItem.repeatDays[dayIndex]
+                                          ? 1.0
+                                          : 0.5,
+                                    ),
                                   ),
                                 );
-                              }),
+                              },
                             ),
                           ),
-                          // 기존 시간 표시
+
+                          /// 시간 표시
                           RichText(
                             text: TextSpan(
+                              style: TextStyle(
+                                color: textColor,
+                                fontWeight: FontWeight.w600,
+                              ),
                               children: [
                                 TextSpan(
                                   text: '${formattedTime.split(' ')[0]} ',
-                                  style: TextStyle(
-                                    color: textColor,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: const TextStyle(fontSize: 24),
                                 ),
                                 TextSpan(
                                   text: formattedTime.split(' ')[1],
-                                  style: TextStyle(
-                                    color: textColor,
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: const TextStyle(fontSize: 32),
                                 ),
                               ],
                             ),
@@ -214,9 +216,11 @@ class AlarmListScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            alarmItem.alarmSettings.notificationSettings.body.isEmpty
+                            alarmItem.alarmSettings.notificationSettings.body
+                                    .isEmpty
                                 ? '메모 없음'
-                                : alarmItem.alarmSettings.notificationSettings.body,
+                                : alarmItem
+                                    .alarmSettings.notificationSettings.body,
                             style: TextStyle(
                               color: textColor,
                               fontSize: 18,
@@ -225,7 +229,6 @@ class AlarmListScreen extends StatelessWidget {
                         ],
                       ),
                       trailing: Switch(
-                        value: alarmItem.isEnabled,
                         activeColor: Colors.white,
                         activeTrackColor: isDarkMode
                             ? Colors.lightBlueAccent
@@ -233,6 +236,7 @@ class AlarmListScreen extends StatelessWidget {
                         inactiveThumbColor: Colors.grey,
                         inactiveTrackColor:
                             isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                        value: alarmItem.isEnabled,
                         onChanged: (value) {
                           HapticFeedback.mediumImpact();
                           onToggleAlarm(alarmItem);
@@ -252,8 +256,8 @@ class AlarmListScreen extends StatelessWidget {
               );
             },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
