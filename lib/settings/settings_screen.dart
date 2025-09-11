@@ -1,8 +1,6 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/auth/login_required_dialog.dart';
 import 'package:flutter_alarm_app_2/settings/quote_language_dialog.dart';
-import 'package:flutter_alarm_app_2/settings/settings_tile.dart';
 import 'package:flutter_alarm_app_2/settings/sound_addition_screen.dart';
 import 'package:flutter_alarm_app_2/settings/star_grade_explanation_dialog.dart';
 import 'package:flutter_alarm_app_2/utils/overlay_loader.dart';
@@ -26,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
     final uid = authProvider.user?.uid;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -82,49 +80,45 @@ class SettingsScreen extends StatelessWidget {
                       const Icon(Icons.star, color: Colors.brown, size: 30);
                 }
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: isDarkMode
-                          ? Colors.grey[850]
-                          : const Color(0xFFEAD3B2),
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        starIcon,
-                        const SizedBox(width: 8),
-                        Text(
-                          '${authProvider.user?.email} 님',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                return Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color:
+                        isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      starIcon,
+                      const SizedBox(width: 8),
+                      Text(
+                        '${authProvider.user?.email} 님',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.info_outline, size: 20),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return StarGradeExplanationDialog(
-                                  currentMonthDismissals:
-                                      currentMonthDismissals,
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.info_outline, size: 20),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return StarGradeExplanationDialog(
+                                currentMonthDismissals: currentMonthDismissals,
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 );
               },
             ),
-          SettingsTile(
+          if (authProvider.isLoggedIn) const SizedBox(height: 16),
+          _SettingsTile(
             icon: Icons.person,
             iconBackgroundColor: Colors.blueGrey,
             title: authProvider.isLoggedIn ? '로그아웃' : '로그인',
@@ -155,7 +149,8 @@ class SettingsScreen extends StatelessWidget {
               }
             },
           ),
-          SettingsTile(
+          const SizedBox(height: 16),
+          _SettingsTile(
             icon: Icons.calculate,
             iconBackgroundColor: Colors.teal,
             title: '수학 문제 난이도 설정',
@@ -168,7 +163,8 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           ),
-          SettingsTile(
+          const SizedBox(height: 16),
+          _SettingsTile(
             icon: Icons.translate,
             iconBackgroundColor: Colors.indigo,
             title: '명언 언어 설정',
@@ -181,7 +177,8 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           ),
-          SettingsTile(
+          const SizedBox(height: 16),
+          _SettingsTile(
             icon: Icons.music_note,
             iconBackgroundColor: Colors.purple,
             title: '나만의 사운드 추가하기',
@@ -201,51 +198,52 @@ class SettingsScreen extends StatelessWidget {
               }
             },
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Stack(
-              children: [
-                StreamBuilder<DocumentSnapshot>(
-                  stream: uid != null
-                      ? FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(uid)
-                          .snapshots()
-                          .handleError((error) {
-                          debugPrint("Firestore 스트림 오류 발생: $error");
-                        })
-                      : null,
-                  builder: (context, snapshot) {
-                    Map<DateTime, int> datasets = {};
+          const SizedBox(height: 16),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              StreamBuilder<DocumentSnapshot>(
+                stream: uid != null
+                    ? FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(uid)
+                        .snapshots()
+                        .handleError((error) {
+                        debugPrint("Firestore 스트림 오류 발생: $error");
+                      })
+                    : null,
+                builder: (context, snapshot) {
+                  final Map<DateTime, int> datasets = {};
 
-                    if (snapshot.hasError) {
-                      debugPrint("Firestore 데이터 로드 실패: ${snapshot.error}");
-                      return const Center(child: Text("데이터를 불러올 수 없습니다."));
-                    }
+                  if (snapshot.hasError) {
+                    debugPrint("Firestore 데이터 로드 실패: ${snapshot.error}");
+                    return const Center(child: Text("데이터를 불러올 수 없습니다."));
+                  }
 
-                    if (snapshot.connectionState == ConnectionState.active &&
-                        snapshot.hasData &&
-                        authProvider.isLoggedIn) {
-                      final data =
-                          snapshot.data?.data() as Map<String, dynamic>?;
-                      final alarmDismissals = data?['alarmDismissals'] ?? {};
+                  if (snapshot.connectionState == ConnectionState.active &&
+                      snapshot.hasData &&
+                      authProvider.isLoggedIn) {
+                    final data = snapshot.data?.data() as Map<String, dynamic>?;
+                    final alarmDismissals = data?['alarmDismissals'] ?? {};
 
-                      alarmDismissals.forEach((date, alarms) {
-                        int minDuration = alarms.values
-                            .map((alarm) => alarm['duration'])
-                            .reduce((a, b) => a < b ? a : b);
+                    alarmDismissals.forEach((date, alarms) {
+                      int minDuration = alarms.values
+                          .map((alarm) => alarm['duration'])
+                          .reduce((a, b) => a < b ? a : b);
 
-                        DateTime dateTime = DateTime.parse(date);
-                        datasets[dateTime] =
-                            (minDuration >= 0 && minDuration < 30)
-                                ? 2
-                                : (minDuration >= 30)
-                                    ? 1
-                                    : 0;
-                      });
-                    }
+                      DateTime dateTime = DateTime.parse(date);
+                      datasets[dateTime] =
+                          (minDuration >= 0 && minDuration < 30)
+                              ? 2
+                              : (minDuration >= 30)
+                                  ? 1
+                                  : 0;
+                    });
+                  }
 
-                    return Column(
+                  return Opacity(
+                    opacity: authProvider.isLoggedIn ? 1.0 : 0.2,
+                    child: Column(
                       children: [
                         HeatMapCalendar(
                           datasets: datasets,
@@ -264,56 +262,47 @@ class SettingsScreen extends StatelessWidget {
                             2: Color(0xFF455A64),
                           },
                         ),
-                        const SizedBox(height: 8),
-                        Row(
+                        const SizedBox(height: 16),
+                        const Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            _buildColorIndicator(
+                            _ColorIndicator(
                               label: "기록 없음",
-                              color: const Color(0xFFB0BEC5),
+                              color: Color(0xFFB0BEC5),
                             ),
-                            const SizedBox(width: 12),
-                            _buildColorIndicator(
+                            SizedBox(width: 12),
+                            _ColorIndicator(
                               label: "30초 이상",
-                              color: const Color(0xFF78909C),
+                              color: Color(0xFF78909C),
                             ),
-                            const SizedBox(width: 12),
-                            _buildColorIndicator(
+                            SizedBox(width: 12),
+                            _ColorIndicator(
                               label: "30초 미만",
-                              color: const Color(0xFF455A64),
+                              color: Color(0xFF455A64),
                             ),
                           ],
                         ),
                       ],
+                    ),
+                  );
+                },
+              ),
+              if (!authProvider.isLoggedIn)
+                GradientBorderButton(
+                  width: double.infinity,
+                  text: '로그인하고 잔디 채우기',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
                     );
                   },
                 ),
-                if (!authProvider.isLoggedIn)
-                  Positioned.fill(
-                    child: ClipRect(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-                        child: Center(
-                          child: GradientBorderButton(
-                            width: double.infinity,
-                            text: '로그인하고 잔디 채우기',
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const LoginScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
+            ],
           ),
-          SettingsTile(
+          const SizedBox(height: 16),
+          _SettingsTile(
             icon: Icons.book,
             iconBackgroundColor: Colors.amber,
             title: '오픈소스 라이선스',
@@ -333,8 +322,9 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           ),
+          if (authProvider.isLoggedIn) const SizedBox(height: 16),
           if (authProvider.isLoggedIn)
-            SettingsTile(
+            _SettingsTile(
               icon: Icons.delete_forever,
               iconBackgroundColor: Colors.redAccent,
               title: '계정 삭제',
@@ -367,12 +357,58 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  // 색상 인디케이터 위젯
-  Widget _buildColorIndicator({
-    required String label,
-    required Color color,
-  }) {
+class _SettingsTile extends StatelessWidget {
+  final IconData icon;
+  final Color iconBackgroundColor;
+  final String title;
+  final VoidCallback onTap;
+
+  const _SettingsTile({
+    required this.icon,
+    required this.iconBackgroundColor,
+    required this.title,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: iconBackgroundColor,
+            child: Icon(icon, color: Colors.black),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ColorIndicator extends StatelessWidget {
+  final String label;
+  final Color color;
+
+  const _ColorIndicator({
+    required this.label,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

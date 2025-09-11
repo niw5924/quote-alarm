@@ -154,8 +154,8 @@ class AlarmListScreen extends StatelessWidget {
                     child: ListTile(
                       onTap: () => onTapAlarm(index),
                       contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 8.0,
+                        horizontal: 16,
+                        vertical: 8,
                       ),
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
