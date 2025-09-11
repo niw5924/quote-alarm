@@ -44,15 +44,16 @@ class NewsScreenState extends State<NewsScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return ListView.builder(
+      return ListView.separated(
+        separatorBuilder: (context, index) => const SizedBox(height: 16),
+        padding: const EdgeInsets.all(16),
         itemCount: 10,
         itemBuilder: (context, index) {
           return Shimmer.fromColors(
             baseColor: Colors.grey.withValues(alpha: 0.3),
             highlightColor: Colors.white.withValues(alpha: 0.3),
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              height: 140,
+              height: 160,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16.0),
@@ -64,21 +65,12 @@ class NewsScreenState extends State<NewsScreen> {
     }
 
     if (_errorMessage.isNotEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('뉴스를 불러오는데 실패했습니다.'),
-              Text(_errorMessage),
-            ],
-          ),
-        ),
-      );
+      return Center(child: Text('뉴스를 불러오는데 실패했습니다. $_errorMessage'));
     }
 
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (context, index) => const SizedBox(height: 16),
+      padding: const EdgeInsets.all(16),
       itemCount: _newsList.length,
       itemBuilder: (context, index) {
         final news = _newsList[index];
@@ -87,11 +79,10 @@ class NewsScreenState extends State<NewsScreen> {
             _unescape.convert(news.description); // HTML 디코딩
 
         return Card(
+          margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          elevation: 2.0,
           clipBehavior: Clip.antiAlias,
           child: ListTile(
             title: Text(
