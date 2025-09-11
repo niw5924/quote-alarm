@@ -24,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
     final uid = authProvider.user?.uid;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
