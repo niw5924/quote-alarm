@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/buttons/themed_icon_button.dart';
 
-class VoiceRecognitionScreen extends StatelessWidget {
+class AlarmCancelVoiceRecognitionScreen extends StatelessWidget {
   final String randomWord;
   final bool isListening;
   final String lastWords;
@@ -10,7 +10,7 @@ class VoiceRecognitionScreen extends StatelessWidget {
   final VoidCallback onStartListening;
   final VoidCallback onStopListening;
 
-  const VoiceRecognitionScreen({
+  const AlarmCancelVoiceRecognitionScreen({
     super.key,
     required this.randomWord,
     required this.isListening,

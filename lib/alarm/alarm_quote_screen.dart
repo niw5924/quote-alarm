@@ -14,18 +14,18 @@ import 'package:speech_to_text/speech_to_text.dart';
 import '../constants/alarm_cancel_mode.dart';
 import '../providers/auth_provider.dart';
 import '../utils/time_util.dart';
-import 'cancel/math_problem_screen.dart';
-import 'cancel/slide_screen.dart';
-import 'cancel/voice_recognition_screen.dart';
+import 'cancel/alarm_cancel_math_problem_screen.dart';
+import 'cancel/alarm_cancel_slide_screen.dart';
+import 'cancel/alarm_cancel_voice_recognition_screen.dart';
 
-class QuoteScreen extends StatefulWidget {
+class AlarmQuoteScreen extends StatefulWidget {
   final Quote quote;
   final int alarmId;
   final AlarmCancelMode cancelMode;
   final double quoteVolume;
   final DateTime alarmStartTime;
 
-  const QuoteScreen({
+  const AlarmQuoteScreen({
     super.key,
     required this.quote,
     required this.alarmId,
@@ -35,29 +35,29 @@ class QuoteScreen extends StatefulWidget {
   });
 
   @override
-  QuoteScreenState createState() => QuoteScreenState();
+  AlarmQuoteScreenState createState() => AlarmQuoteScreenState();
 }
 
-class QuoteScreenState extends State<QuoteScreen> {
-  // 슬라이드 관련 상태
+class AlarmQuoteScreenState extends State<AlarmQuoteScreen> {
+  /// TTS
+  final FlutterTts _flutterTts = FlutterTts();
+
+  /// 슬라이드 관련 상태
   double _slideValue = 0;
 
-  // 수학 문제 관련 상태
+  /// 수학 문제 관련 상태
   late int _firstNumber;
   late int _secondNumber;
   final TextEditingController _answerController = TextEditingController();
   String? _errorMessage;
   bool _isMathProblemGenerated = false;
 
-  // 음성 인식 관련 상태
+  /// 음성 인식 관련 상태
   final SpeechToText _speechToText = SpeechToText();
   late String _randomWord;
   bool _isListening = false;
   String _lastWords = '';
   String _resultMessage = '';
-
-  // TTS
-  final FlutterTts _flutterTts = FlutterTts();
 
   @override
   void initState() {
@@ -280,14 +280,14 @@ class QuoteScreenState extends State<QuoteScreen> {
   Widget _buildCancelModeUI() {
     switch (widget.cancelMode) {
       case AlarmCancelMode.slide:
-        return SlideScreen(
+        return AlarmCancelSlideScreen(
           slideValue: _slideValue,
           onSlideChanged: (value) => setState(() => _slideValue = value),
           onSlideComplete: cancelAlarm,
         );
       case AlarmCancelMode.mathProblem:
         return _isMathProblemGenerated
-            ? MathProblemScreen(
+            ? AlarmCancelMathProblemScreen(
                 firstNumber: _firstNumber,
                 secondNumber: _secondNumber,
                 answerController: _answerController,
@@ -296,7 +296,7 @@ class QuoteScreenState extends State<QuoteScreen> {
               )
             : const CircularProgressIndicator();
       case AlarmCancelMode.voiceRecognition:
-        return VoiceRecognitionScreen(
+        return AlarmCancelVoiceRecognitionScreen(
           randomWord: _randomWord,
           isListening: _isListening,
           lastWords: _lastWords,

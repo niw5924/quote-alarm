@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/widgets/buttons/primary_button.dart';
 
-class MathProblemScreen extends StatelessWidget {
+class AlarmCancelMathProblemScreen extends StatelessWidget {
   final int firstNumber;
   final int secondNumber;
   final TextEditingController answerController;
   final String? errorMessage;
   final VoidCallback onValidateAnswer;
 
-  const MathProblemScreen({
+  const AlarmCancelMathProblemScreen({
     super.key,
     required this.firstNumber,
     required this.secondNumber,

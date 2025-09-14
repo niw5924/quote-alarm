@@ -4,7 +4,7 @@ import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/alarm/alarm_edit_screen.dart';
 import 'package:flutter_alarm_app_2/alarm/alarm_list_screen.dart';
-import 'package:flutter_alarm_app_2/alarm/quote_screen.dart';
+import 'package:flutter_alarm_app_2/alarm/alarm_quote_screen.dart';
 import 'package:flutter_alarm_app_2/news/news_screen.dart';
 import 'package:flutter_alarm_app_2/services/quote_service.dart';
 import 'package:flutter_alarm_app_2/settings/settings_screen.dart';
@@ -57,7 +57,7 @@ class HomeScreenState extends State<HomeScreen> {
       await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => QuoteScreen(
+          builder: (context) => AlarmQuoteScreen(
             quote: quote,
             alarmId: matchingAlarm.alarmSettings.id,
             cancelMode: matchingAlarm.cancelMode,

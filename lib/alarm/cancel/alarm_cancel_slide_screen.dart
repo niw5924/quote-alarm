@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class SlideScreen extends StatelessWidget {
+class AlarmCancelSlideScreen extends StatelessWidget {
   final double slideValue;
   final ValueChanged<double> onSlideChanged;
   final VoidCallback onSlideComplete;
 
-  const SlideScreen({
+  const AlarmCancelSlideScreen({
     super.key,
     required this.slideValue,
     required this.onSlideChanged,
