@@ -1,7 +1,8 @@
+import 'package:alarm/alarm.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:alarm/alarm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart' as path;
 
 import '../constants/alarm_cancel_mode.dart';
 import '../models/alarm_item.dart';
@@ -123,8 +124,25 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
       quoteVolume: _quoteVolume,
     );
 
-    if (context.mounted) {
-      Navigator.pop(context, updatedAlarmItem);
+    Navigator.pop(context, updatedAlarmItem);
+  }
+
+  bool _listsAreEqual(List<bool> a, List<bool> b) {
+    if (a.length != b.length) return false;
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
+  }
+
+  Alignment _getAlignmentForCancelMode() {
+    switch (_cancelMode) {
+      case AlarmCancelMode.slide:
+        return const Alignment(-1.0, 0.0);
+      case AlarmCancelMode.mathProblem:
+        return const Alignment(0.0, 0.0);
+      case AlarmCancelMode.voiceRecognition:
+        return const Alignment(1.0, 0.0);
     }
   }
 
@@ -148,18 +166,20 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
           ),
         ],
       ),
-      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Container(
               decoration: BoxDecoration(
                 color: isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.0),
               ),
-              padding: const EdgeInsets.symmetric(vertical: 10),
               child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 title: Text(
                   '알람 시간',
                   style: TextStyle(
@@ -201,43 +221,109 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
             ),
             const SizedBox(height: 16),
             Container(
-              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      const Text(
+                      Text(
                         '반복 요일 설정',
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: textColor,
+                        ),
                       ),
                       const Spacer(),
-                      GestureDetector(
-                        onTap: () {
+                      IconButton(
+                        icon: Icon(
+                          Icons.refresh,
+                          color: textColor,
+                        ),
+                        onPressed: () {
                           setState(() {
                             _repeatDays = List.filled(7, false);
                           });
                         },
-                        child: Icon(Icons.refresh, color: textColor),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildQuickRepeatButton('매일', List.filled(7, true)),
-                      _buildQuickRepeatButton(
-                          '평일', [false, true, true, true, true, true, false]),
-                      _buildQuickRepeatButton('주말',
-                          [true, false, false, false, false, false, true]),
+                      _QuickRepeatButton(
+                        isDarkMode: isDarkMode,
+                        isSelected:
+                            _listsAreEqual(_repeatDays, List.filled(7, true)),
+                        label: '매일',
+                        onTap: () {
+                          setState(() {
+                            final target = List.filled(7, true);
+                            _repeatDays = _listsAreEqual(_repeatDays, target)
+                                ? List.filled(7, false)
+                                : List.from(target);
+                          });
+                        },
+                      ),
+                      _QuickRepeatButton(
+                        isDarkMode: isDarkMode,
+                        isSelected: _listsAreEqual(
+                          _repeatDays,
+                          [false, true, true, true, true, true, false],
+                        ),
+                        label: '평일',
+                        onTap: () {
+                          setState(() {
+                            final target = [
+                              false,
+                              true,
+                              true,
+                              true,
+                              true,
+                              true,
+                              false
+                            ];
+                            _repeatDays = _listsAreEqual(_repeatDays, target)
+                                ? List.filled(7, false)
+                                : List.from(target);
+                          });
+                        },
+                      ),
+                      _QuickRepeatButton(
+                        isDarkMode: isDarkMode,
+                        isSelected: _listsAreEqual(
+                          _repeatDays,
+                          [true, false, false, false, false, false, true],
+                        ),
+                        label: '주말',
+                        onTap: () {
+                          setState(() {
+                            final target = [
+                              true,
+                              false,
+                              false,
+                              false,
+                              false,
+                              false,
+                              true
+                            ];
+                            _repeatDays = _listsAreEqual(_repeatDays, target)
+                                ? List.filled(7, false)
+                                : List.from(target);
+                          });
+                        },
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: List.generate(7, (index) {
@@ -273,15 +359,18 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text('알람 해제 방법', style: TextStyle(fontSize: 18)),
+            Text(
+              '알람 해제 방법',
+              style: TextStyle(color: textColor, fontSize: 18),
+            ),
             const SizedBox(height: 8),
             Container(
-              height: 60,
-              padding: const EdgeInsets.all(8),
+              height: 64,
               decoration: BoxDecoration(
                 color: isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(24.0),
               ),
+              padding: const EdgeInsets.all(8),
               child: Stack(
                 children: [
                   AnimatedAlign(
@@ -291,7 +380,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
                       width: (MediaQuery.of(context).size.width - 48) / 3,
                       decoration: BoxDecoration(
                         color: const Color(0xFF6BF3B1),
-                        borderRadius: BorderRadius.circular(25),
+                        borderRadius: BorderRadius.circular(16.0),
                       ),
                     ),
                   ),
@@ -366,7 +455,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text('알람 소리 선택', style: TextStyle(fontSize: 18)),
+            Text('알람 소리 선택', style: TextStyle(color: textColor, fontSize: 18)),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               value: _selectedAudioPath,
@@ -374,17 +463,17 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
               isExpanded: true,
               dropdownColor:
                   isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10.0),
               decoration: InputDecoration(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 filled: true,
                 fillColor:
                     isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide.none,
                 ),
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
               ),
               onChanged: (String? newValue) {
                 setState(() {
@@ -397,33 +486,36 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
                   value: value,
                   child: Text(
                     value.contains('assets/sound/')
-                        ? value.split('/').last.replaceAll('.mp3', '')
-                        : 'Custom: ${value.split('/').last.replaceAll('.mp3', '')}',
+                        ? path.basenameWithoutExtension(value)
+                        : 'Custom: ${path.basenameWithoutExtension(value)}',
                     style: TextStyle(color: textColor),
                   ),
                 );
               }).toList(),
             ),
             const SizedBox(height: 16),
-            const Text('알람 소리 크기', style: TextStyle(fontSize: 18)),
+            Text('알람 소리 크기', style: TextStyle(color: textColor, fontSize: 18)),
             const SizedBox(height: 8),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
               decoration: BoxDecoration(
                 color: isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.0),
               ),
               child: Row(
                 children: [
                   Icon(Icons.volume_up, color: textColor),
                   Expanded(
                     child: Slider(
-                      value: _alarmVolume,
                       min: 0.0,
                       max: 1.0,
                       divisions: 10,
                       activeColor: const Color(0xFF6BF3B1),
                       inactiveColor: Colors.white,
+                      value: _alarmVolume,
                       onChanged: (newValue) {
                         setState(() {
                           _alarmVolume = newValue;
@@ -435,25 +527,28 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text('명언 소리 크기', style: TextStyle(fontSize: 18)),
+            Text('명언 소리 크기', style: TextStyle(color: textColor, fontSize: 18)),
             const SizedBox(height: 8),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
               decoration: BoxDecoration(
                 color: isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.0),
               ),
               child: Row(
                 children: [
                   Icon(Icons.volume_up, color: textColor),
                   Expanded(
                     child: Slider(
-                      value: _quoteVolume,
                       min: 0.0,
                       max: 1.0,
                       divisions: 10,
                       activeColor: const Color(0xFF6BF3B1),
                       inactiveColor: Colors.white,
+                      value: _quoteVolume,
                       onChanged: (newValue) {
                         setState(() {
                           _quoteVolume = newValue;
@@ -465,21 +560,21 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text('메모', style: TextStyle(fontSize: 18)),
+            Text('메모', style: TextStyle(color: textColor, fontSize: 18)),
             const SizedBox(height: 8),
             TextField(
               controller: _memoController,
               style: TextStyle(color: textColor),
               decoration: InputDecoration(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 filled: true,
                 fillColor:
                     isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide.none,
                 ),
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                 prefixIcon: Icon(Icons.note, color: textColor),
                 labelText: '메모',
                 labelStyle: TextStyle(color: textColor),
@@ -492,42 +587,39 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
       ),
     );
   }
+}
 
-  Alignment _getAlignmentForCancelMode() {
-    switch (_cancelMode) {
-      case AlarmCancelMode.slide:
-        return const Alignment(-1.0, 0.0);
-      case AlarmCancelMode.mathProblem:
-        return const Alignment(0.0, 0.0);
-      case AlarmCancelMode.voiceRecognition:
-        return const Alignment(1.0, 0.0);
-    }
-  }
+class _QuickRepeatButton extends StatelessWidget {
+  const _QuickRepeatButton({
+    required this.isDarkMode,
+    required this.isSelected,
+    required this.label,
+    required this.onTap,
+  });
 
-  Widget _buildQuickRepeatButton(String label, List<bool> days) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final isSame = _listsAreEqual(_repeatDays, days);
+  final bool isDarkMode;
+  final bool isSelected;
+  final String label;
+  final VoidCallback onTap;
 
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _repeatDays = isSame ? List.filled(7, false) : List.from(days);
-        });
-      },
+      onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isSame
+          color: isSelected
               ? const Color(0xFF6BF3B1)
               : (isDarkMode
                   ? const Color(0xFF151922)
                   : const Color(0xFFF8EDD8)),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16.0),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSame
+            color: isSelected
                 ? Colors.black
                 : (isDarkMode ? Colors.white : Colors.black),
             fontWeight: FontWeight.w600,
@@ -535,13 +627,5 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
         ),
       ),
     );
-  }
-
-  bool _listsAreEqual(List<bool> a, List<bool> b) {
-    if (a.length != b.length) return false;
-    for (int i = 0; i < a.length; i++) {
-      if (a[i] != b[i]) return false;
-    }
-    return true;
   }
 }
