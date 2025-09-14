@@ -18,10 +18,8 @@ class SoundAdditionScreen extends StatefulWidget {
 
 class SoundAdditionScreenState extends State<SoundAdditionScreen> {
   late AudioPlayer _player;
-  String _currentSound = '';
-  String _searchQuery = '';
-  List<String> _customSoundFiles = []; // 사용자 선택 파일 리스트
 
+  List<String> _customSoundFiles = []; // 사용자 선택 파일 리스트
   final List<String> _defaultSoundFiles = [
     'sound/alarm_cuckoo.mp3',
     'sound/alarm_sound.mp3',
@@ -29,6 +27,9 @@ class SoundAdditionScreenState extends State<SoundAdditionScreen> {
     'sound/alarm_gun.mp3',
     'sound/alarm_emergency.mp3',
   ];
+
+  String _currentSound = '';
+  String _searchQuery = '';
 
   @override
   void initState() {
@@ -54,32 +55,6 @@ class SoundAdditionScreenState extends State<SoundAdditionScreen> {
   Future<void> _saveCustomSounds() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('customSoundFiles', _customSoundFiles);
-  }
-
-  @override
-  void dispose() {
-    _player.dispose();
-    super.dispose();
-  }
-
-  Future<void> _playSound(String soundPath) async {
-    if (_currentSound == soundPath) {
-      await _player.stop();
-      setState(() {
-        _currentSound = '';
-      });
-    } else {
-      await _player.stop();
-      setState(() {
-        _currentSound = soundPath;
-      });
-
-      if (_defaultSoundFiles.contains(soundPath)) {
-        await _player.play(AssetSource(soundPath));
-      } else {
-        await _player.play(DeviceFileSource(soundPath)); // 로컬 파일 재생
-      }
-    }
   }
 
   Future<void> _addCustomSound() async {
@@ -112,30 +87,56 @@ class SoundAdditionScreenState extends State<SoundAdditionScreen> {
     }
   }
 
+  Future<void> _playSound(String soundPath) async {
+    if (_currentSound == soundPath) {
+      await _player.stop();
+      setState(() {
+        _currentSound = '';
+      });
+    } else {
+      await _player.stop();
+      setState(() {
+        _currentSound = soundPath;
+      });
+
+      if (_defaultSoundFiles.contains(soundPath)) {
+        await _player.play(AssetSource(soundPath));
+      } else {
+        await _player.play(DeviceFileSource(soundPath)); // 로컬 파일 재생
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _player.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final textColor = isDarkMode ? Colors.white : Colors.black;
 
     final filteredDefaultSoundFiles = _defaultSoundFiles.where((file) {
-      final soundName = file.split('/').last.split('.')[0].split('_').last;
+      final soundName = path.basenameWithoutExtension(file);
       return soundName.toLowerCase().contains(_searchQuery.toLowerCase());
     }).toList();
 
     final filteredCustomSoundFiles = _customSoundFiles.where((file) {
-      final soundName = path.basenameWithoutExtension(file); // 파일명에서 확장자 제거
+      final soundName = path.basenameWithoutExtension(file);
       return soundName.toLowerCase().contains(_searchQuery.toLowerCase());
     }).toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('나만의 사운드 추가'),
+        title: const Text('사운드 추가'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-            child: TextField(
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            TextField(
               style: TextStyle(color: textColor),
               decoration: InputDecoration(
                 prefixIcon:
@@ -146,7 +147,7 @@ class SoundAdditionScreenState extends State<SoundAdditionScreen> {
                 fillColor:
                     isDarkMode ? Colors.grey[850] : const Color(0xFFEAD3B2),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide.none,
                 ),
               ),
@@ -156,115 +157,99 @@ class SoundAdditionScreenState extends State<SoundAdditionScreen> {
                 });
               },
             ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+            Expanded(
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.0),
-                      child: Text(
-                        '기본',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    const Text(
+                      '기본',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     ListView.builder(
-                      shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
                       itemCount: filteredDefaultSoundFiles.length,
                       itemBuilder: (context, index) {
                         final soundFile = filteredDefaultSoundFiles[index];
-                        final soundName = soundFile
-                            .split('/')
-                            .last
-                            .split('.')[0]
-                            .split('_')
-                            .last;
+                        final soundName =
+                            path.basenameWithoutExtension(soundFile);
 
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: ListTile(
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 0.0),
-                            leading: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: isDarkMode
-                                    ? Colors.grey[850]
-                                    : const Color(0xFFEAD3B2),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Icon(Icons.music_note, color: textColor),
+                        return ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: isDarkMode
+                                  ? Colors.grey[850]
+                                  : const Color(0xFFEAD3B2),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                            title: Text(soundName),
-                            trailing: IconButton(
-                              icon: Icon(
-                                _currentSound == soundFile
-                                    ? Icons.stop
-                                    : Icons.volume_up,
-                                color: textColor,
-                              ),
-                              onPressed: () => _playSound(soundFile),
+                            child: Icon(Icons.music_note, color: textColor),
+                          ),
+                          title: Text(soundName),
+                          trailing: IconButton(
+                            icon: Icon(
+                              _currentSound == soundFile
+                                  ? Icons.stop
+                                  : Icons.volume_up,
+                              color: textColor,
                             ),
+                            onPressed: () => _playSound(soundFile),
                           ),
                         );
                       },
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.0),
-                      child: Text(
-                        '나만의 사운드',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    Divider(
+                      color: isDarkMode
+                          ? Colors.grey[850]
+                          : const Color(0xFFEAD3B2),
+                    ),
+                    const Text(
+                      '나만의 사운드',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     ListView.builder(
-                      shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: filteredCustomSoundFiles.length, // 필터링된 리스트 적용
+                      shrinkWrap: true,
+                      itemCount: filteredCustomSoundFiles.length,
                       itemBuilder: (context, index) {
-                        final soundFile =
-                            filteredCustomSoundFiles[index]; // 필터링된 리스트 사용
+                        final soundFile = filteredCustomSoundFiles[index];
                         final soundName =
-                            path.basenameWithoutExtension(soundFile); // 확장자 제거
+                            path.basenameWithoutExtension(soundFile);
 
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: ListTile(
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 0.0),
-                            leading: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: isDarkMode
-                                    ? Colors.grey[850]
-                                    : const Color(0xFFEAD3B2),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Icon(Icons.music_note, color: textColor),
+                        return ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: isDarkMode
+                                  ? Colors.grey[850]
+                                  : const Color(0xFFEAD3B2),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                            title: Text(soundName),
-                            trailing: IconButton(
-                              icon: Icon(
-                                _currentSound == soundFile
-                                    ? Icons.stop
-                                    : Icons.volume_up,
-                                color: textColor,
-                              ),
-                              onPressed: () => _playSound(soundFile),
+                            child: Icon(Icons.music_note, color: textColor),
+                          ),
+                          title: Text(soundName),
+                          trailing: IconButton(
+                            icon: Icon(
+                              _currentSound == soundFile
+                                  ? Icons.stop
+                                  : Icons.volume_up,
+                              color: textColor,
                             ),
+                            onPressed: () => _playSound(soundFile),
                           ),
                         );
                       },
                     ),
+                    const SizedBox(height: 4),
                     ThemedIconButton(
                       width: double.infinity,
                       icon: Icons.add,
@@ -275,8 +260,8 @@ class SoundAdditionScreenState extends State<SoundAdditionScreen> {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
