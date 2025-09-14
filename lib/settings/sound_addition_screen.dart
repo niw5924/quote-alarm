@@ -266,6 +266,7 @@ class SoundAdditionScreenState extends State<SoundAdditionScreen> {
                       },
                     ),
                     ThemedIconButton(
+                      width: double.infinity,
                       icon: Icons.add,
                       label: '추가하기',
                       onPressed: _addCustomSound,
