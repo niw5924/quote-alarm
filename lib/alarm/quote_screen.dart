@@ -1,21 +1,22 @@
+import 'dart:math';
+
 import 'package:alarm/alarm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_app_2/alarm/alarm_cancel_slide.dart';
 import 'package:flutter_alarm_app_2/alarm/alarm_success_screen.dart';
-import 'package:flutter_alarm_app_2/providers/auth_provider.dart';
 import 'package:flutter_alarm_app_2/services/quote_service.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:math';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import '../constants/alarm_cancel_mode.dart';
+import '../providers/auth_provider.dart';
 import '../utils/time_util.dart';
-import 'alarm_cancel_math_problem.dart';
-import 'alarm_cancel_voice_recognition.dart';
+import 'cancel/math_problem_screen.dart';
+import 'cancel/slide_screen.dart';
+import 'cancel/voice_recognition_screen.dart';
 
 class QuoteScreen extends StatefulWidget {
   final Quote quote;
@@ -279,14 +280,14 @@ class QuoteScreenState extends State<QuoteScreen> {
   Widget _buildCancelModeUI() {
     switch (widget.cancelMode) {
       case AlarmCancelMode.slide:
-        return AlarmCancelSlide(
+        return SlideScreen(
           slideValue: _slideValue,
           onSlideChanged: (value) => setState(() => _slideValue = value),
           onSlideComplete: cancelAlarm,
         );
       case AlarmCancelMode.mathProblem:
         return _isMathProblemGenerated
-            ? AlarmCancelMathProblem(
+            ? MathProblemScreen(
                 firstNumber: _firstNumber,
                 secondNumber: _secondNumber,
                 answerController: _answerController,
@@ -295,7 +296,7 @@ class QuoteScreenState extends State<QuoteScreen> {
               )
             : const CircularProgressIndicator();
       case AlarmCancelMode.voiceRecognition:
-        return AlarmCancelVoiceRecognition(
+        return VoiceRecognitionScreen(
           randomWord: _randomWord,
           isListening: _isListening,
           lastWords: _lastWords,
