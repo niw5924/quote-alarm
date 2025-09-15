@@ -4,6 +4,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:html_unescape/html_unescape.dart';
 
+import '../models/news_item.dart';
+
 class NewsScreen extends StatefulWidget {
   const NewsScreen({super.key});
 
@@ -14,7 +16,7 @@ class NewsScreen extends StatefulWidget {
 class NewsScreenState extends State<NewsScreen> {
   final NaverNewsService _newsService = NaverNewsService();
   final HtmlUnescape _unescape = HtmlUnescape(); // HTML 엔티티 변환기
-  List<News> _newsList = [];
+  List<NewsItem> _newsList = [];
   bool _isLoading = true;
   String _errorMessage = '';
 
