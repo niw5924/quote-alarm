@@ -75,6 +75,7 @@ class AlarmSuccessScreenState extends State<AlarmSuccessScreen> {
 
                 Future.delayed(composition.duration, () {
                   Navigator.pop(context);
+                  Navigator.pop(context);
                 });
               },
             ),

@@ -89,8 +89,6 @@ class AlarmQuoteScreenState extends State<AlarmQuoteScreen> {
     }
     debugPrint('알람이 취소되었습니다.');
 
-    if (!mounted) return;
-
     // 알람 성공 스크린으로 이동
     await Navigator.push(
       context,
@@ -98,9 +96,6 @@ class AlarmQuoteScreenState extends State<AlarmQuoteScreen> {
         builder: (context) => const AlarmSuccessScreen(),
       ),
     );
-
-    if (!mounted) return;
-    Navigator.pop(context);
   }
 
   Future<void> _speakQuote() async {
