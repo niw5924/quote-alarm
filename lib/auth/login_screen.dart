@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              Image.asset('assets/image/gear.gif'),
+              Image.asset('assets/gifs/gear.gif'),
               const Text(
                 'LOGIN',
                 style: TextStyle(

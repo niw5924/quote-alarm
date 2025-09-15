@@ -78,9 +78,9 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: false
-  image_path: "assets/image/quote_alarm_icon.png"
+  image_path: "assets/images/quote_alarm_icon.png"
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/image/quote_alarm_icon.png"
+  adaptive_icon_foreground: "assets/images/quote_alarm_icon.png"
   min_sdk_android: 21
 
 # For information on the generic Dart part of this file, see the
@@ -95,16 +95,17 @@ flutter:
   uses-material-design: true
   assets:
     - .env
-    - assets/sound/
-    - assets/image/
-    - assets/animation/
+    - assets/gifs/
+    - assets/images/
+    - assets/lotties/
+    - assets/sounds/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
-  # An image asset can refer to one or more resolution-specific "variants", see
+  # An images asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
   # For details regarding adding assets from package dependencies, see

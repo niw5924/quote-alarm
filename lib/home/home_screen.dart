@@ -156,7 +156,7 @@ class HomeScreenState extends State<HomeScreen> {
     final AlarmSettings newAlarmSettings = AlarmSettings(
       id: newAlarmId.hashCode,
       dateTime: DateTime.now().add(const Duration(minutes: 1)),
-      assetAudioPath: 'assets/sound/alarm_sound.mp3',
+      assetAudioPath: 'assets/sounds/alarm_sound.mp3',
       notificationSettings: const NotificationSettings(
         title: '울림소리',
         body: '',

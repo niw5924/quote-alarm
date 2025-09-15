@@ -34,7 +34,7 @@ class StatisticsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Lottie.asset(
-                        'assets/animation/lottie_statistics.json',
+                        'assets/lotties/statistics.json',
                         width: double.infinity,
                         fit: BoxFit.cover,
                       ),

@@ -31,13 +31,13 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
   late List<bool> _repeatDays; // 요일 선택 상태
   late AlarmCancelMode _cancelMode;
   final List<String> _defaultSoundFiles = [
-    'assets/sound/alarm_cuckoo.mp3',
-    'assets/sound/alarm_sound.mp3',
-    'assets/sound/alarm_bell.mp3',
-    'assets/sound/alarm_gun.mp3',
-    'assets/sound/alarm_emergency.mp3',
+    'assets/sounds/alarm_cuckoo.mp3',
+    'assets/sounds/alarm_sound.mp3',
+    'assets/sounds/alarm_bell.mp3',
+    'assets/sounds/alarm_gun.mp3',
+    'assets/sounds/alarm_emergency.mp3',
   ];
-  String _selectedAudioPath = 'assets/sound/alarm_sound.mp3';
+  String _selectedAudioPath = 'assets/sounds/alarm_sound.mp3';
   List<String> _customSoundFiles = []; // 사용자 사운드 파일 목록
   late double _alarmVolume;
   late double _quoteVolume;
@@ -485,7 +485,7 @@ class AlarmEditScreenState extends State<AlarmEditScreen> {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(
-                    value.contains('assets/sound/')
+                    value.contains('assets/sounds/')
                         ? path.basenameWithoutExtension(value)
                         : 'Custom: ${path.basenameWithoutExtension(value)}',
                     style: TextStyle(color: textColor),

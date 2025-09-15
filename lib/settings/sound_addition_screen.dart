@@ -21,11 +21,11 @@ class SoundAdditionScreenState extends State<SoundAdditionScreen> {
 
   List<String> _customSoundFiles = []; // 사용자 선택 파일 리스트
   final List<String> _defaultSoundFiles = [
-    'sound/alarm_cuckoo.mp3',
-    'sound/alarm_sound.mp3',
-    'sound/alarm_bell.mp3',
-    'sound/alarm_gun.mp3',
-    'sound/alarm_emergency.mp3',
+    'sounds/alarm_cuckoo.mp3',
+    'sounds/alarm_sound.mp3',
+    'sounds/alarm_bell.mp3',
+    'sounds/alarm_gun.mp3',
+    'sounds/alarm_emergency.mp3',
   ];
 
   String _currentSound = '';

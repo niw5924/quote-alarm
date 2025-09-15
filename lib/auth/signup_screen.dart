@@ -64,7 +64,7 @@ class SignupScreenState extends State<SignupScreen> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              Image.asset('assets/image/gear.gif'),
+              Image.asset('assets/gifs/gear.gif'),
               const Text(
                 'SIGN UP',
                 style: TextStyle(

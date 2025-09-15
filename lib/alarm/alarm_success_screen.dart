@@ -60,7 +60,7 @@ class AlarmSuccessScreenState extends State<AlarmSuccessScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Lottie.asset(
-              'assets/animation/lottie_check.json',
+              'assets/lotties/check.json',
               width: MediaQuery.of(context).size.width * 0.6,
               height: MediaQuery.of(context).size.height * 0.6,
               repeat: false,
