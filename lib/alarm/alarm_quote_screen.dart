@@ -230,7 +230,8 @@ class AlarmQuoteScreenState extends State<AlarmQuoteScreen> {
         formattedDate: {'${widget.alarmId}': alarmData}
       }
     }, SetOptions(merge: true)).timeout(
-        const Duration(seconds: 1)); // 타임아웃 설정(인터넷 연결 X)
+      const Duration(seconds: 1),
+    ); // 타임아웃 설정(인터넷 연결 X)
   }
 
   @override
@@ -248,27 +249,29 @@ class AlarmQuoteScreenState extends State<AlarmQuoteScreen> {
           // 화면을 터치하면 키보드가 닫히도록 설정
           child: Center(
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '"${widget.quote.quote}"',
-                      style: const TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Text(
+                    '"${widget.quote.quote}"',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      '- ${widget.quote.author}',
-                      style: const TextStyle(
-                          fontSize: 18, fontStyle: FontStyle.italic),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '- ${widget.quote.author}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontStyle: FontStyle.italic,
                     ),
-                    const SizedBox(height: 32),
-                    _buildCancelModeUI(),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildCancelModeUI(),
+                ],
               ),
             ),
           ),
