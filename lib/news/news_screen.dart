@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/services/naver_news_service.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:html_unescape/html_unescape.dart';
 
 import '../models/news_item.dart';
+import '../utils/html_util.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({super.key});
@@ -15,10 +15,9 @@ class NewsScreen extends StatefulWidget {
 
 class NewsScreenState extends State<NewsScreen> {
   final NaverNewsService _newsService = NaverNewsService();
-  final HtmlUnescape _unescape = HtmlUnescape(); // HTML 엔티티 변환기
-  List<NewsItem> _newsList = [];
   bool _isLoading = true;
   String _errorMessage = '';
+  List<NewsItem> _newsList = [];
 
   @override
   void initState() {
@@ -76,9 +75,8 @@ class NewsScreenState extends State<NewsScreen> {
       itemCount: _newsList.length,
       itemBuilder: (context, index) {
         final news = _newsList[index];
-        final decodedTitle = _unescape.convert(news.title); // HTML 디코딩
-        final decodedDescription =
-            _unescape.convert(news.description); // HTML 디코딩
+        final title = parseHtmlString(news.title);
+        final description = parseHtmlString(news.description);
 
         return Card(
           margin: EdgeInsets.zero,
@@ -88,10 +86,10 @@ class NewsScreenState extends State<NewsScreen> {
           clipBehavior: Clip.antiAlias,
           child: ListTile(
             title: Text(
-              decodedTitle,
+              title,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(decodedDescription),
+            subtitle: Text(description),
             onTap: () => launchUrl(Uri.parse(news.link)),
           ),
         );
