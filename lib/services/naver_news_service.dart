@@ -29,7 +29,7 @@ class NaverNewsService {
       throw Exception('Failed to fetch news (status: ${response.statusCode})');
     }
 
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
+    final data = jsonDecode(response.body);
     final List<dynamic> items = data['items'];
     return items.map((item) => NewsItem.fromJson(item)).toList();
   }

@@ -14,6 +14,7 @@ import 'package:uuid/uuid.dart';
 
 import '../constants/alarm_cancel_mode.dart';
 import '../models/alarm_item.dart';
+import '../models/quote_item.dart';
 import '../utils/time_util.dart';
 import '../utils/toast_util.dart';
 
@@ -49,10 +50,16 @@ class HomeScreenState extends State<HomeScreen> {
           .firstWhere((alarm) => alarm.alarmSettings.id == alarmSettings.id);
 
       final DateTime alarmStartTime = DateTime.now();
-      final quoteService = QuoteService();
-      final quote = await quoteService.fetchRandomQuote();
+      late final QuoteItem quote;
 
-      if (!mounted) return;
+      try {
+        quote = await QuoteService().fetchRandomQuote();
+      } catch (e) {
+        quote = QuoteItem(
+          quote: "명언을 불러오는 데 실패했습니다.",
+          author: e.toString(),
+        );
+      }
 
       await Navigator.push(
         context,

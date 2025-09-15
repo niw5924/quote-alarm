@@ -4,7 +4,6 @@ import 'package:alarm/alarm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app_2/alarm/alarm_success_screen.dart';
-import 'package:flutter_alarm_app_2/services/quote_service.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,6 +11,7 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import '../constants/alarm_cancel_mode.dart';
+import '../models/quote_item.dart';
 import '../providers/auth_provider.dart';
 import '../utils/time_util.dart';
 import 'cancel/alarm_cancel_math_problem_screen.dart';
@@ -19,7 +19,7 @@ import 'cancel/alarm_cancel_slide_screen.dart';
 import 'cancel/alarm_cancel_voice_recognition_screen.dart';
 
 class AlarmQuoteScreen extends StatefulWidget {
-  final Quote quote;
+  final QuoteItem quote;
   final int alarmId;
   final AlarmCancelMode cancelMode;
   final double quoteVolume;
