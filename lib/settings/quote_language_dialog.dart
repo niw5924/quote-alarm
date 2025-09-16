@@ -20,14 +20,14 @@ class QuoteLanguageDialogState extends State<QuoteLanguageDialog> {
   }
 
   Future<void> _loadLanguage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     setState(() {
       _selectedLanguage = prefs.getString('quoteLanguage') ?? 'ko';
     });
   }
 
   Future<void> _saveLanguage(String language) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     await prefs.setString('quoteLanguage', language);
     setState(() {
       _selectedLanguage = language;
@@ -39,16 +39,12 @@ class QuoteLanguageDialogState extends State<QuoteLanguageDialog> {
     return Dialog(
       backgroundColor: const Color(0xFFFFFBEA),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.translate,
-              size: 50,
-              color: Colors.blueAccent,
-            ),
-            const SizedBox(height: 15),
+            const Icon(Icons.translate, size: 50, color: Colors.blueAccent),
+            const SizedBox(height: 16),
             const Text(
               '명언 언어 설정',
               style: TextStyle(
@@ -58,20 +54,29 @@ class QuoteLanguageDialogState extends State<QuoteLanguageDialog> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 10),
-            _buildLanguageCard(
+            const SizedBox(height: 16),
+            _LanguageCard(
               icon: Icons.translate,
               title: '한국어 (Korean)',
-              value: 'ko',
               color: Colors.orangeAccent,
+              isSelected: _selectedLanguage == 'ko',
+              onTap: () {
+                HapticFeedback.lightImpact();
+                _saveLanguage('ko');
+              },
             ),
-            _buildLanguageCard(
+            const SizedBox(height: 8),
+            _LanguageCard(
               icon: Icons.language,
               title: '영어 (English)',
-              value: 'en',
               color: Colors.lightBlueAccent,
+              isSelected: _selectedLanguage == 'en',
+              onTap: () {
+                HapticFeedback.lightImpact();
+                _saveLanguage('en');
+              },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             PrimaryButton(
               text: '확인',
               onPressed: () {
@@ -83,28 +88,33 @@ class QuoteLanguageDialogState extends State<QuoteLanguageDialog> {
       ),
     );
   }
+}
 
-  Widget _buildLanguageCard({
-    required IconData icon,
-    required String title,
-    required String value,
-    required Color color,
-  }) {
+class _LanguageCard extends StatelessWidget {
+  const _LanguageCard({
+    required this.icon,
+    required this.title,
+    required this.color,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final Color color;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        _saveLanguage(value);
-      },
+      onTap: onTap,
       child: Card(
-        color: _selectedLanguage == value
-            ? color.withValues(alpha: 0.9)
-            : Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
+        color: isSelected ? color.withValues(alpha: 0.9) : Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         elevation: 2,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Row(
             children: [
               Icon(icon, size: 30, color: Colors.black),
@@ -114,8 +124,7 @@ class QuoteLanguageDialogState extends State<QuoteLanguageDialog> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color:
-                      _selectedLanguage == value ? Colors.white : Colors.black,
+                  color: isSelected ? Colors.white : Colors.black,
                 ),
               ),
             ],
