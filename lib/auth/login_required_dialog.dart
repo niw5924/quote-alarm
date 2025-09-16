@@ -11,7 +11,7 @@ class LoginRequiredDialog extends StatelessWidget {
     return Dialog(
       backgroundColor: const Color(0xFFFFFBEA),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -20,7 +20,7 @@ class LoginRequiredDialog extends StatelessWidget {
               size: 50,
               color: Colors.redAccent,
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 16),
             const Text(
               '로그인이 필요합니다',
               style: TextStyle(
@@ -30,7 +30,7 @@ class LoginRequiredDialog extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 16),
             const Text(
               '이 기능을 사용하려면 로그인 해주세요!',
               style: TextStyle(
@@ -39,7 +39,7 @@ class LoginRequiredDialog extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

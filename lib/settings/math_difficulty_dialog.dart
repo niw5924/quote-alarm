@@ -48,9 +48,10 @@ class MathDifficultyDialogState extends State<MathDifficultyDialog> {
             const Text(
               '수학 문제 난이도 설정',
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
