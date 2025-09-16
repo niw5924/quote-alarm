@@ -28,7 +28,7 @@ class ConfirmDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, size: 50, color: Colors.redAccent),
-            const SizedBox(height: 15),
+            const SizedBox(height: 16),
             Text(
               title,
               style: const TextStyle(
@@ -36,17 +36,15 @@ class ConfirmDialog extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 16),
             Text(
               message,
+              style: const TextStyle(fontSize: 16, color: Colors.black),
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black,
-              ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
