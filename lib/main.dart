@@ -18,7 +18,9 @@ Future<void> main() async {
   await Alarm.init();
 
   await Alarm.setWarningNotificationOnKill(
-      '🥺 울림소리 앱을 다시 켜주세요', '앱이 종료되면 알람이 정상적으로 작동하지 않을 수 있습니다.');
+    '🥺 울림소리 앱을 다시 켜주세요',
+    '앱이 종료되면 알람이 정상적으로 작동하지 않을 수 있습니다.',
+  );
 
   final prefs = await SharedPreferences.getInstance();
   final isDarkTheme = prefs.getBool('isDarkTheme') ?? true;
@@ -89,8 +91,7 @@ class QuoteAlarmAppState extends State<QuoteAlarmApp> {
                 unselectedItemColor: Colors.grey[700],
               ),
             ),
-      home:
-          HomeScreen(onThemeToggle: _toggleTheme, isDarkTheme: _isDarkTheme),
+      home: HomeScreen(onThemeToggle: _toggleTheme, isDarkTheme: _isDarkTheme),
     );
   }
 }
